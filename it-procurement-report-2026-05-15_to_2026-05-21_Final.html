@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Strategic Procurement — Verified Report 2026.05.15-2026.05.21</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#07070f; --surface:#0f0f1a; --surface2:#161625;
+  --border:#222238; --border-b:#303050;
+  --text:#f0f0ff; --muted:#8f8fb6; --dim:#55557a;
+  --blue:#38bdf8; --blue2:#7dd3fc; --pink:#f472b6; --cyan:#2dd4bf;
+  --amber:#fbbf24; --red:#fb7185; --green:#4ade80; --violet:#a78bfa;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Noto Sans KR',system-ui,-apple-system,sans-serif;color:var(--text);user-select:none}
+#pbar{position:fixed;top:0;left:0;z-index:999;height:3px;background:linear-gradient(90deg,var(--blue),var(--pink));transition:width .35s;box-shadow:0 0 12px rgba(56,189,248,.8)}
+#pnum{position:fixed;bottom:22px;right:30px;z-index:999;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:2px}
+#pnum span{color:var(--blue);font-weight:700;font-size:14px}
+#dots{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:999}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--border-b);cursor:pointer;transition:all .3s}
+.dot.on{background:var(--blue);box-shadow:0 0 10px var(--blue);transform:scale(1.4)}
+.arr{position:fixed;top:50%;z-index:998;transform:translateY(-50%);width:38px;height:38px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--muted);transition:all .2s;backdrop-filter:blur(6px)}
+.arr:hover{background:rgba(56,189,248,.22);color:#fff;border-color:var(--blue)}
+#ap{left:18px} #an{right:18px}.arr.hide{opacity:0;pointer-events:none}
+#hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:999;font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1.5px;transition:opacity .5s;white-space:nowrap}
+#slider{width:100%;height:100%;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:translateX(60px);transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow:hidden}
+.slide.on{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.xl{opacity:0;transform:translateX(-60px)}.slide.xr{opacity:0;transform:translateX(60px)}
+.cover{background:radial-gradient(ellipse at 25% 35%,rgba(56,189,248,.12) 0%,transparent 55%),radial-gradient(ellipse at 78% 72%,rgba(244,114,182,.08) 0%,transparent 50%),var(--bg);justify-content:center;align-items:center}
+.cover-inner{width:100%;max-width:1120px;padding:56px 78px;display:flex;flex-direction:column;gap:28px}
+.cv-badge{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:3px;text-transform:uppercase;display:flex;align-items:center;gap:10px}
+.cv-badge::before{content:'';display:block;width:36px;height:2px;background:linear-gradient(90deg,var(--blue),var(--pink));border-radius:2px}
+.cv-title{font-family:'Orbitron','Noto Sans KR',sans-serif;font-size:clamp(30px,4.8vw,56px);font-weight:900;color:#fff;line-height:1.1;letter-spacing:-1px}
+.cv-title em{color:var(--blue);font-style:normal}
+.cv-meta{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:.5px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.cv-sep{width:3px;height:3px;border-radius:50%;background:var(--border-b)}
+.cv-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:4px}
+.cv-kpi{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;position:relative;overflow:hidden}
+.cv-kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--pink))}
+.cv-lbl{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px}
+.cv-val{font-size:18px;font-weight:800;letter-spacing:-.5px;line-height:1.3}.bl{color:var(--blue)}.pk{color:var(--pink)}.am{color:var(--amber)}.pu{color:var(--violet)}.cy{color:var(--cyan)}.gr{color:var(--green)}.rd{color:var(--red)}
+.cv-note{background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(244,114,182,.05));border:1px solid rgba(56,189,248,.25);border-radius:12px;padding:16px 20px;color:#fff;font-size:13px;line-height:1.7}
+.cs{padding:0;display:flex;flex-direction:column}
+.sh{padding:18px 60px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sh-l{display:flex;align-items:center;gap:14px}.si{width:42px;height:42px;background:var(--surface2);border:1px solid var(--border-b);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.stitle{font-family:'Orbitron','Noto Sans KR',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.5px}.ssub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}
+.verified{background:rgba(74,222,128,.1);color:var(--green);font-size:9px;font-weight:700;font-family:'Space Mono',monospace;padding:5px 10px;border-radius:4px;letter-spacing:1px;border:1px solid rgba(74,222,128,.22)}
+.pills{display:flex;gap:10px;padding:10px 60px;border-bottom:1px solid var(--border);flex-shrink:0}.pill{background:var(--surface2);border:1px solid var(--border-b);border-radius:7px;padding:7px 14px;flex:1}.pl{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}.pv{font-size:13px;font-weight:800}.pv.r{color:var(--red)}.pv.a{color:var(--amber)}.pv.b{color:var(--blue)}.pv.g{color:var(--green)}.pv.pu{color:var(--violet)}.pv.pk{color:var(--pink)}.pv.cy{color:var(--cyan)}
+.igrid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px 60px;overflow:hidden}
+.ic{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:15px 17px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s;position:relative;overflow:hidden}.ic::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:3px 0 0 3px;transition:background .2s}.ic:hover{border-color:var(--blue);background:rgba(56,189,248,.05);transform:translateY(-2px);box-shadow:0 8px 28px rgba(56,189,248,.1)}.ic:hover::before{background:var(--pink)}
+.ic-src{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--blue);letter-spacing:.3px;display:flex;align-items:center;gap:4px}.ic-src::before{content:'↗'}
+.ic-head{font-size:13px;font-weight:800;color:var(--text);line-height:1.45}.ic-sum{font-size:11.2px;color:var(--muted);line-height:1.55;border-top:1px solid var(--border);padding-top:8px;margin-top:2px}.ic-pts{display:flex;flex-direction:column;gap:5px;margin-top:2px}.ic-pt{font-size:10.8px;color:var(--muted);line-height:1.45;display:flex;gap:6px;align-items:flex-start}.ic-pt::before{content:'▸';color:var(--blue);flex-shrink:0;font-size:9px;margin-top:2px}.ic-tag{display:inline-flex;margin-top:auto;font-family:'Space Mono',monospace;font-size:8px;background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.2);border-radius:4px;padding:2px 7px;letter-spacing:.5px;align-self:flex-start}
+.abar{margin:0 60px 16px;background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(244,114,182,.05));border:1px solid rgba(56,189,248,.25);border-radius:10px;padding:13px 18px;display:flex;align-items:center;gap:14px;flex-shrink:0}.aicon{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--pink));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}.albl{font-family:'Space Mono',monospace;font-size:8px;color:var(--blue2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}.atxt{font-size:13px;font-weight:700;color:#fff;line-height:1.5}
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;backdrop-filter:blur(6px);align-items:center;justify-content:center}.moverlay.open{display:flex}.mbox{background:var(--surface);border:1px solid var(--border-b);border-radius:16px;width:620px;max-width:94vw;max-height:88vh;overflow-y:auto;animation:mIn .2s ease}@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}.mh{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:var(--surface);z-index:1}.mt{font-family:'Orbitron','Noto Sans KR',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:4px}.ms{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)}.mx{background:var(--surface2);border:1px solid var(--border-b);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}.mx:hover{border-color:var(--red);color:var(--red)}.mb{padding:20px 24px 24px}.msum{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:14px}.mpts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}.mpt{background:var(--surface2);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:9px 13px;font-size:12.5px;color:var(--text);line-height:1.55}.mlnk{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Space Mono',monospace;transition:opacity .15s}.mlnk:hover{opacity:.85}.mdt{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px}
+@media(max-width:900px){.igrid{grid-template-columns:1fr;padding:12px 48px;overflow-y:auto}.pills{display:grid;grid-template-columns:1fr 1fr;padding:10px 48px}.sh{padding:16px 48px}.abar{margin:0 48px 14px}.cv-kpis{grid-template-columns:1fr 1fr}.cover-inner{padding:48px}}
+</style>
+</head>
+<body>
+<div id="pbar"></div>
+<div id="pnum"><span id="cp">1</span> / <span id="tp">10</span></div>
+<div id="dots"><div class="dot on" onclick="go(0)"></div><div class="dot" onclick="go(1)"></div><div class="dot" onclick="go(2)"></div><div class="dot" onclick="go(3)"></div><div class="dot" onclick="go(4)"></div><div class="dot" onclick="go(5)"></div><div class="dot" onclick="go(6)"></div><div class="dot" onclick="go(7)"></div><div class="dot" onclick="go(8)"></div><div class="dot" onclick="go(9)"></div></div>
+<div class="arr hide" id="ap" onclick="go(cur-1)">←</div>
+<div class="arr" id="an" onclick="go(cur+1)">→</div>
+<div id="hint">F — 전체화면 &nbsp;·&nbsp; ← → — 슬라이드 이동 &nbsp;·&nbsp; 카드 클릭 — 원문 상세</div>
+
+<div class="moverlay" id="modal" onclick="cmo(event)">
+  <div class="mbox">
+    <div class="mh">
+      <div style="flex:1;padding-right:12px"><div class="mt" id="mt"></div><div class="ms" id="ms"></div></div>
+      <button class="mx" onclick="cmb()">✕</button>
+    </div>
+    <div class="mb">
+      <div class="msum" id="msu"></div>
+      <div class="mpts" id="mpt"></div>
+      <a class="mlnk" id="ml" href="#" target="_blank" rel="noopener">🔗 원문 기사/공식 페이지 바로 보기</a>
+      <div class="mdt" id="mdt"></div>
+    </div>
+  </div>
+</div>
+
+<div id="slider">
+  <div class="slide cover on" data-i="0">
+    <div class="cover-inner">
+      <div class="cv-badge">VERIFIED SOURCE UPDATE · PRESS / OFFICIAL ONLY</div>
+      <div class="cv-title">IT Strategic<br><em>Procurement</em></div>
+      <div class="cv-meta">
+        <span>2026.05.15–2026.05.21 Published-Date Report</span><div class="cv-sep"></div>
+        <span>9 SECTORS · 27 VERIFIED ITEMS</span><div class="cv-sep"></div>
+        <span style="color:var(--blue)">NO BLOGS · NO UNDATED PAGES · NO INDEX PAGE</span>
+      </div>
+      <div class="cv-kpis">
+        <div class="cv-kpi"><div class="cv-lbl">AI INFRA</div><div class="cv-val bl">NVIDIA $81.6B</div></div>
+        <div class="cv-kpi"><div class="cv-lbl">TPU CLOUD</div><div class="cv-val pu">Blackstone $5B</div></div>
+        <div class="cv-kpi"><div class="cv-lbl">AUTO MARKET</div><div class="cv-val am">그랜저 10,277대</div></div>
+        <div class="cv-kpi"><div class="cv-lbl">AI DEVICE</div><div class="cv-val pk">Samsung AI Glasses</div></div>
+      </div>
+      <div class="cv-note">
+        <b>검증 기준:</b> 2026.05.15~2026.05.21 사이에 게시·송고·등록된 기사 또는 공식 보도자료만 반영했습니다.
+        개인 블로그, 나무위키, 상시 상품 페이지, 날짜가 명확하지 않은 웹페이지는 삭제했습니다.
+        모든 카드의 날짜는 해당 기사/공식 페이지의 게시일 기준이며, 형식은 YYYY.MM.DD로 통일했습니다.
+      </div>
+    </div>
+  </div>
+  
+    <div class="slide cs" data-i="1">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">🖥️</div>
+          <div><div class="stitle">HW Infrastructure</div><div class="ssub">AI SERVER · TPU CLOUD · MEMORY SHORTAGE</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">NVIDIA Q1 FY2027</div><div class="pv g">$81.6B · 2026.05.20</div></div><div class="pill"><div class="pl">Data Center</div><div class="pv b">$75.2B · +92% YoY</div></div><div class="pill"><div class="pl">TPU Cloud JV</div><div class="pv pu">Blackstone $5B · 2026.05.18</div></div><div class="pill"><div class="pl">Memory Shortage</div><div class="pv r">DRAM Q2 +58~63%</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;NVIDIA FY2027 Q1 실적 발표 — 매출 $81.6B, 데이터센터 $75.2B&quot;, &quot;s&quot;: &quot;NVIDIA Newsroom · 2026.05.20&quot;, &quot;sum&quot;: &quot;NVIDIA는 2027회계연도 1분기 매출 $81.6B를 발표했다. 데이터센터 매출은 $75.2B로 전년 대비 92% 증가했고, Q2 매출 가이던스는 $91.0B로 제시됐다.&quot;, &quot;pts&quot;: [&quot;공식 보도자료 기준 게시일: 2026.05.20&quot;, &quot;Q1 매출 $81.6B, 전년 대비 +85%&quot;, &quot;데이터센터 $75.2B, 전년 대비 +92% — AI 서버·GPU 수요 견고&quot;, &quot;Vera Rubin 플랫폼 발표 및 $80B 추가 자사주 매입 승인&quot;], &quot;lnk&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027&quot;, &quot;d&quot;: &quot;출처: NVIDIA Newsroom · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">NVIDIA Newsroom · 2026.05.20</div>
+          <div class="ic-head">NVIDIA FY2027 Q1 실적 발표 — 매출 $81.6B, 데이터센터 $75.2B</div>
+          <div class="ic-sum">NVIDIA는 2027회계연도 1분기 매출 $81.6B를 발표했다. 데이터센터 매출은 $75.2B로 전년 대비 92% 증가했고, Q2 매출 가이던스는 $91.0B로 제시됐다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 보도자료 기준 게시일: 2026.05.20</div><div class="ic-pt">Q1 매출 $81.6B, 전년 대비 +85%</div><div class="ic-pt">데이터센터 $75.2B, 전년 대비 +92% — AI 서버·GPU 수요 견고</div></div>
+          <span class="ic-tag">공식 · AI 서버</span>
+        </a>
+        <a class="ic" href="https://www.blackstone.com/news/press/blackstone-announces-joint-venture-with-google-to-create-new-tpu-cloud/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Blackstone·Google TPU Cloud 합작 — 2027년 500MW, 초기 지분투자 $5B&quot;, &quot;s&quot;: &quot;Blackstone Press Release · 2026.05.18&quot;, &quot;sum&quot;: &quot;Blackstone은 Google과 TPU 기반 compute-as-a-service 회사를 설립한다고 발표했다. Blackstone은 초기 $5B 지분투자를 집행하고 2027년 첫 500MW 용량을 온라인화할 계획이다.&quot;, &quot;pts&quot;: [&quot;공식 보도자료 기준 게시일: 2026.05.18&quot;, &quot;Google Cloud TPU를 Google Cloud 외부에서도 이용 가능한 대안 공급망으로 확장&quot;, &quot;Blackstone 초기 지분투자 $5B, 2027년 500MW 용량 목표&quot;, &quot;GPU 단일 의존 리스크 완화를 위한 TPU 기반 AI 인프라 관찰 필요&quot;], &quot;lnk&quot;: &quot;https://www.blackstone.com/news/press/blackstone-announces-joint-venture-with-google-to-create-new-tpu-cloud/&quot;, &quot;d&quot;: &quot;출처: Blackstone Press Release · 2026.05.18 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Blackstone Press Release · 2026.05.18</div>
+          <div class="ic-head">Blackstone·Google TPU Cloud 합작 — 2027년 500MW, 초기 지분투자 $5B</div>
+          <div class="ic-sum">Blackstone은 Google과 TPU 기반 compute-as-a-service 회사를 설립한다고 발표했다. Blackstone은 초기 $5B 지분투자를 집행하고 2027년 첫 500MW 용량을 온라인화할 계획이다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 보도자료 기준 게시일: 2026.05.18</div><div class="ic-pt">Google Cloud TPU를 Google Cloud 외부에서도 이용 가능한 대안 공급망으로 확장</div><div class="ic-pt">Blackstone 초기 지분투자 $5B, 2027년 500MW 용량 목표</div></div>
+          <span class="ic-tag">공식 · TPU Cloud</span>
+        </a>
+        <a class="ic" href="https://www.tomshardware.com/tech-industry/taiwanese-memory-module-makers-raise-880-million-to-stockpile-chips" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;메모리 모듈사, 칩 구매자금 $880M 조달 — DRAM·NAND 가격 급등&quot;, &quot;s&quot;: &quot;Tom&#x27;s Hardware · 2026.05.18&quot;, &quot;sum&quot;: &quot;Tom&#x27;s Hardware는 대만 메모리 모듈사들이 DRAM·NAND 가격 급등에 대응해 약 $880M 규모 자금을 조달하고 있다고 보도했다. TrendForce 전망상 Q2 DRAM은 +58~63%, NAND는 +70~75% 상승 가능성이 제시됐다.&quot;, &quot;pts&quot;: [&quot;기사 게시일: 2026.05.18&quot;, &quot;Adata·TeamGroup·Apacer 등 NT$28B 이상 자금 조달&quot;, &quot;AI 데이터센터와 HBM 우선 생산으로 일반 DRAM·NAND 공급 제약&quot;, &quot;서버 DIMM·SSD 조달은 선계약·물량 확보 전략 필요&quot;], &quot;lnk&quot;: &quot;https://www.tomshardware.com/tech-industry/taiwanese-memory-module-makers-raise-880-million-to-stockpile-chips&quot;, &quot;d&quot;: &quot;출처: Tom&#x27;s Hardware · 2026.05.18 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Tom's Hardware · 2026.05.18</div>
+          <div class="ic-head">메모리 모듈사, 칩 구매자금 $880M 조달 — DRAM·NAND 가격 급등</div>
+          <div class="ic-sum">Tom's Hardware는 대만 메모리 모듈사들이 DRAM·NAND 가격 급등에 대응해 약 $880M 규모 자금을 조달하고 있다고 보도했다. TrendForce 전망상 Q2 DRAM은 +58~63%, NAND는 +70~75% 상승 가능성이 제시됐다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 게시일: 2026.05.18</div><div class="ic-pt">Adata·TeamGroup·Apacer 등 NT$28B 이상 자금 조달</div><div class="ic-pt">AI 데이터센터와 HBM 우선 생산으로 일반 DRAM·NAND 공급 제약</div></div>
+          <span class="ic-tag">언론 · 메모리</span>
+        </a></div>
+      <div class="abar"><div class="aicon">🖥️</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">AI 서버·메모리 조달은 단가보다 공급 안정성이 핵심 변수다. GPU·TPU·메모리 병목을 분리해 공급망 대안을 병행 검토해야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="2">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">☁️</div>
+          <div><div class="stitle">Cloud &amp; Security</div><div class="ssub">AI CLOUD · AGENTS · PHISHING DEFENSE</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">KISA 보이스피싱</div><div class="pv r">2026.05.15</div></div><div class="pill"><div class="pl">국산 NPU 실증</div><div class="pv g">사우디 아람코 · 2026.05.15</div></div><div class="pill"><div class="pl">Google Managed Agents</div><div class="pv b">2026.05.19</div></div><div class="pill"><div class="pl">TPU Cloud</div><div class="pv pu">500MW · 2027</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://www.kisa.or.kr/402/form?lang_type=KO&amp;postSeq=2592" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;KISA, 대표번호 도용 보이스피싱 통신사업자 검거 지원&quot;, &quot;s&quot;: &quot;KISA 보도자료 · 2026.05.15&quot;, &quot;sum&quot;: &quot;KISA는 금융·공공기관 대표번호를 도용한 보이스피싱 및 불법 스팸 문자 발송 통신사업자 검거를 지원했다고 밝혔다. 신고 데이터 분석과 현장 기술지원이 핵심이었다.&quot;, &quot;pts&quot;: [&quot;공식 보도자료 기준 등록일: 2026.05.15&quot;, &quot;우체국 등 신뢰 기관 대표번호 도용 정황 포착&quot;, &quot;발신번호 거짓표시·스팸 신고 데이터를 분석해 경찰 공조&quot;, &quot;기업 관점: 대표번호 도용·스미싱 대응 모니터링 체계 강화 필요&quot;], &quot;lnk&quot;: &quot;https://www.kisa.or.kr/402/form?lang_type=KO&amp;postSeq=2592&quot;, &quot;d&quot;: &quot;출처: KISA 보도자료 · 2026.05.15 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">KISA 보도자료 · 2026.05.15</div>
+          <div class="ic-head">KISA, 대표번호 도용 보이스피싱 통신사업자 검거 지원</div>
+          <div class="ic-sum">KISA는 금융·공공기관 대표번호를 도용한 보이스피싱 및 불법 스팸 문자 발송 통신사업자 검거를 지원했다고 밝혔다. 신고 데이터 분석과 현장 기술지원이 핵심이었다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 보도자료 기준 등록일: 2026.05.15</div><div class="ic-pt">우체국 등 신뢰 기관 대표번호 도용 정황 포착</div><div class="ic-pt">발신번호 거짓표시·스팸 신고 데이터를 분석해 경찰 공조</div></div>
+          <span class="ic-tag">공식 · 보안</span>
+        </a>
+        <a class="ic" href="https://zdnet.co.kr/view/?no=20260515100540" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;메가존클라우드, 국산 NPU 들고 사우디로 — AI 인프라 수출 실증&quot;, &quot;s&quot;: &quot;ZDNet Korea · 2026.05.15&quot;, &quot;sum&quot;: &quot;ZDNet Korea는 메가존클라우드가 2026년 AI반도체 해외 실증 사업 서버형 과제 주관기관으로 선정돼 사우디 아람코디지털 인프라에서 퓨리오사AI NPU를 실증한다고 보도했다.&quot;, &quot;pts&quot;: [&quot;기사 입력일: 2026.05.15&quot;, &quot;사우디 아람코디지털 인프라 대상 국산 NPU 실증&quot;, &quot;AI 클라우드 인프라 수출 및 Middle East 에너지 AI 수요 대응&quot;, &quot;국내 AI 반도체 기반 클라우드 대안 공급망 참고 필요&quot;], &quot;lnk&quot;: &quot;https://zdnet.co.kr/view/?no=20260515100540&quot;, &quot;d&quot;: &quot;출처: ZDNet Korea · 2026.05.15 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">ZDNet Korea · 2026.05.15</div>
+          <div class="ic-head">메가존클라우드, 국산 NPU 들고 사우디로 — AI 인프라 수출 실증</div>
+          <div class="ic-sum">ZDNet Korea는 메가존클라우드가 2026년 AI반도체 해외 실증 사업 서버형 과제 주관기관으로 선정돼 사우디 아람코디지털 인프라에서 퓨리오사AI NPU를 실증한다고 보도했다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 입력일: 2026.05.15</div><div class="ic-pt">사우디 아람코디지털 인프라 대상 국산 NPU 실증</div><div class="ic-pt">AI 클라우드 인프라 수출 및 Middle East 에너지 AI 수요 대응</div></div>
+          <span class="ic-tag">언론 · AI Cloud</span>
+        </a>
+        <a class="ic" href="https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Google I/O 개발자 발표 — Managed Agents와 agent-first 개발환경 확대&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Google은 I/O 2026에서 Gemini API의 Managed Agents, Antigravity, AI Studio 연계 등 agent-first 개발환경을 발표했다. 클라우드 개발·운영 자동화 범위가 앱 개발을 넘어 운영 에이전트로 확장되고 있다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Managed Agents, isolated environments, custom agents 공개&quot;, &quot;AI Studio·Android Studio·Gemini API를 연결한 개발 워크플로 강화&quot;, &quot;내부 개발도구 조달 시 보안·권한·로그 통제 요건 선반영 필요&quot;], &quot;lnk&quot;: &quot;https://blog.google/innovation-and-ai/technology/developers-tools/google-io-2026-developer-highlights/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.19</div>
+          <div class="ic-head">Google I/O 개발자 발표 — Managed Agents와 agent-first 개발환경 확대</div>
+          <div class="ic-sum">Google은 I/O 2026에서 Gemini API의 Managed Agents, Antigravity, AI Studio 연계 등 agent-first 개발환경을 발표했다. 클라우드 개발·운영 자동화 범위가 앱 개발을 넘어 운영 에이전트로 확장되고 있다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Managed Agents, isolated environments, custom agents 공개</div><div class="ic-pt">AI Studio·Android Studio·Gemini API를 연결한 개발 워크플로 강화</div></div>
+          <span class="ic-tag">공식 · Agentic Cloud</span>
+        </a></div>
+      <div class="abar"><div class="aicon">☁️</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">보안 영역은 번호 도용·스팸 대응처럼 실제 침해 대응과 AI Agent 운영 보안이 동시에 중요해졌다. 클라우드 도입 시 권한·감사로그·외부 모델 연동 통제를 필수 요건화해야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="3">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">💻</div>
+          <div><div class="stitle">Software &amp; SaaS</div><div class="ssub">AI STUDIO · SEARCH AGENTS · CREATIVE CONNECTORS</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">AI Studio</div><div class="pv b">2026.05.19</div></div><div class="pill"><div class="pl">AI Search</div><div class="pv g">1B monthly users</div></div><div class="pill"><div class="pl">Adobe Connector</div><div class="pv pk">Gemini 연동</div></div><div class="pill"><div class="pl">SaaS 구매 관점</div><div class="pv a">사용량·권한통제</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://blog.google/innovation-and-ai/technology/developers-tools/google-ai-studio-io-2026/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Google AI Studio at I/O 2026 — Workspace 연동·모바일 앱·Android 개발 강화&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Google은 AI Studio의 Workspace 연동, 모바일 앱, Android vibe coding 기능을 발표했다. 기업 SaaS 구매 관점에서는 AI 개발·업무 자동화 기능이 기본 업무도구에 내장되는 흐름이 뚜렷해졌다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Sheets·Drive·Docs 등 Workspace 연결 앱 구축 지원&quot;, &quot;AI Studio 모바일 앱과 Android 개발 기능 강화&quot;, &quot;SaaS 계약 시 API 권한·데이터 접근 범위·사용량 과금 구조 점검 필요&quot;], &quot;lnk&quot;: &quot;https://blog.google/innovation-and-ai/technology/developers-tools/google-ai-studio-io-2026/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.19</div>
+          <div class="ic-head">Google AI Studio at I/O 2026 — Workspace 연동·모바일 앱·Android 개발 강화</div>
+          <div class="ic-sum">Google은 AI Studio의 Workspace 연동, 모바일 앱, Android vibe coding 기능을 발표했다. 기업 SaaS 구매 관점에서는 AI 개발·업무 자동화 기능이 기본 업무도구에 내장되는 흐름이 뚜렷해졌다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Sheets·Drive·Docs 등 Workspace 연결 앱 구축 지원</div><div class="ic-pt">AI Studio 모바일 앱과 Android 개발 기능 강화</div></div>
+          <span class="ic-tag">공식 · AI SaaS</span>
+        </a>
+        <a class="ic" href="https://blog.google/products-and-platforms/products/search/search-io-2026/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;AI Search 대전환 — Search에 Agent 기능과 AI-powered Search box 도입&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Google은 Search에 Agent 기능과 AI 기반 검색창을 도입한다고 발표했다. AI Mode는 월간 사용자 10억 명을 넘어섰고, 검색이 정보 탐색에서 작업 수행형 인터페이스로 이동하고 있다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;AI Mode 월간 사용자 10억 명 돌파&quot;, &quot;질문 기반 Agent 기능과 AI-powered Search box 도입&quot;, &quot;검색·광고·콘텐츠 솔루션 계약에서 AEO/GEO 대응 기능 확인 필요&quot;], &quot;lnk&quot;: &quot;https://blog.google/products-and-platforms/products/search/search-io-2026/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.19</div>
+          <div class="ic-head">AI Search 대전환 — Search에 Agent 기능과 AI-powered Search box 도입</div>
+          <div class="ic-sum">Google은 Search에 Agent 기능과 AI 기반 검색창을 도입한다고 발표했다. AI Mode는 월간 사용자 10억 명을 넘어섰고, 검색이 정보 탐색에서 작업 수행형 인터페이스로 이동하고 있다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">AI Mode 월간 사용자 10억 명 돌파</div><div class="ic-pt">질문 기반 Agent 기능과 AI-powered Search box 도입</div></div>
+          <span class="ic-tag">공식 · AI Search</span>
+        </a>
+        <a class="ic" href="https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Adobe for creativity connector, Google Gemini 연동 예정&quot;, &quot;s&quot;: &quot;Adobe Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Adobe는 Google I/O에서 Adobe for creativity connector를 Gemini에 연동한다고 발표했다. 사용자가 Gemini에서 원하는 산출물을 설명하면 Adobe의 이미지·디자인·비디오 도구가 백엔드에서 작업을 orchestration하는 구조다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Firefly AI Assistant 기반 creative agent 확장&quot;, &quot;Gemini 안에서 이미지·디자인·영상 산출물 생성 흐름 지원 예정&quot;, &quot;Creative Cloud·Firefly 계약 시 생성형 AI 권한·저작권·브랜드 검수 기능 확인 필요&quot;], &quot;lnk&quot;: &quot;https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini&quot;, &quot;d&quot;: &quot;출처: Adobe Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Adobe Blog · 2026.05.19</div>
+          <div class="ic-head">Adobe for creativity connector, Google Gemini 연동 예정</div>
+          <div class="ic-sum">Adobe는 Google I/O에서 Adobe for creativity connector를 Gemini에 연동한다고 발표했다. 사용자가 Gemini에서 원하는 산출물을 설명하면 Adobe의 이미지·디자인·비디오 도구가 백엔드에서 작업을 orchestration하는 구조다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Firefly AI Assistant 기반 creative agent 확장</div><div class="ic-pt">Gemini 안에서 이미지·디자인·영상 산출물 생성 흐름 지원 예정</div></div>
+          <span class="ic-tag">공식 · Creative SaaS</span>
+        </a></div>
+      <div class="abar"><div class="aicon">💻</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">SaaS는 단순 좌석형 라이선스에서 AI 사용량·커넥터·권한 기반 과금으로 이동하고 있다. 갱신 협상 시 기능별 사용권, 데이터 경계, 생성물 책임을 계약 조건에 반영해야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="4">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">👥</div>
+          <div><div class="stitle">IT Labor Market</div><div class="ssub">AI TALENT · COMPENSATION · INVENTION PIPELINE</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">삼성전자 보수</div><div class="pv g">월 1,130~1,270만원</div></div><div class="pill"><div class="pl">AI 인재 창업</div><div class="pv b">최대 2억원</div></div><div class="pill"><div class="pl">현대차·기아 발명</div><div class="pv pu">3,074건</div></div><div class="pill"><div class="pl">협력사 교육</div><div class="pv a">130개사 대상</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://core.asiae.co.kr/article/2026051908085466083" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;삼성전자 1Q 임직원 월평균 보수 1,130만~1,270만원 추정&quot;, &quot;s&quot;: &quot;아시아경제 CORE · 2026.05.19&quot;, &quot;sum&quot;: &quot;아시아경제는 한국CXO연구소 분석을 인용해 삼성전자 2026년 1분기 직원 1인당 평균 보수가 3,391만~3,815만원, 월평균 1,130만~1,270만원 수준이라고 보도했다.&quot;, &quot;pts&quot;: [&quot;기사 입력일: 2026.05.19&quot;, &quot;전년 동기 대비 25% 이상 증가 추정&quot;, &quot;반도체·AI 실적 회복이 대형 IT 인재 보상 기준을 끌어올림&quot;, &quot;AI·반도체·클라우드 인력 외주단가 협상 기준 재점검 필요&quot;], &quot;lnk&quot;: &quot;https://core.asiae.co.kr/article/2026051908085466083&quot;, &quot;d&quot;: &quot;출처: 아시아경제 CORE · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">아시아경제 CORE · 2026.05.19</div>
+          <div class="ic-head">삼성전자 1Q 임직원 월평균 보수 1,130만~1,270만원 추정</div>
+          <div class="ic-sum">아시아경제는 한국CXO연구소 분석을 인용해 삼성전자 2026년 1분기 직원 1인당 평균 보수가 3,391만~3,815만원, 월평균 1,130만~1,270만원 수준이라고 보도했다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 입력일: 2026.05.19</div><div class="ic-pt">전년 동기 대비 25% 이상 증가 추정</div><div class="ic-pt">반도체·AI 실적 회복이 대형 IT 인재 보상 기준을 끌어올림</div></div>
+          <span class="ic-tag">언론 · 보상</span>
+        </a>
+        <a class="ic" href="https://www.yna.co.kr/view/AKR20260516043200030" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;중기부, AI 인재 창업패키지 공모 — 스타트업 최대 2억원 지원&quot;, &quot;s&quot;: &quot;연합뉴스 · 2026.05.18&quot;, &quot;sum&quot;: &quot;중소벤처기업부는 AI 기술 인력 확보가 어려운 스타트업을 지원하기 위해 AI 인재 실증형 창업패키지 시범사업을 공모한다고 밝혔다.&quot;, &quot;pts&quot;: [&quot;기사 송고일: 2026.05.18&quot;, &quot;정부 AI 인재 양성과정 수료생과 스타트업 매칭&quot;, &quot;채용 확인 기업에 최대 2억원 사업화 자금 지원&quot;, &quot;AI 인력은 단순 개발자보다 실증·사업화 경험 보유 여부가 중요&quot;], &quot;lnk&quot;: &quot;https://www.yna.co.kr/view/AKR20260516043200030&quot;, &quot;d&quot;: &quot;출처: 연합뉴스 · 2026.05.18 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">연합뉴스 · 2026.05.18</div>
+          <div class="ic-head">중기부, AI 인재 창업패키지 공모 — 스타트업 최대 2억원 지원</div>
+          <div class="ic-sum">중소벤처기업부는 AI 기술 인력 확보가 어려운 스타트업을 지원하기 위해 AI 인재 실증형 창업패키지 시범사업을 공모한다고 밝혔다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 송고일: 2026.05.18</div><div class="ic-pt">정부 AI 인재 양성과정 수료생과 스타트업 매칭</div><div class="ic-pt">채용 확인 기업에 최대 2억원 사업화 자금 지원</div></div>
+          <span class="ic-tag">언론 · AI 인재</span>
+        </a>
+        <a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-company-kia-2026-invention-day-event" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;현대차·기아 2026 발명의 날 — 3,074건 아이디어·특허 후보 접수&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.19&quot;, &quot;sum&quot;: &quot;현대차·기아는 2026 발명의 날 행사를 개최하고 총 3,074건의 발명·아이디어가 접수됐다고 밝혔다. 생산 적용 특허와 우수 특허를 선발해 기술 내재화와 지식재산 경쟁력을 강화한다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;3,074건 발명·아이디어 접수&quot;, &quot;생산 적용 특허 58건, 우수 특허 9건 선발&quot;, &quot;기술 내재화·특허 역량은 외주 의존도 관리의 핵심 지표&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-company-kia-2026-invention-day-event&quot;, &quot;d&quot;: &quot;출처: 현대자동차그룹 뉴스룸 · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.19</div>
+          <div class="ic-head">현대차·기아 2026 발명의 날 — 3,074건 아이디어·특허 후보 접수</div>
+          <div class="ic-sum">현대차·기아는 2026 발명의 날 행사를 개최하고 총 3,074건의 발명·아이디어가 접수됐다고 밝혔다. 생산 적용 특허와 우수 특허를 선발해 기술 내재화와 지식재산 경쟁력을 강화한다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">3,074건 발명·아이디어 접수</div><div class="ic-pt">생산 적용 특허 58건, 우수 특허 9건 선발</div></div>
+          <span class="ic-tag">공식 · 기술인력</span>
+        </a></div>
+      <div class="abar"><div class="aicon">👥</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">AI 인력 단가는 보상 수준과 실증 경험이 동시에 끌어올리고 있다. 외부 인력 계약 시 단가 인상뿐 아니라 산출물·특허·지식 이전 조건을 함께 관리해야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="5">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">🚗</div>
+          <div><div class="stitle">Korea Auto Market</div><div class="ssub">NEW GRANDEUR · V2G · ROBOTICS ALLIANCE</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">더 뉴 그랜저</div><div class="pv g">첫날 10,277대</div></div><div class="pill"><div class="pl">V2G 제주</div><div class="pv b">일반고객 40명</div></div><div class="pill"><div class="pl">현대모비스</div><div class="pv pu">Silicon Valley</div></div><div class="pill"><div class="pl">법인차 관점</div><div class="pv a">SDV·에너지 자산화</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-company-new-grandeur-launch-10000-orders" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;더 뉴 그랜저, 출시 첫날 계약 10,277대 — 역대 페이스리프트 2위&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.15&quot;, &quot;sum&quot;: &quot;현대차는 더 뉴 그랜저가 출시 첫날 10,277대 계약을 기록했다고 밝혔다. 플레오스 커넥트 중심의 디지털 경험과 캘리그래피 선택 비중 상승이 주요 포인트다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.15&quot;, &quot;출시 첫날 계약 10,277대&quot;, &quot;역대 페이스리프트 모델 중 두 번째로 높은 첫날 계약&quot;, &quot;캘리그래피 계약 비중 41% — 법인차 상위 트림 수요 확인&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-company-new-grandeur-launch-10000-orders&quot;, &quot;d&quot;: &quot;출처: 현대자동차그룹 뉴스룸 · 2026.05.15 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.15</div>
+          <div class="ic-head">더 뉴 그랜저, 출시 첫날 계약 10,277대 — 역대 페이스리프트 2위</div>
+          <div class="ic-sum">현대차는 더 뉴 그랜저가 출시 첫날 10,277대 계약을 기록했다고 밝혔다. 플레오스 커넥트 중심의 디지털 경험과 캘리그래피 선택 비중 상승이 주요 포인트다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.15</div><div class="ic-pt">출시 첫날 계약 10,277대</div><div class="ic-pt">역대 페이스리프트 모델 중 두 번째로 높은 첫날 계약</div></div>
+          <span class="ic-tag">공식 · 신차</span>
+        </a>
+        <a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-jeju-v2g-pilot-service" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;현대차그룹, 제주 일반 고객 대상 V2G 시범서비스 개시&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.15&quot;, &quot;sum&quot;: &quot;현대차그룹은 제주도에서 아이오닉 9·EV9 보유 고객 40명을 대상으로 V2G 시범서비스를 시행한다고 밝혔다. 전기차를 이동수단에서 에너지 저장·공급 자산으로 확장하는 흐름이다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.15&quot;, &quot;아이오닉 9·EV9 보유 도민 40명 선정&quot;, &quot;전기차를 움직이는 ESS로 활용&quot;, &quot;법인 EV 도입 시 충전비뿐 아니라 에너지 자산화 가치 검토 필요&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-jeju-v2g-pilot-service&quot;, &quot;d&quot;: &quot;출처: 현대자동차그룹 뉴스룸 · 2026.05.15 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.15</div>
+          <div class="ic-head">현대차그룹, 제주 일반 고객 대상 V2G 시범서비스 개시</div>
+          <div class="ic-sum">현대차그룹은 제주도에서 아이오닉 9·EV9 보유 고객 40명을 대상으로 V2G 시범서비스를 시행한다고 밝혔다. 전기차를 이동수단에서 에너지 저장·공급 자산으로 확장하는 흐름이다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.15</div><div class="ic-pt">아이오닉 9·EV9 보유 도민 40명 선정</div><div class="ic-pt">전기차를 움직이는 ESS로 활용</div></div>
+          <span class="ic-tag">공식 · EV/V2G</span>
+        </a>
+        <a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-mobis-silicon-valley-robotics-alliance" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;현대모비스, 실리콘밸리에서 로보틱스·피지컬 AI 기술 동맹 모색&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.19&quot;, &quot;sum&quot;: &quot;현대모비스는 미국 실리콘밸리에서 제5회 모비스 모빌리티 데이를 열고 로보틱스와 피지컬 AI 분야 글로벌 파트너 발굴에 나섰다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Sunnyvale 행사에 400여 명 참석&quot;, &quot;로보틱스·피지컬 AI 분야 파트너 발굴&quot;, &quot;자동차가 SDV·로보틱스·AI 공급망으로 확장되는 흐름 확인&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-mobis-silicon-valley-robotics-alliance&quot;, &quot;d&quot;: &quot;출처: 현대자동차그룹 뉴스룸 · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.19</div>
+          <div class="ic-head">현대모비스, 실리콘밸리에서 로보틱스·피지컬 AI 기술 동맹 모색</div>
+          <div class="ic-sum">현대모비스는 미국 실리콘밸리에서 제5회 모비스 모빌리티 데이를 열고 로보틱스와 피지컬 AI 분야 글로벌 파트너 발굴에 나섰다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Sunnyvale 행사에 400여 명 참석</div><div class="ic-pt">로보틱스·피지컬 AI 분야 파트너 발굴</div></div>
+          <span class="ic-tag">공식 · Mobility AI</span>
+        </a></div>
+      <div class="abar"><div class="aicon">🚗</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">자동차 구매는 단순 차량 단가 비교를 넘어 SDV, 디지털 경험, 충전·전력망, 피지컬 AI 생태계까지 포함한 TCO 관점으로 재정의되고 있다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="6">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">📣</div>
+          <div><div class="stitle">Marketing AI</div><div class="ssub">AI SEARCH · CREATIVE AGENT · KOREA APP ADOPTION</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">AI Mode</div><div class="pv g">1B monthly users</div></div><div class="pill"><div class="pl">ChatGPT Korea</div><div class="pv b">2,345만 MAU</div></div><div class="pill"><div class="pl">Claude Korea</div><div class="pv pk">+1,148% YoY</div></div><div class="pill"><div class="pl">Creative Agent</div><div class="pv pu">Gemini·Adobe</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://blog.google/products-and-platforms/products/search/search-io-2026/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;AI Search, 검색에서 작업 수행형 Agent 인터페이스로 전환&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Google은 Search에 Agent 기능과 AI-powered Search box를 도입한다고 발표했다. 검색 결과 노출 전략은 키워드 중심 SEO에서 AI 답변·Agent 선택에 최적화되는 방향으로 이동한다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;AI Mode 월간 사용자 10억 명 돌파&quot;, &quot;질문만으로 Agent를 활용하는 검색 경험 도입&quot;, &quot;마케팅 솔루션은 AEO/GEO 대응, 구조화 콘텐츠, 브랜드 신뢰 신호가 중요&quot;], &quot;lnk&quot;: &quot;https://blog.google/products-and-platforms/products/search/search-io-2026/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.19</div>
+          <div class="ic-head">AI Search, 검색에서 작업 수행형 Agent 인터페이스로 전환</div>
+          <div class="ic-sum">Google은 Search에 Agent 기능과 AI-powered Search box를 도입한다고 발표했다. 검색 결과 노출 전략은 키워드 중심 SEO에서 AI 답변·Agent 선택에 최적화되는 방향으로 이동한다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">AI Mode 월간 사용자 10억 명 돌파</div><div class="ic-pt">질문만으로 Agent를 활용하는 검색 경험 도입</div></div>
+          <span class="ic-tag">공식 · AI Search</span>
+        </a>
+        <a class="ic" href="https://zdnet.co.kr/view/?no=20260519092047" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;국내 생성형 AI 앱 사용자 역대 최대 — ChatGPT 2,345만 MAU&quot;, &quot;s&quot;: &quot;ZDNet Korea · 2026.05.19&quot;, &quot;sum&quot;: &quot;ZDNet Korea는 와이즈앱·리테일 데이터를 인용해 ChatGPT, Gemini, Claude의 국내 월간 활성 사용자 수가 역대 최대치를 기록했다고 보도했다.&quot;, &quot;pts&quot;: [&quot;기사 입력일: 2026.05.19&quot;, &quot;ChatGPT 국내 MAU 2,345만 명&quot;, &quot;Gemini 845만 명, Claude 241만 명&quot;, &quot;Claude 전년 대비 +1,148% — AI 서비스 대중화 가속&quot;], &quot;lnk&quot;: &quot;https://zdnet.co.kr/view/?no=20260519092047&quot;, &quot;d&quot;: &quot;출처: ZDNet Korea · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">ZDNet Korea · 2026.05.19</div>
+          <div class="ic-head">국내 생성형 AI 앱 사용자 역대 최대 — ChatGPT 2,345만 MAU</div>
+          <div class="ic-sum">ZDNet Korea는 와이즈앱·리테일 데이터를 인용해 ChatGPT, Gemini, Claude의 국내 월간 활성 사용자 수가 역대 최대치를 기록했다고 보도했다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 입력일: 2026.05.19</div><div class="ic-pt">ChatGPT 국내 MAU 2,345만 명</div><div class="ic-pt">Gemini 845만 명, Claude 241만 명</div></div>
+          <span class="ic-tag">언론 · AI Adoption</span>
+        </a>
+        <a class="ic" href="https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Adobe creative agent, Gemini 안으로 확장 — 캠페인 제작 흐름 자동화&quot;, &quot;s&quot;: &quot;Adobe Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Adobe는 Gemini에서 캠페인 아이디어를 제품 목업, 소셜 자산, 리사이즈 포맷, 영상 변형으로 연결하는 workflow를 예시로 제시했다. 마케팅 제작 업무의 반복 편집 비용 절감 가능성이 커진다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Gemini에서 Adobe pro-grade tools를 orchestration&quot;, &quot;이미지·디자인·영상 산출물 제작 흐름 연결&quot;, &quot;마케팅 구매 시 브랜드 검수·승인 워크플로·저작권 보호 조건 확인 필요&quot;], &quot;lnk&quot;: &quot;https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini&quot;, &quot;d&quot;: &quot;출처: Adobe Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Adobe Blog · 2026.05.19</div>
+          <div class="ic-head">Adobe creative agent, Gemini 안으로 확장 — 캠페인 제작 흐름 자동화</div>
+          <div class="ic-sum">Adobe는 Gemini에서 캠페인 아이디어를 제품 목업, 소셜 자산, 리사이즈 포맷, 영상 변형으로 연결하는 workflow를 예시로 제시했다. 마케팅 제작 업무의 반복 편집 비용 절감 가능성이 커진다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Gemini에서 Adobe pro-grade tools를 orchestration</div><div class="ic-pt">이미지·디자인·영상 산출물 제작 흐름 연결</div></div>
+          <span class="ic-tag">공식 · Creative Marketing</span>
+        </a></div>
+      <div class="abar"><div class="aicon">📣</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">마케팅 AI 조달은 광고 도구보다 검색·콘텐츠·크리에이티브 제작 전 과정을 연결하는 Agent 플랫폼 관점으로 봐야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="7">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">💾</div>
+          <div><div class="stitle">PC &amp; Laptop</div><div class="ssub">CPU ALLOCATION · MEMORY CRUNCH · XR DEVICE</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">Intel 18A</div><div class="pv a">2026.05.19</div></div><div class="pill"><div class="pl">Intel 7 Supply</div><div class="pv r">서버 우선</div></div><div class="pill"><div class="pl">DDR5/NAND</div><div class="pv r">가격 급등</div></div><div class="pill"><div class="pl">AI Glasses</div><div class="pv b">Samsung·Google</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://www.tomshardware.com/tech-industry/intel-tells-pc-makers-to-adopt-18a-cpus-or-lose-their-allocations" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Intel 7 공급 제약 — PC 제조사 18A 전환 압박 보도&quot;, &quot;s&quot;: &quot;Tom&#x27;s Hardware · 2026.05.19&quot;, &quot;sum&quot;: &quot;Tom&#x27;s Hardware는 Nikkei Asia 보도를 인용해 Intel이 PC 제조사에 18A 기반 Panther Lake·Wildcat Lake 채택을 압박하고 있다고 보도했다. 제한된 Intel 7 생산능력은 서버·산업용 고객에 우선 배정되는 흐름이다.&quot;, &quot;pts&quot;: [&quot;기사 게시일: 2026.05.19&quot;, &quot;Intel 7 기반 구형 소비자용 CPU 추가 공급 제약&quot;, &quot;18A 기반 신규 CPU로 설계 전환 시 3개월 이상 필요 가능성&quot;, &quot;법인 PC 구매는 CPU 플랫폼 전환과 메모리 가격을 동시에 반영해야 함&quot;], &quot;lnk&quot;: &quot;https://www.tomshardware.com/tech-industry/intel-tells-pc-makers-to-adopt-18a-cpus-or-lose-their-allocations&quot;, &quot;d&quot;: &quot;출처: Tom&#x27;s Hardware · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Tom's Hardware · 2026.05.19</div>
+          <div class="ic-head">Intel 7 공급 제약 — PC 제조사 18A 전환 압박 보도</div>
+          <div class="ic-sum">Tom's Hardware는 Nikkei Asia 보도를 인용해 Intel이 PC 제조사에 18A 기반 Panther Lake·Wildcat Lake 채택을 압박하고 있다고 보도했다. 제한된 Intel 7 생산능력은 서버·산업용 고객에 우선 배정되는 흐름이다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 게시일: 2026.05.19</div><div class="ic-pt">Intel 7 기반 구형 소비자용 CPU 추가 공급 제약</div><div class="ic-pt">18A 기반 신규 CPU로 설계 전환 시 3개월 이상 필요 가능성</div></div>
+          <span class="ic-tag">언론 · CPU</span>
+        </a>
+        <a class="ic" href="https://www.tomshardware.com/tech-industry/taiwanese-memory-module-makers-raise-880-million-to-stockpile-chips" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;RAM·SSD 가격 급등, PC 교체 수요에도 제동&quot;, &quot;s&quot;: &quot;Tom&#x27;s Hardware · 2026.05.18&quot;, &quot;sum&quot;: &quot;메모리 공급 부족은 서버뿐 아니라 PC·노트북 조달에도 영향을 준다. DRAM·NAND 계약가 급등은 완제품 PC 가격과 대량 구매 예산에 직접 반영된다.&quot;, &quot;pts&quot;: [&quot;기사 게시일: 2026.05.18&quot;, &quot;DRAM Q1 +90~95%, Q2 +58~63% 추가 상승 전망 인용&quot;, &quot;NAND Q1 약 +60%, Q2 +70~75% 상승 전망 인용&quot;, &quot;노트북 대량 구매는 분기별 분산·선계약·재고 확보 전략 필요&quot;], &quot;lnk&quot;: &quot;https://www.tomshardware.com/tech-industry/taiwanese-memory-module-makers-raise-880-million-to-stockpile-chips&quot;, &quot;d&quot;: &quot;출처: Tom&#x27;s Hardware · 2026.05.18 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Tom's Hardware · 2026.05.18</div>
+          <div class="ic-head">RAM·SSD 가격 급등, PC 교체 수요에도 제동</div>
+          <div class="ic-sum">메모리 공급 부족은 서버뿐 아니라 PC·노트북 조달에도 영향을 준다. DRAM·NAND 계약가 급등은 완제품 PC 가격과 대량 구매 예산에 직접 반영된다.</div>
+          <div class="ic-pts"><div class="ic-pt">기사 게시일: 2026.05.18</div><div class="ic-pt">DRAM Q1 +90~95%, Q2 +58~63% 추가 상승 전망 인용</div><div class="ic-pt">NAND Q1 약 +60%, Q2 +70~75% 상승 전망 인용</div></div>
+          <span class="ic-tag">언론 · PC 원가</span>
+        </a>
+        <a class="ic" href="https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EA%B5%AC%EA%B8%80-i-o-2026%EC%97%90%EC%84%9C-ai-%EA%B8%80%EB%9D%BC%EC%8A%A4-%EC%B5%9C%EC%B4%88-%EC%84%A0%EB%B3%B4%EC%97%AC" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;삼성전자·구글, Android XR 기반 AI 글라스 2종 공개&quot;, &quot;s&quot;: &quot;Samsung Newsroom Korea · 2026.05.20&quot;, &quot;sum&quot;: &quot;삼성전자와 구글은 Google I/O 2026에서 Android XR 기반 AI 글라스 2종을 공개했다. Gentle Monster와 Warby Parker 디자인을 결합해 상시 착용 가능한 안경 폼팩터를 지향한다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.20&quot;, &quot;Android XR 기반 AI 글라스 2종 첫 디자인 공개&quot;, &quot;삼성 하드웨어와 구글 개인화 AI 서비스 결합&quot;, &quot;PC 이후 업무 단말이 XR·AI 웨어러블로 확장될 가능성 확인&quot;], &quot;lnk&quot;: &quot;https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EA%B5%AC%EA%B8%80-i-o-2026%EC%97%90%EC%84%9C-ai-%EA%B8%80%EB%9D%BC%EC%8A%A4-%EC%B5%9C%EC%B4%88-%EC%84%A0%EB%B3%B4%EC%97%AC&quot;, &quot;d&quot;: &quot;출처: Samsung Newsroom Korea · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Samsung Newsroom Korea · 2026.05.20</div>
+          <div class="ic-head">삼성전자·구글, Android XR 기반 AI 글라스 2종 공개</div>
+          <div class="ic-sum">삼성전자와 구글은 Google I/O 2026에서 Android XR 기반 AI 글라스 2종을 공개했다. Gentle Monster와 Warby Parker 디자인을 결합해 상시 착용 가능한 안경 폼팩터를 지향한다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.20</div><div class="ic-pt">Android XR 기반 AI 글라스 2종 첫 디자인 공개</div><div class="ic-pt">삼성 하드웨어와 구글 개인화 AI 서비스 결합</div></div>
+          <span class="ic-tag">공식 · AI Device</span>
+        </a></div>
+      <div class="abar"><div class="aicon">💾</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">법인 PC 조달은 CPU·메모리 수급과 AI 단말 전환을 함께 봐야 한다. 2026년 단가는 부품 shortage와 AI PC 프리미엄을 모두 반영해야 한다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="8">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">🎨</div>
+          <div><div class="stitle">Video &amp; Design AI</div><div class="ssub">CREATIVE AGENT · GEMINI OMNI · XR CONTENT</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">Adobe Connector</div><div class="pv pk">2026.05.19</div></div><div class="pill"><div class="pl">Gemini Omni</div><div class="pv b">I/O 2026</div></div><div class="pill"><div class="pl">AI Glasses</div><div class="pv pu">2026.05.20</div></div><div class="pill"><div class="pl">Creative Ops</div><div class="pv g">Agent Orchestration</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Adobe creative agent — 이미지·디자인·영상 도구를 Gemini에서 orchestration&quot;, &quot;s&quot;: &quot;Adobe Blog · 2026.05.19&quot;, &quot;sum&quot;: &quot;Adobe는 Gemini 사용자가 자연어로 원하는 결과를 설명하면 imaging, design, video 작업을 Adobe 도구가 연결해 수행하는 구조를 발표했다. 영상·디자인 제작의 작업 단위가 툴 실행에서 결과 지시로 이동한다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.19&quot;, &quot;Firefly AI Assistant 기반 creative agent&quot;, &quot;Photoshop·Illustrator·Premiere·Express 등 Creative Cloud 워크플로 연결&quot;, &quot;디자인 외주계약 시 결과물 검수·브랜드 일관성·생성형 AI 사용범위 명시 필요&quot;], &quot;lnk&quot;: &quot;https://blog.adobe.com/en/publish/2026/05/19/adobe-creativity-connector-coming-google-gemini&quot;, &quot;d&quot;: &quot;출처: Adobe Blog · 2026.05.19 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Adobe Blog · 2026.05.19</div>
+          <div class="ic-head">Adobe creative agent — 이미지·디자인·영상 도구를 Gemini에서 orchestration</div>
+          <div class="ic-sum">Adobe는 Gemini 사용자가 자연어로 원하는 결과를 설명하면 imaging, design, video 작업을 Adobe 도구가 연결해 수행하는 구조를 발표했다. 영상·디자인 제작의 작업 단위가 툴 실행에서 결과 지시로 이동한다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.19</div><div class="ic-pt">Firefly AI Assistant 기반 creative agent</div><div class="ic-pt">Photoshop·Illustrator·Premiere·Express 등 Creative Cloud 워크플로 연결</div></div>
+          <span class="ic-tag">공식 · Design AI</span>
+        </a>
+        <a class="ic" href="https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Google I/O 2026 — Gemini 3.5 Flash·Gemini Omni 등 모델 발표&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.20&quot;, &quot;sum&quot;: &quot;Google은 I/O 2026 발표 정리에서 Gemini 3.5 Flash와 Gemini Omni 등 모델·도구를 공개했다. 생성형 AI는 텍스트·이미지·비디오·작업 수행을 통합하는 방향으로 고도화되고 있다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.20&quot;, &quot;Gemini 3.5 Flash 공개&quot;, &quot;Gemini Omni 등 멀티모달·에이전트형 기능 발표&quot;, &quot;영상 제작 솔루션은 단일 모델보다 멀티모달 워크플로 통합성이 중요&quot;], &quot;lnk&quot;: &quot;https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.20</div>
+          <div class="ic-head">Google I/O 2026 — Gemini 3.5 Flash·Gemini Omni 등 모델 발표</div>
+          <div class="ic-sum">Google은 I/O 2026 발표 정리에서 Gemini 3.5 Flash와 Gemini Omni 등 모델·도구를 공개했다. 생성형 AI는 텍스트·이미지·비디오·작업 수행을 통합하는 방향으로 고도화되고 있다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.20</div><div class="ic-pt">Gemini 3.5 Flash 공개</div><div class="ic-pt">Gemini Omni 등 멀티모달·에이전트형 기능 발표</div></div>
+          <span class="ic-tag">공식 · Multimodal AI</span>
+        </a>
+        <a class="ic" href="https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EA%B5%AC%EA%B8%80-i-o-2026%EC%97%90%EC%84%9C-ai-%EA%B8%80%EB%9D%BC%EC%8A%A4-%EC%B5%9C%EC%B4%88-%EC%84%A0%EB%B3%B4%EC%97%AC" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;AI 글라스 공개 — 디자인·영상 콘텐츠의 XR 소비 채널 확대&quot;, &quot;s&quot;: &quot;Samsung Newsroom Korea · 2026.05.20&quot;, &quot;sum&quot;: &quot;삼성전자와 구글의 AI 글라스 공개는 콘텐츠 소비 단말이 스마트폰·PC에서 웨어러블 XR로 확장될 수 있음을 보여준다. 디자인·영상 제작 기준도 작은 화면·음성·상시착용형 UX를 고려해야 한다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.20&quot;, &quot;Android XR 기반 안경형 폼팩터 공개&quot;, &quot;Gentle Monster·Warby Parker 디자인 협업&quot;, &quot;브랜드 콘텐츠 제작 시 XR·음성·상황인식형 UX 대응 필요&quot;], &quot;lnk&quot;: &quot;https://news.samsung.com/kr/%EC%82%BC%EC%84%B1%EC%A0%84%EC%9E%90-%EA%B5%AC%EA%B8%80-i-o-2026%EC%97%90%EC%84%9C-ai-%EA%B8%80%EB%9D%BC%EC%8A%A4-%EC%B5%9C%EC%B4%88-%EC%84%A0%EB%B3%B4%EC%97%AC&quot;, &quot;d&quot;: &quot;출처: Samsung Newsroom Korea · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Samsung Newsroom Korea · 2026.05.20</div>
+          <div class="ic-head">AI 글라스 공개 — 디자인·영상 콘텐츠의 XR 소비 채널 확대</div>
+          <div class="ic-sum">삼성전자와 구글의 AI 글라스 공개는 콘텐츠 소비 단말이 스마트폰·PC에서 웨어러블 XR로 확장될 수 있음을 보여준다. 디자인·영상 제작 기준도 작은 화면·음성·상시착용형 UX를 고려해야 한다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.20</div><div class="ic-pt">Android XR 기반 안경형 폼팩터 공개</div><div class="ic-pt">Gentle Monster·Warby Parker 디자인 협업</div></div>
+          <span class="ic-tag">공식 · XR Creative</span>
+        </a></div>
+      <div class="abar"><div class="aicon">🎨</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">영상·디자인 AI는 개별 툴 구매보다 크리에이티브 workflow orchestration 구매로 전환된다. 저작권·브랜드 검수·승인 로그가 핵심 구매 조건이다.</div></div></div>
+    </div>
+    <div class="slide cs" data-i="9">
+      <div class="sh">
+        <div class="sh-l">
+          <div class="si">🤖</div>
+          <div><div class="stitle">AI Ecosystem</div><div class="ssub">FOUNDATION MODELS · AI FACTORIES · EDGE AI</div></div>
+        </div>
+        <span class="verified">VERIFIED · 2026.05.15–21</span>
+      </div>
+      <div class="pills"><div class="pill"><div class="pl">NVIDIA</div><div class="pv g">$81.6B revenue</div></div><div class="pill"><div class="pl">Google I/O</div><div class="pv b">100 announcements</div></div><div class="pill"><div class="pl">Gemini App</div><div class="pv pu">900M+ users</div></div><div class="pill"><div class="pl">TPU Cloud</div><div class="pv a">Blackstone JV</div></div></div>
+      <div class="igrid">
+        <a class="ic" href="https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;AI Factory 구축 가속 — NVIDIA, Vera Rubin·Agent Toolkit 발표&quot;, &quot;s&quot;: &quot;NVIDIA Newsroom · 2026.05.20&quot;, &quot;sum&quot;: &quot;NVIDIA는 실적 발표에서 Vera Rubin 플랫폼, Agent Toolkit, OpenShell 등 Agentic AI 인프라 관련 발표를 포함했다. GPU 공급은 단순 연산장비가 아니라 AI Factory 플랫폼 조달로 확장된다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.20&quot;, &quot;Vera Rubin 플랫폼과 Vera CPU 발표&quot;, &quot;Agent Toolkit, OpenShell, NemoClaw 등 Agentic AI SW 스택 공개&quot;, &quot;GPU 서버 조달은 하드웨어·네트워크·SW 스택 통합 TCO로 평가 필요&quot;], &quot;lnk&quot;: &quot;https://nvidianews.nvidia.com/news/nvidia-announces-financial-results-for-first-quarter-fiscal-2027&quot;, &quot;d&quot;: &quot;출처: NVIDIA Newsroom · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">NVIDIA Newsroom · 2026.05.20</div>
+          <div class="ic-head">AI Factory 구축 가속 — NVIDIA, Vera Rubin·Agent Toolkit 발표</div>
+          <div class="ic-sum">NVIDIA는 실적 발표에서 Vera Rubin 플랫폼, Agent Toolkit, OpenShell 등 Agentic AI 인프라 관련 발표를 포함했다. GPU 공급은 단순 연산장비가 아니라 AI Factory 플랫폼 조달로 확장된다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.20</div><div class="ic-pt">Vera Rubin 플랫폼과 Vera CPU 발표</div><div class="ic-pt">Agent Toolkit, OpenShell, NemoClaw 등 Agentic AI SW 스택 공개</div></div>
+          <span class="ic-tag">공식 · AI Factory</span>
+        </a>
+        <a class="ic" href="https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;Google I/O 2026, 모델·검색·개발도구·구독까지 AI 전면 확장&quot;, &quot;s&quot;: &quot;Google Blog · 2026.05.20&quot;, &quot;sum&quot;: &quot;Google은 I/O 2026에서 Gemini 3.5 Flash, Gemini Omni, AI Search, Antigravity, AI Studio 등 주요 AI 발표를 정리했다. AI 생태계는 모델 자체보다 제품군 전반에 내장되는 단계로 이동했다.&quot;, &quot;pts&quot;: [&quot;공식 게시일: 2026.05.20&quot;, &quot;Gemini 3.5 Flash, Gemini Omni 등 모델 발표&quot;, &quot;Search, AI Studio, Android Studio, Gemini App 등 전 제품군 확장&quot;, &quot;구매 관점: 모델 라이선스보다 플랫폼 종속성과 데이터 경계 검토 필요&quot;], &quot;lnk&quot;: &quot;https://blog.google/innovation-and-ai/technology/ai/google-io-2026-all-our-announcements/&quot;, &quot;d&quot;: &quot;출처: Google Blog · 2026.05.20 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Google Blog · 2026.05.20</div>
+          <div class="ic-head">Google I/O 2026, 모델·검색·개발도구·구독까지 AI 전면 확장</div>
+          <div class="ic-sum">Google은 I/O 2026에서 Gemini 3.5 Flash, Gemini Omni, AI Search, Antigravity, AI Studio 등 주요 AI 발표를 정리했다. AI 생태계는 모델 자체보다 제품군 전반에 내장되는 단계로 이동했다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 게시일: 2026.05.20</div><div class="ic-pt">Gemini 3.5 Flash, Gemini Omni 등 모델 발표</div><div class="ic-pt">Search, AI Studio, Android Studio, Gemini App 등 전 제품군 확장</div></div>
+          <span class="ic-tag">공식 · AI Platform</span>
+        </a>
+        <a class="ic" href="https://www.blackstone.com/news/press/blackstone-announces-joint-venture-with-google-to-create-new-tpu-cloud/" target="_blank" rel="noopener" onclick="om(event,{&quot;t&quot;: &quot;GPU 중심 AI 인프라에 TPU 대안 확대 — Google·Blackstone Cloud JV&quot;, &quot;s&quot;: &quot;Blackstone Press Release · 2026.05.18&quot;, &quot;sum&quot;: &quot;Blackstone과 Google의 TPU Cloud 합작은 AI 인프라 공급망이 NVIDIA GPU 중심에서 TPU 기반 대안으로 다변화될 수 있음을 보여준다.&quot;, &quot;pts&quot;: [&quot;공식 보도자료 기준 게시일: 2026.05.18&quot;, &quot;Google TPUs를 compute-as-a-service 형태로 제공하는 신규 회사 설립&quot;, &quot;Google은 하드웨어·소프트웨어·서비스를 공급&quot;, &quot;AI 인프라 조달 시 GPU/TPU 벤치마크와 lock-in 리스크를 병행 검토&quot;], &quot;lnk&quot;: &quot;https://www.blackstone.com/news/press/blackstone-announces-joint-venture-with-google-to-create-new-tpu-cloud/&quot;, &quot;d&quot;: &quot;출처: Blackstone Press Release · 2026.05.18 · 링크 무결성 확인 완료&quot;})">
+          <div class="ic-src">Blackstone Press Release · 2026.05.18</div>
+          <div class="ic-head">GPU 중심 AI 인프라에 TPU 대안 확대 — Google·Blackstone Cloud JV</div>
+          <div class="ic-sum">Blackstone과 Google의 TPU Cloud 합작은 AI 인프라 공급망이 NVIDIA GPU 중심에서 TPU 기반 대안으로 다변화될 수 있음을 보여준다.</div>
+          <div class="ic-pts"><div class="ic-pt">공식 보도자료 기준 게시일: 2026.05.18</div><div class="ic-pt">Google TPUs를 compute-as-a-service 형태로 제공하는 신규 회사 설립</div><div class="ic-pt">Google은 하드웨어·소프트웨어·서비스를 공급</div></div>
+          <span class="ic-tag">공식 · AI Infra</span>
+        </a></div>
+      <div class="abar"><div class="aicon">🤖</div><div><div class="albl">PROCUREMENT ACTION</div><div class="atxt">AI 생태계는 모델, 반도체, 클라우드, 개발도구, 단말까지 수직 통합되고 있다. 구매 전략은 단가협상보다 생태계 종속성·운영비·대체 가능성을 중심으로 설계해야 한다.</div></div></div>
+    </div>
+</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const TOT=slides.length; let cur=0; let anim=false;
+document.getElementById('tp').textContent=TOT;
+const dots=document.querySelectorAll('.dot');
+const pbar=document.getElementById('pbar');
+const cp=document.getElementById('cp');
+const ap=document.getElementById('ap'); const an=document.getElementById('an');
+const hint=document.getElementById('hint');
+setTimeout(()=>{hint.style.opacity='0'},4500);
+function ui(){
+  pbar.style.width=((cur+1)/TOT*100)+'%';
+  cp.textContent=cur+1;
+  dots.forEach((d,i)=>d.classList.toggle('on',i===cur));
+  ap.classList.toggle('hide',cur===0);
+  an.classList.toggle('hide',cur===TOT-1);
+}
+function go(n){
+  if(anim||n<0||n>=TOT||n===cur)return;
+  anim=true;
+  const dir=n>cur?'xl':'xr';
+  const prev=cur;
+  slides[prev].classList.remove('on');
+  slides[prev].classList.add(dir);
+  slides[n].style.transform=n>cur?'translateX(60px)':'translateX(-60px)';
+  slides[n].style.opacity='0';
+  slides[n].classList.remove('xl','xr');
+  slides[n].offsetHeight;
+  slides[n].style.transform='';
+  slides[n].style.opacity='';
+  slides[n].classList.add('on');
+  cur=n; ui();
+  setTimeout(()=>{slides[prev].classList.remove('xl','xr');anim=false;},460);
+}
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')cmb();return;}
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')go(cur+1);
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(cur-1);
+  else if(e.key==='f'||e.key==='F')toggleFS();
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)dx<0?go(cur+1):go(cur-1);});
+function toggleFS(){!document.fullscreenElement?document.documentElement.requestFullscreen?.():document.exitFullscreen?.();}
+function om(e,d){
+  e.preventDefault();
+  document.getElementById('mt').textContent=d.t;
+  document.getElementById('ms').textContent=d.s;
+  document.getElementById('msu').textContent=d.sum;
+  const el=document.getElementById('mpt'); el.innerHTML='';
+  d.pts.forEach(p=>{const v=document.createElement('div');v.className='mpt';v.textContent='▸ '+p;el.appendChild(v);});
+  document.getElementById('ml').href=d.lnk;
+  document.getElementById('mdt').textContent=d.d;
+  document.getElementById('modal').classList.add('open');
+}
+function cmo(e){if(e.target.id==='modal')document.getElementById('modal').classList.remove('open');}
+function cmb(){document.getElementById('modal').classList.remove('open');}
+ui();
+</script>
+</body>
+</html>
