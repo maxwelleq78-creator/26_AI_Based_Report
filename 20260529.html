@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT‑PRAT Team AX Weekly Report · 2026.05.21–29</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700;900&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07070f;--surface:#0f0f1a;--surface2:#161625;--border:#25253d;--border-b:#343456;--text:#f2f2ff;--muted:#9a9abb;--dim:#585878;--blue:#38bdf8;--pink:#f472b6;--cyan:#2dd4bf;--amber:#fbbf24;--red:#fb7185;--green:#4ade80;--violet:#a78bfa;--white:#fff}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html,body{width:100%;height:100%;background:#000;overflow:hidden;font-family:'Noto Sans KR',sans-serif;color:var(--text);user-select:none}a{color:inherit}
+#pbar{position:fixed;top:0;left:0;z-index:999;height:3px;background:linear-gradient(90deg,var(--blue),var(--pink));transition:width .45s cubic-bezier(.4,0,.2,1);box-shadow:0 0 12px rgba(56,189,248,.8)}
+#pnum{position:fixed;bottom:22px;right:30px;z-index:999;font-family:'Space Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:2px}#pnum span{color:var(--blue);font-weight:700;font-size:14px}
+#dots{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:999}.dot{width:5px;height:5px;border-radius:50%;background:var(--border-b);cursor:pointer;transition:all .3s}.dot.on{background:var(--blue);box-shadow:0 0 10px var(--blue);transform:scale(1.4)}
+.arr{position:fixed;top:50%;z-index:998;transform:translateY(-50%);width:38px;height:38px;background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:var(--muted);transition:all .2s;backdrop-filter:blur(6px)}.arr:hover{background:rgba(56,189,248,.22);color:#fff;border-color:var(--blue)}#ap{left:18px}#an{right:18px}.arr.hide{opacity:0;pointer-events:none}
+#hint{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);z-index:999;font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);letter-spacing:1.5px;transition:opacity .5s;white-space:nowrap}
+#slider{width:100%;height:100%;position:relative;overflow:hidden}.slide{position:absolute;inset:0;width:100%;height:100%;display:flex;flex-direction:column;background:var(--bg);opacity:0;transform:translateX(60px);transition:opacity .42s cubic-bezier(.4,0,.2,1),transform .42s cubic-bezier(.4,0,.2,1);pointer-events:none;overflow:hidden}.slide.on{opacity:1;transform:translateX(0);pointer-events:all}.slide.xl{opacity:0;transform:translateX(-60px)}.slide.xr{opacity:0;transform:translateX(60px)}
+.cover{background:radial-gradient(ellipse at 15% 8%,rgba(56,189,248,.18) 0%,transparent 44%),radial-gradient(ellipse at 90% 85%,rgba(244,114,182,.12) 0%,transparent 48%),var(--bg);padding:28px 58px 42px;gap:14px}.cover-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--border);padding-bottom:14px}.cv-badge{font-family:'Space Mono',monospace;font-size:10px;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:8px}.cv-title{font-family:'Orbitron',sans-serif;font-size:34px;font-weight:900;line-height:1.05;color:white}.cv-title em{font-style:normal;color:var(--blue)}.cv-desc{max-width:560px;font-size:13px;color:var(--muted);line-height:1.6;text-align:right}.cv-desc b{color:white}.top-grid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:12px;min-height:0}.top-card{background:rgba(15,15,26,.92);border:1px solid var(--border);border-radius:13px;padding:14px 16px;text-decoration:none;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:all .2s}.top-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:linear-gradient(var(--blue),var(--pink))}.top-card:hover{transform:translateY(-2px);border-color:var(--blue);background:rgba(56,189,248,.06)}.top-meta{display:flex;gap:8px;align-items:center;font-family:'Space Mono',monospace;font-size:9px;color:var(--blue);letter-spacing:.8px;text-transform:uppercase}.top-icon{font-size:16px}.top-date{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--muted)}.top-head{font-size:13px;font-weight:800;line-height:1.45;color:white}.top-impact{font-size:11px;line-height:1.55;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;margin-top:auto}.verify-strip{display:flex;gap:12px;font-size:11px;color:var(--muted);font-family:'Space Mono',monospace}.verify-strip span{border:1px solid var(--border);background:rgba(255,255,255,.03);border-radius:7px;padding:7px 10px}.verify-strip b{color:var(--green)}
+.cs{padding:0;display:flex;flex-direction:column}.sh{padding:18px 60px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}.sh-l{display:flex;align-items:center;gap:14px}.si{width:42px;height:42px;background:var(--surface2);border:1px solid var(--border-b);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}.stitle{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700;color:#fff;letter-spacing:.5px}.ssub{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:3px}.emg{background:var(--red);color:#fff;font-size:9px;font-weight:700;font-family:'Space Mono',monospace;padding:4px 10px;border-radius:4px;letter-spacing:1px;margin-left:auto}
+.pills{display:flex;gap:10px;padding:10px 60px;border-bottom:1px solid var(--border);flex-shrink:0}.pill{background:var(--surface2);border:1px solid var(--border-b);border-radius:7px;padding:7px 14px;flex:1}.pl{font-family:'Space Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:3px}.pv{font-size:13px;font-weight:700;color:var(--blue)}
+.igrid{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:14px 60px;overflow:hidden}.ic{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s;position:relative;overflow:hidden}.ic::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--blue);border-radius:3px 0 0 3px;transition:background .2s}.ic:hover{border-color:var(--blue);background:rgba(56,189,248,.05);transform:translateY(-2px);box-shadow:0 8px 28px rgba(56,189,248,.1)}.ic:hover::before{background:var(--pink)}.ic-src{font-family:'Space Mono',monospace;font-size:8.5px;color:var(--blue);letter-spacing:.5px;display:flex;align-items:center;gap:4px}.ic-src::before{content:'↗'}.ic-head{font-size:13px;font-weight:800;color:var(--text);line-height:1.5}.ic-sum{font-size:11.2px;color:var(--muted);line-height:1.6;border-top:1px solid var(--border);padding-top:8px;margin-top:2px}.ic-pts{display:flex;flex-direction:column;gap:5px;margin-top:2px}.ic-pt{font-size:10.8px;color:var(--muted);line-height:1.45;display:flex;gap:6px;align-items:flex-start}.ic-pt::before{content:'▸';color:var(--blue);flex-shrink:0;font-size:9px;margin-top:2px}.ic-tag{display:inline-flex;margin-top:auto;font-family:'Space Mono',monospace;font-size:8px;background:rgba(56,189,248,.1);color:var(--blue);border:1px solid rgba(56,189,248,.2);border-radius:4px;padding:2px 7px;letter-spacing:.5px;align-self:flex-start}
+.abar{margin:0 60px 16px;background:linear-gradient(135deg,rgba(56,189,248,.08),rgba(244,114,182,.05));border:1px solid rgba(56,189,248,.25);border-radius:10px;padding:13px 18px;display:flex;align-items:center;gap:14px;flex-shrink:0}.aicon{width:28px;height:28px;background:linear-gradient(135deg,var(--blue),var(--pink));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}.albl{font-family:'Space Mono',monospace;font-size:8px;color:#7dd3fc;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}.atxt{font-size:13px;font-weight:700;color:#fff;line-height:1.5}
+.moverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:9999;backdrop-filter:blur(6px);align-items:center;justify-content:center}.moverlay.open{display:flex}.mbox{background:var(--surface);border:1px solid var(--border-b);border-radius:16px;width:640px;max-width:94vw;max-height:88vh;overflow-y:auto;animation:mIn .2s ease}@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}.mh{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;position:sticky;top:0;background:var(--surface);z-index:1}.mt{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:4px}.ms{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted)}.mx{background:var(--surface2);border:1px solid var(--border-b);color:var(--muted);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}.mx:hover{border-color:var(--red);color:var(--red)}.mb{padding:20px 24px 24px}.msum{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:14px}.mpts{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}.mpt{background:var(--surface2);border-left:3px solid var(--blue);border-radius:0 6px 6px 0;padding:9px 13px;font-size:12.5px;color:var(--text);line-height:1.55}.mlnk{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;text-decoration:none;padding:10px 20px;border-radius:8px;font-size:12px;font-weight:600;font-family:'Space Mono',monospace;transition:opacity .15s}.mlnk:hover{opacity:.85}.mdt{font-family:'Space Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px}
+@media(max-width:900px){.cover,.sh,.pills,.igrid,.abar{padding-left:30px;padding-right:30px}.top-grid,.igrid{grid-template-columns:1fr}.slide{overflow:auto}.cover{overflow:auto}.cv-desc{text-align:left}.cover-head{flex-direction:column;gap:10px}.verify-strip{flex-wrap:wrap}}
+</style>
+</head>
+<body>
+<div id="pbar"></div>
+<div id="pnum"><span id="cp">1</span> / 11</div>
+<div id="dots">
+  <div class="dot on" onclick="go(0)"></div>
+  <div class="dot" onclick="go(1)"></div>
+  <div class="dot" onclick="go(2)"></div>
+  <div class="dot" onclick="go(3)"></div>
+  <div class="dot" onclick="go(4)"></div>
+  <div class="dot" onclick="go(5)"></div>
+  <div class="dot" onclick="go(6)"></div>
+  <div class="dot" onclick="go(7)"></div>
+  <div class="dot" onclick="go(8)"></div>
+  <div class="dot" onclick="go(9)"></div>
+  <div class="dot" onclick="go(10)"></div>
+</div>
+<div class="arr hide" id="ap" onclick="go(cur-1)">←</div>
+<div class="arr" id="an" onclick="go(cur+1)">→</div>
+<div id="hint">F — 전체화면 &nbsp;·&nbsp; ← → — 슬라이드 이동 &nbsp;·&nbsp; 카드 클릭 — 원문 상세</div>
+<div class="moverlay" id="modal" onclick="cmo(event)">
+  <div class="mbox"><div class="mh"><div style="flex:1;padding-right:12px"><div class="mt" id="mt"></div><div class="ms" id="ms"></div></div><button class="mx" onclick="cmb()">✕</button></div>
+    <div class="mb"><div class="msum" id="msu"></div><div class="mpts" id="mpt"></div><a class="mlnk" id="ml" href="#" target="_blank" rel="noopener">🔗 원문 기사 바로 보기</a><div class="mdt" id="mdt"></div></div>
+  </div>
+</div>
+<div id="slider">
+<!-- SLIDE 1: COVER -->
+<div class="slide cover on" data-i="0">
+  <div class="cover-head">
+    <div>
+      <div class="cv-badge">2026.05.21–2026.05.29 · VERIFIED WEEKLY INTEL</div>
+      <div class="cv-title">IT Strategic<br><em>Procurement</em></div>
+    </div>
+    <div class="cv-desc"><b>이번 주 9대 핵심 시그널</b><br>공신력 언론·공식 뉴스룸·공공기관 자료만 사용. 모든 카드는 게시/송고일이 2026.05.21~2026.05.29 범위 내에 있는 실제 링크 기준으로 작성.</div>
+  </div>
+  <div class="top-grid">
+    <a class="top-card" href="https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Dell, AI 서버 매출 전망 $60B로 상향 — 메모리 위기 속 매일 재가격 조정&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 Dell이 AI 데이터센터 구축 수요에 힘입어 FY2027 AI 서버 매출 전망을 기존 $50B에서 약 $60B로 상향했다고 보도했다. Dell은 메모리 칩 위기 대응을 위해 가격 인상과 공급망 조정을 병행 중이라고 설명했다.&quot;, &quot;pts&quot;: [&quot;AI 서버 수요가 서버·스토리지·네트워크 조달 단가를 직접 끌어올리는 구간 진입&quot;, &quot;메모리 쇼티지 상황에서 서버 견적 유효기간 단축·재가격 조항 점검 필요&quot;, &quot;AI 인프라 장비는 단품 구매가 아니라 장기 캐파 확보 계약 관점으로 접근 필요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">🖥️</span><span>HW</span></div>
+        <div class="top-date">Reuters · 2026.05.28</div>
+        <div class="top-head">Dell, AI 서버 매출 전망 $60B로 상향 — 메모리 위기 속 매일 재가격 조정</div>
+        <div class="top-impact">AI 서버 수요와 메모리 부족이 서버 조달가 재가격 리스크를 확대</div>
+      </a><a class="top-card" href="https://www.techradar.com/pro/security/microsoft-confirms-two-major-defender-security-issues-so-update-now-or-face-possible-attack" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Microsoft Defender 제로데이 2건 확인 — CISA KEV 등재, 긴급 업데이트 필요&quot;, &quot;s&quot;: &quot;TechRadar · 2026.05.22&quot;, &quot;sum&quot;: &quot;TechRadar는 Microsoft Defender 관련 주요 보안 취약점 2건이 확인됐고, CISA KEV에 등재되어 신속 업데이트가 요구된다고 보도했다. 엔드포인트 보안 솔루션 자체도 공격면이 될 수 있다는 점이 부각됐다.&quot;, &quot;pts&quot;: [&quot;EDR·백신 솔루션 구매 시 기능성뿐 아니라 패치 SLA·취약점 대응속도 평가 필요&quot;, &quot;전사 단말 보안 제품은 버전 현황·긴급 패치 자동화 체계를 계약 조건에 반영&quot;, &quot;보안 장비·솔루션 RFP에 KEV 취약점 대응 리포트 제출 조항 필요&quot;], &quot;lnk&quot;: &quot;https://www.techradar.com/pro/security/microsoft-confirms-two-major-defender-security-issues-so-update-now-or-face-possible-attack&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 TechRadar · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">🛡️</span><span>보안</span></div>
+        <div class="top-date">TechRadar · 2026.05.22</div>
+        <div class="top-head">Microsoft Defender 제로데이 2건 확인 — CISA KEV 등재, 긴급 업데이트 필요</div>
+        <div class="top-impact">보안 솔루션도 패치 SLA와 취약점 대응 체계가 구매 핵심 조건</div>
+      </a><a class="top-card" href="https://www.reuters.com/business/pentagon-awards-microsoft-97-billion-deal-bid-cut-costs-end-license-sprawl-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;미 국방부, Microsoft와 $9.69B 단일 SW 계약 — 라이선스 난립 비용 절감 목적&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 미 국방부가 Microsoft 및 관련 SW 라이선스를 5년 $9.69B 규모 단일 계약으로 통합해 중복·분산 구매 비용을 줄이려 한다고 보도했다.&quot;, &quot;pts&quot;: [&quot;대형 조직의 SW 구매는 벤더 단가보다 라이선스 통합·중복 제거가 핵심 절감 포인트&quot;, &quot;Microsoft 365·클라우드·온프레미스 라이선스를 묶은 통합 협상 모델 참고 필요&quot;, &quot;사내 부서별 분산 구매와 미사용 라이선스 회수 체계를 정기화해야 함&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/pentagon-awards-microsoft-97-billion-deal-bid-cut-costs-end-license-sprawl-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">💻</span><span>SW</span></div>
+        <div class="top-date">Reuters · 2026.05.27</div>
+        <div class="top-head">미 국방부, Microsoft와 $9.69B 단일 SW 계약 — 라이선스 난립 비용 절감 목적</div>
+        <div class="top-impact">SW 비용 절감의 핵심이 단가 인하에서 라이선스 통합·중복 제거로 이동</div>
+      </a><a class="top-card" href="https://www.mk.co.kr/news/business/12054603" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;“원가 1%에도 애타는 기업, AX 지원 절실” — AI 인프라·전문인력 양성 요구 확대&quot;, &quot;s&quot;: &quot;매일경제 · 2026.05.21&quot;, &quot;sum&quot;: &quot;매일경제는 중견기업 AX 전환에서 AI 인프라와 R&amp;D 특화 AI, 전문 실무인력 양성 지원이 절실하다는 현장 목소리를 보도했다. 높은 AI 개발자 인건비와 초기 투자 부담도 언급됐다.&quot;, &quot;pts&quot;: [&quot;AI·AX 프로젝트의 병목이 솔루션 가격뿐 아니라 전문인력 확보 비용으로 이동&quot;, &quot;SI/SM 단가 협상에서 AI 설계·운영·검증 인력 프리미엄을 별도 밴드화 필요&quot;, &quot;내부 자동화 과제는 외부 고급인력 의존도를 낮추는 방향으로 설계해야 함&quot;], &quot;lnk&quot;: &quot;https://www.mk.co.kr/news/business/12054603&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 매일경제 · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">👥</span><span>IT 인건비</span></div>
+        <div class="top-date">매일경제 · 2026.05.21</div>
+        <div class="top-head">“원가 1%에도 애타는 기업, AX 지원 절실” — AI 인프라·전문인력 양성 요구 확대</div>
+        <div class="top-impact">AI 전문인력 수급과 인건비가 AX 과제의 실질 제약요인으로 부상</div>
+      </a><a class="top-card" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-world-hydrogen-summit-2026" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;현대차그룹, 월드 하이드로젠 서밋 참가 — 디 올 뉴 넥쏘·수소 생태계 전시&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.21&quot;, &quot;sum&quot;: &quot;현대차그룹은 월드 하이드로젠 서밋 2026에서 HTWO 수소 사업과 디 올 뉴 넥쏘를 전시했다. 디 올 뉴 넥쏘는 1회 충전 최대 720km 수준과 유럽 판매 개시가 언급됐다.&quot;, &quot;pts&quot;: [&quot;법인 친환경차 검토에서 EV뿐 아니라 수소전기차·수소 인프라 동향도 병행 모니터링&quot;, &quot;장거리 운행·충전시간·충전 인프라 조건을 법인차 TCO 비교에 반영&quot;, &quot;수소차 도입은 차량 가격보다 인프라·정비·잔존가치 리스크 검토가 중요&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-world-hydrogen-summit-2026&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 현대자동차그룹 뉴스룸 · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">🚗</span><span>자동차</span></div>
+        <div class="top-date">현대자동차그룹 뉴스룸 · 2026.05.21</div>
+        <div class="top-head">현대차그룹, 월드 하이드로젠 서밋 참가 — 디 올 뉴 넥쏘·수소 생태계 전시</div>
+        <div class="top-impact">친환경 법인차 선택지가 EV 중심에서 수소차·인프라까지 확장</div>
+      </a><a class="top-card" href="https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Google 검색·Agentic AI 변화, 구매 여정이 브랜드 웹사이트를 우회할 가능성&quot;, &quot;s&quot;: &quot;Business Insider · 2026.05.27&quot;, &quot;sum&quot;: &quot;Business Insider는 Google의 AI 에이전트와 Universal Cart가 여행·식당·상품 구매 여정을 Google 생태계 내부에서 처리하게 만들 수 있으며, 브랜드는 AI가 추천할 만한 콘텐츠·크리에이티브를 구축해야 한다고 분석했다.&quot;, &quot;pts&quot;: [&quot;마케팅 구매 기준이 검색광고·SEO에서 AI 추천 최적화와 멀티미디어 신호 관리로 이동&quot;, &quot;대행사·솔루션 계약에 AEO/GEO, 영상·이미지 데이터 최적화 항목 반영 필요&quot;, &quot;브랜드 웹사이트 유입 감소 가능성에 대비해 AI 플랫폼 내 전환 지표를 관리해야 함&quot;], &quot;lnk&quot;: &quot;https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Business Insider · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">📣</span><span>마케팅 AI</span></div>
+        <div class="top-date">Business Insider · 2026.05.27</div>
+        <div class="top-head">Google 검색·Agentic AI 변화, 구매 여정이 브랜드 웹사이트를 우회할 가능성</div>
+        <div class="top-impact">AI 에이전트가 고객 구매 여정을 플랫폼 내부로 흡수하는 구조적 변화</div>
+      </a><a class="top-card" href="https://www.theverge.com/tech/938665/qualcomm-promises-300-windows-laptops-with-new-snapdragon-c" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Qualcomm, Snapdragon C로 $300 Windows 노트북 예고 — RAM 가격 상승 속 저가 ARM 대안&quot;, &quot;s&quot;: &quot;The Verge · 2026.05.28&quot;, &quot;sum&quot;: &quot;The Verge는 Qualcomm이 Snapdragon C 플랫폼을 통해 올해 $300 수준의 Windows 노트북을 목표로 한다고 보도했다. RAM 가격 상승과 PC 가격 상승 속에서 저가 ARM 기반 대안이 부상하고 있다.&quot;, &quot;pts&quot;: [&quot;법인 표준 노트북 구매에서 x86 단일 구조가 ARM 저가형 옵션으로 일부 분산 가능&quot;, &quot;저가형 ARM 노트북은 성능·호환성·보안 SW 지원성 검증 후 제한 도입 필요&quot;, &quot;메모리 가격 상승기에 예산형 단말 라인업 확보가 비용 방어 수단이 될 수 있음&quot;], &quot;lnk&quot;: &quot;https://www.theverge.com/tech/938665/qualcomm-promises-300-windows-laptops-with-new-snapdragon-c&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 The Verge · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">💻</span><span>PC/랩탑</span></div>
+        <div class="top-date">The Verge · 2026.05.28</div>
+        <div class="top-head">Qualcomm, Snapdragon C로 $300 Windows 노트북 예고 — RAM 가격 상승 속 저가 ARM 대안</div>
+        <div class="top-impact">PC 가격 상승기에 ARM 기반 저가 노트북이 법인 단말 대안으로 부상</div>
+      </a><a class="top-card" href="https://news.einfomax.co.kr/news/articleView.html?idxno=4416151" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;공정위, AI 서비스 시장 실태조사 실시 — 국내외 주요 AI 사업자 거래·경쟁 현황 점검&quot;, &quot;s&quot;: &quot;연합인포맥스 · 2026.05.21&quot;, &quot;sum&quot;: &quot;연합인포맥스는 공정거래위원회가 국내 AI 서비스 시장에 참여하는 국내외 주요 사업자를 대상으로 시장 실태조사를 시작했다고 보도했다. 거래 실태와 경쟁 현황, 허위·과장 광고 우려가 점검 대상이다.&quot;, &quot;pts&quot;: [&quot;AI 서비스·시장조사 용역 구매 시 데이터 사용, 광고 표현, 경쟁 제한 리스크 검토 필요&quot;, &quot;AI 솔루션 도입 전 시장지배력·전환비용·락인 가능성을 비교 평가해야 함&quot;, &quot;시장분석 용역에 규제·공정거래 리스크 분석을 포함할 필요&quot;], &quot;lnk&quot;: &quot;https://news.einfomax.co.kr/news/articleView.html?idxno=4416151&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 연합인포맥스 · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">📊</span><span>고객 조사</span></div>
+        <div class="top-date">연합인포맥스 · 2026.05.21</div>
+        <div class="top-head">공정위, AI 서비스 시장 실태조사 실시 — 국내외 주요 AI 사업자 거래·경쟁 현황 점검</div>
+        <div class="top-impact">AI 서비스 조달에서 경쟁·광고·데이터 규제 리스크가 중요 평가 항목으로 부상</div>
+      </a><a class="top-card" href="https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Google Omni, Flow에서 “anything-to-anything” 영상 생성·편집 — 딥페이크 수준 현실화&quot;, &quot;s&quot;: &quot;The Verge · 2026.05.23&quot;, &quot;sum&quot;: &quot;The Verge는 Google의 Omni Flash가 Flow에서 사진·영상·텍스트 기반 영상 생성·편집을 지원하며, 짧은 프롬프트로 현실감 있는 결과물을 만들 수 있다고 평가했다. 동시에 딥페이크·콘텐츠 신뢰 리스크도 지적했다.&quot;, &quot;pts&quot;: [&quot;영상 제작 외주·툴 구매 기준이 생성 품질뿐 아니라 워터마크·권리·검수 기능으로 확대&quot;, &quot;단순 편집·합성 작업은 AI 대체 가능성이 커져 제작비 구조 재산정 필요&quot;, &quot;브랜드 영상 제작 시 AI 사용 고지·저작권·초상권 검수 프로세스 필요&quot;], &quot;lnk&quot;: &quot;https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.23 · 출처 The Verge · 원문 링크 확인&quot;})'>
+        <div class="top-meta"><span class="top-icon">🎨</span><span>영상·디자인 AI</span></div>
+        <div class="top-date">The Verge · 2026.05.23</div>
+        <div class="top-head">Google Omni, Flow에서 “anything-to-anything” 영상 생성·편집 — 딥페이크 수준 현실화</div>
+        <div class="top-impact">영상 제작 AI는 비용 절감 기회와 딥페이크 리스크를 동시에 확대</div>
+      </a>
+  </div>
+  <div class="verify-strip"><span><b>검증 기준</b> 언론사·공식 발표</span><span><b>기간</b> 2026.05.21–2026.05.29</span><span><b>구성</b> 첫 페이지 + 9개 카테고리 + AI Ecosystem = 11pg</span></div>
+</div><!-- SLIDE 2: HW -->
+<div class="slide cs" data-i="1">
+  <div class="sh">
+    <div class="sh-l"><div class="si">🖥️</div><div><div class="stitle">HW: x86·DRAM·Storage</div><div class="ssub">SERVER · MEMORY · STORAGE</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ AI 서버 $60B</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ DRAM Q2 최대 +63%</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ DDR4 공급확대</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Dell, AI 서버 매출 전망 $60B로 상향 — 메모리 위기 속 매일 재가격 조정&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 Dell이 AI 데이터센터 구축 수요에 힘입어 FY2027 AI 서버 매출 전망을 기존 $50B에서 약 $60B로 상향했다고 보도했다. Dell은 메모리 칩 위기 대응을 위해 가격 인상과 공급망 조정을 병행 중이라고 설명했다.&quot;, &quot;pts&quot;: [&quot;AI 서버 수요가 서버·스토리지·네트워크 조달 단가를 직접 끌어올리는 구간 진입&quot;, &quot;메모리 쇼티지 상황에서 서버 견적 유효기간 단축·재가격 조항 점검 필요&quot;, &quot;AI 인프라 장비는 단품 구매가 아니라 장기 캐파 확보 계약 관점으로 접근 필요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.28</div>
+      <div class="ic-head">Dell, AI 서버 매출 전망 $60B로 상향 — 메모리 위기 속 매일 재가격 조정</div>
+      <div class="ic-sum">Reuters는 Dell이 AI 데이터센터 구축 수요에 힘입어 FY2027 AI 서버 매출 전망을 기존 $50B에서 약 $60B로 상향했다고 보도했다. Dell은 메모리 칩 위기 대응을 위해 가격 인상과 공급망 조정을 병행 중이라고 설명했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 서버 수요가 서버·스토리지·네트워크 조달 단가를 직접 끌어올리는 구간 진입</div><div class="ic-pt">메모리 쇼티지 상황에서 서버 견적 유효기간 단축·재가격 조항 점검 필요</div><div class="ic-pt">AI 인프라 장비는 단품 구매가 아니라 장기 캐파 확보 계약 관점으로 접근 필요</div>
+      </div>
+      <span class="ic-tag">AI 서버·메모리</span>
+    </a><a class="ic" href="https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;SK하이닉스, AI 메모리 붐으로 시가총액 $1T 돌파 — 메모리 가격 Q1 2배·Q2 최대 +63% 전망&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 SK하이닉스가 AI 칩셋용 고성능 메모리 수요로 시가총액 $1T 클럽에 진입했고, 메모리 칩 가격이 Q1에 전기 대비 2배 상승했으며 현 분기에도 최대 63% 상승 전망이 나온다고 보도했다.&quot;, &quot;pts&quot;: [&quot;HBM·고성능 DRAM 수요가 범용 서버·PC·자동차용 메모리 공급까지 압박&quot;, &quot;메모리 가격 상승분을 서버·PC 예산 산정의 별도 리스크 항목으로 반영 필요&quot;, &quot;장기 단가계약·선구매·대체 사양 DDR4/DDR5 혼용 시나리오 병행 검토&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.27</div>
+      <div class="ic-head">SK하이닉스, AI 메모리 붐으로 시가총액 $1T 돌파 — 메모리 가격 Q1 2배·Q2 최대 +63% 전망</div>
+      <div class="ic-sum">Reuters는 SK하이닉스가 AI 칩셋용 고성능 메모리 수요로 시가총액 $1T 클럽에 진입했고, 메모리 칩 가격이 Q1에 전기 대비 2배 상승했으며 현 분기에도 최대 63% 상승 전망이 나온다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">HBM·고성능 DRAM 수요가 범용 서버·PC·자동차용 메모리 공급까지 압박</div><div class="ic-pt">메모리 가격 상승분을 서버·PC 예산 산정의 별도 리스크 항목으로 반영 필요</div><div class="ic-pt">장기 단가계약·선구매·대체 사양 DDR4/DDR5 혼용 시나리오 병행 검토</div>
+      </div>
+      <span class="ic-tag">DRAM/HBM 수급</span>
+    </a><a class="ic" href="https://www.tomshardware.com/tech-industry/micron-begins-producing-americas-most-advanced-dram-at-its-virginia-fab" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Micron, 버지니아 팹에서 첨단 DRAM 생산 개시 — 자동차·방산 DDR4 부족 완화 목적&quot;, &quot;s&quot;: &quot;Tom&#x27;s Hardware · 2026.05.23&quot;, &quot;sum&quot;: &quot;Tom’s Hardware는 Micron이 미국 버지니아 팹에서 첨단 DRAM 생산을 시작했으며, DDR4 웨이퍼 생산량을 연말까지 4배 확대해 자동차·방산·산업용 메모리 부족 완화를 노린다고 보도했다.&quot;, &quot;pts&quot;: [&quot;AI용 HBM·DDR5 전환이 DDR4·산업용 메모리 수급까지 왜곡하는 흐름 확인&quot;, &quot;네트워크·산업용 장비처럼 장수명 부품을 쓰는 영역은 부품 단종·리드타임 점검 필요&quot;, &quot;서버뿐 아니라 차량·방산·산업장비 메모리 원가 상승도 구매 리스크로 관리 필요&quot;], &quot;lnk&quot;: &quot;https://www.tomshardware.com/tech-industry/micron-begins-producing-americas-most-advanced-dram-at-its-virginia-fab&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.23 · 출처 Tom&#x27;s Hardware · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Tom's Hardware · 2026.05.23</div>
+      <div class="ic-head">Micron, 버지니아 팹에서 첨단 DRAM 생산 개시 — 자동차·방산 DDR4 부족 완화 목적</div>
+      <div class="ic-sum">Tom’s Hardware는 Micron이 미국 버지니아 팹에서 첨단 DRAM 생산을 시작했으며, DDR4 웨이퍼 생산량을 연말까지 4배 확대해 자동차·방산·산업용 메모리 부족 완화를 노린다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI용 HBM·DDR5 전환이 DDR4·산업용 메모리 수급까지 왜곡하는 흐름 확인</div><div class="ic-pt">네트워크·산업용 장비처럼 장수명 부품을 쓰는 영역은 부품 단종·리드타임 점검 필요</div><div class="ic-pt">서버뿐 아니라 차량·방산·산업장비 메모리 원가 상승도 구매 리스크로 관리 필요</div>
+      </div>
+      <span class="ic-tag">DDR4 공급</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">🖥️</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">AI 서버·메모리 가격 급등에 대비해 서버 견적 유효기간 단축, 메모리 옵션별 별도 가격조항, 선구매·대체 사양 시나리오를 즉시 점검</div></div></div>
+</div><!-- SLIDE 3: Security -->
+<div class="slide cs" data-i="2">
+  <div class="sh">
+    <div class="sh-l"><div class="si">🛡️</div><div><div class="stitle">보안 장비 및 솔루션</div><div class="ssub">EDR · OSS SECURITY · AI VULN SCAN</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ Defender KEV</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ IBM $5B OSS</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ Mythos 23,000건</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.techradar.com/pro/security/microsoft-confirms-two-major-defender-security-issues-so-update-now-or-face-possible-attack" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Microsoft Defender 제로데이 2건 확인 — CISA KEV 등재, 긴급 업데이트 필요&quot;, &quot;s&quot;: &quot;TechRadar · 2026.05.22&quot;, &quot;sum&quot;: &quot;TechRadar는 Microsoft Defender 관련 주요 보안 취약점 2건이 확인됐고, CISA KEV에 등재되어 신속 업데이트가 요구된다고 보도했다. 엔드포인트 보안 솔루션 자체도 공격면이 될 수 있다는 점이 부각됐다.&quot;, &quot;pts&quot;: [&quot;EDR·백신 솔루션 구매 시 기능성뿐 아니라 패치 SLA·취약점 대응속도 평가 필요&quot;, &quot;전사 단말 보안 제품은 버전 현황·긴급 패치 자동화 체계를 계약 조건에 반영&quot;, &quot;보안 장비·솔루션 RFP에 KEV 취약점 대응 리포트 제출 조항 필요&quot;], &quot;lnk&quot;: &quot;https://www.techradar.com/pro/security/microsoft-confirms-two-major-defender-security-issues-so-update-now-or-face-possible-attack&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 TechRadar · 원문 링크 확인&quot;})'>
+      <div class="ic-src">TechRadar · 2026.05.22</div>
+      <div class="ic-head">Microsoft Defender 제로데이 2건 확인 — CISA KEV 등재, 긴급 업데이트 필요</div>
+      <div class="ic-sum">TechRadar는 Microsoft Defender 관련 주요 보안 취약점 2건이 확인됐고, CISA KEV에 등재되어 신속 업데이트가 요구된다고 보도했다. 엔드포인트 보안 솔루션 자체도 공격면이 될 수 있다는 점이 부각됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">EDR·백신 솔루션 구매 시 기능성뿐 아니라 패치 SLA·취약점 대응속도 평가 필요</div><div class="ic-pt">전사 단말 보안 제품은 버전 현황·긴급 패치 자동화 체계를 계약 조건에 반영</div><div class="ic-pt">보안 장비·솔루션 RFP에 KEV 취약점 대응 리포트 제출 조항 필요</div>
+      </div>
+      <span class="ic-tag">EDR 취약점</span>
+    </a><a class="ic" href="https://www.reuters.com/legal/transactional/ibm-commits-5-billion-secure-open-source-software-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;IBM·Red Hat, 오픈소스 보안에 $5B 투입 — Project Lightwell 추진&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 IBM과 Red Hat이 AI 시대 오픈소스 소프트웨어 보안을 위해 5년간 $5B를 투입하고 Project Lightwell을 추진한다고 보도했다. 금융권 등 초기 파일럿도 언급됐다.&quot;, &quot;pts&quot;: [&quot;OSS 보안 인증·검증 서비스가 기업 SW 구매의 새로운 필수 검토 항목으로 부상&quot;, &quot;상용 SW 내부 OSS 구성요소 SBOM·보안 인증 제출 요구 강화 필요&quot;, &quot;금융·통신 핵심 시스템은 OSS 보안 검증 비용을 총소유비용에 포함해야 함&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/legal/transactional/ibm-commits-5-billion-secure-open-source-software-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.28</div>
+      <div class="ic-head">IBM·Red Hat, 오픈소스 보안에 $5B 투입 — Project Lightwell 추진</div>
+      <div class="ic-sum">Reuters는 IBM과 Red Hat이 AI 시대 오픈소스 소프트웨어 보안을 위해 5년간 $5B를 투입하고 Project Lightwell을 추진한다고 보도했다. 금융권 등 초기 파일럿도 언급됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">OSS 보안 인증·검증 서비스가 기업 SW 구매의 새로운 필수 검토 항목으로 부상</div><div class="ic-pt">상용 SW 내부 OSS 구성요소 SBOM·보안 인증 제출 요구 강화 필요</div><div class="ic-pt">금융·통신 핵심 시스템은 OSS 보안 검증 비용을 총소유비용에 포함해야 함</div>
+      </div>
+      <span class="ic-tag">OSS 보안</span>
+    </a><a class="ic" href="https://www.securityweek.com/anthropic-mythos-detected-23000-potential-vulnerabilities-across-1000-oss-projects/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Anthropic Mythos, OSS 1,000개 프로젝트에서 잠재 취약점 23,000건 탐지&quot;, &quot;s&quot;: &quot;SecurityWeek · 2026.05.25&quot;, &quot;sum&quot;: &quot;SecurityWeek는 Anthropic의 Mythos가 1,000개 오픈소스 프로젝트에서 잠재 취약점 23,000건을 탐지했고, 검토된 항목 중 다수의 고위험 취약점이 확인됐다고 보도했다.&quot;, &quot;pts&quot;: [&quot;AI 기반 취약점 탐지가 보안 점검·코드감사 용역의 생산성 기준을 바꾸는 중&quot;, &quot;개발·운영 협력사 보안 평가에 AI 취약점 스캔 결과 제출 요구 가능&quot;, &quot;AI 탐지 결과의 오탐·검증 책임 범위를 계약상 명확히 해야 함&quot;], &quot;lnk&quot;: &quot;https://www.securityweek.com/anthropic-mythos-detected-23000-potential-vulnerabilities-across-1000-oss-projects/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.25 · 출처 SecurityWeek · 원문 링크 확인&quot;})'>
+      <div class="ic-src">SecurityWeek · 2026.05.25</div>
+      <div class="ic-head">Anthropic Mythos, OSS 1,000개 프로젝트에서 잠재 취약점 23,000건 탐지</div>
+      <div class="ic-sum">SecurityWeek는 Anthropic의 Mythos가 1,000개 오픈소스 프로젝트에서 잠재 취약점 23,000건을 탐지했고, 검토된 항목 중 다수의 고위험 취약점이 확인됐다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 기반 취약점 탐지가 보안 점검·코드감사 용역의 생산성 기준을 바꾸는 중</div><div class="ic-pt">개발·운영 협력사 보안 평가에 AI 취약점 스캔 결과 제출 요구 가능</div><div class="ic-pt">AI 탐지 결과의 오탐·검증 책임 범위를 계약상 명확히 해야 함</div>
+      </div>
+      <span class="ic-tag">AI 보안검증</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">🛡️</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">보안 솔루션 RFP에 패치 SLA, KEV 대응 리포트, SBOM/OSS 검증, AI 취약점 스캔의 오탐 검증 책임을 명시</div></div></div>
+</div><!-- SLIDE 4: SW -->
+<div class="slide cs" data-i="3">
+  <div class="sh">
+    <div class="sh-l"><div class="si">💻</div><div><div class="stitle">SW: Software</div><div class="ssub">LICENSE · SaaS · AI AGENT</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ MS $9.69B</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ SaaSpocalypse</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ HR SaaS AI</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.reuters.com/business/pentagon-awards-microsoft-97-billion-deal-bid-cut-costs-end-license-sprawl-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;미 국방부, Microsoft와 $9.69B 단일 SW 계약 — 라이선스 난립 비용 절감 목적&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 미 국방부가 Microsoft 및 관련 SW 라이선스를 5년 $9.69B 규모 단일 계약으로 통합해 중복·분산 구매 비용을 줄이려 한다고 보도했다.&quot;, &quot;pts&quot;: [&quot;대형 조직의 SW 구매는 벤더 단가보다 라이선스 통합·중복 제거가 핵심 절감 포인트&quot;, &quot;Microsoft 365·클라우드·온프레미스 라이선스를 묶은 통합 협상 모델 참고 필요&quot;, &quot;사내 부서별 분산 구매와 미사용 라이선스 회수 체계를 정기화해야 함&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/pentagon-awards-microsoft-97-billion-deal-bid-cut-costs-end-license-sprawl-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.27</div>
+      <div class="ic-head">미 국방부, Microsoft와 $9.69B 단일 SW 계약 — 라이선스 난립 비용 절감 목적</div>
+      <div class="ic-sum">Reuters는 미 국방부가 Microsoft 및 관련 SW 라이선스를 5년 $9.69B 규모 단일 계약으로 통합해 중복·분산 구매 비용을 줄이려 한다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">대형 조직의 SW 구매는 벤더 단가보다 라이선스 통합·중복 제거가 핵심 절감 포인트</div><div class="ic-pt">Microsoft 365·클라우드·온프레미스 라이선스를 묶은 통합 협상 모델 참고 필요</div><div class="ic-pt">사내 부서별 분산 구매와 미사용 라이선스 회수 체계를 정기화해야 함</div>
+      </div>
+      <span class="ic-tag">SW 라이선스 통합</span>
+    </a><a class="ic" href="https://www.reuters.com/business/salesforce-beats-first-quarter-revenue-estimates-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Salesforce, AI 전환 우려 속 2Q 매출 전망 시장 기대 하회 — SaaS 좌석 모델 압박&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 Salesforce가 AI로 인한 전통 SaaS 수요 교란 우려 속에서 2분기 매출 전망이 시장 기대를 소폭 하회했다고 보도했다. Agentforce 등 AI 에이전트 전환 성과가 관건으로 제시됐다.&quot;, &quot;pts&quot;: [&quot;SaaS 구매 기준이 좌석 수·구독료에서 AI 에이전트 성과·사용량 기반으로 이동&quot;, &quot;기존 SaaS 갱신 시 AI 기능 중복·대체 가능성을 별도 검토해야 함&quot;, &quot;Agentic AI 기능은 PoC 성과 기준과 비용 상한을 계약서에 명확히 반영 필요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/salesforce-beats-first-quarter-revenue-estimates-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.27</div>
+      <div class="ic-head">Salesforce, AI 전환 우려 속 2Q 매출 전망 시장 기대 하회 — SaaS 좌석 모델 압박</div>
+      <div class="ic-sum">Reuters는 Salesforce가 AI로 인한 전통 SaaS 수요 교란 우려 속에서 2분기 매출 전망이 시장 기대를 소폭 하회했다고 보도했다. Agentforce 등 AI 에이전트 전환 성과가 관건으로 제시됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">SaaS 구매 기준이 좌석 수·구독료에서 AI 에이전트 성과·사용량 기반으로 이동</div><div class="ic-pt">기존 SaaS 갱신 시 AI 기능 중복·대체 가능성을 별도 검토해야 함</div><div class="ic-pt">Agentic AI 기능은 PoC 성과 기준과 비용 상한을 계약서에 명확히 반영 필요</div>
+      </div>
+      <span class="ic-tag">SaaS 재편</span>
+    </a><a class="ic" href="https://www.reuters.com/technology/workday-shares-jump-ai-demand-eases-investor-concerns-2026-05-22/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Workday, AI 수요로 주가 급등 — HR SaaS도 자동화 기능 경쟁 본격화&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.22&quot;, &quot;sum&quot;: &quot;Reuters는 Workday가 1분기 실적 호조와 AI 기능 수요로 투자자 우려를 완화했다고 보도했다. HR 업무 자동화와 인력 계획 영역에 AI 기능이 빠르게 내장되고 있다.&quot;, &quot;pts&quot;: [&quot;HR·ERP SaaS 구매 시 AI 자동화 기능의 실제 업무 대체 범위 검증 필요&quot;, &quot;SaaS 갱신협상에서 AI 기능 포함 여부와 추가 과금 구조를 분리 산정&quot;, &quot;기존 업무 프로세스 개선 효과를 KPI로 정해 도입 후 성과를 측정해야 함&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/technology/workday-shares-jump-ai-demand-eases-investor-concerns-2026-05-22/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.22</div>
+      <div class="ic-head">Workday, AI 수요로 주가 급등 — HR SaaS도 자동화 기능 경쟁 본격화</div>
+      <div class="ic-sum">Reuters는 Workday가 1분기 실적 호조와 AI 기능 수요로 투자자 우려를 완화했다고 보도했다. HR 업무 자동화와 인력 계획 영역에 AI 기능이 빠르게 내장되고 있다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">HR·ERP SaaS 구매 시 AI 자동화 기능의 실제 업무 대체 범위 검증 필요</div><div class="ic-pt">SaaS 갱신협상에서 AI 기능 포함 여부와 추가 과금 구조를 분리 산정</div><div class="ic-pt">기존 업무 프로세스 개선 효과를 KPI로 정해 도입 후 성과를 측정해야 함</div>
+      </div>
+      <span class="ic-tag">HR SaaS AI</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">💻</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">SW 갱신은 좌석 수 증감보다 라이선스 통합·중복 제거·AI 기능 과금 구조 분리를 우선 검토</div></div></div>
+</div><!-- SLIDE 5: Labor -->
+<div class="slide cs" data-i="4">
+  <div class="sh">
+    <div class="sh-l"><div class="si">👥</div><div><div class="stitle">국내 IT 용역 인건비</div><div class="ssub">AX TALENT · OUTSOURCING · LABOR RISK</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ AX 인력 부족</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ AI 인력재편</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ 반도체 노무리스크</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.mk.co.kr/news/business/12054603" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;“원가 1%에도 애타는 기업, AX 지원 절실” — AI 인프라·전문인력 양성 요구 확대&quot;, &quot;s&quot;: &quot;매일경제 · 2026.05.21&quot;, &quot;sum&quot;: &quot;매일경제는 중견기업 AX 전환에서 AI 인프라와 R&amp;D 특화 AI, 전문 실무인력 양성 지원이 절실하다는 현장 목소리를 보도했다. 높은 AI 개발자 인건비와 초기 투자 부담도 언급됐다.&quot;, &quot;pts&quot;: [&quot;AI·AX 프로젝트의 병목이 솔루션 가격뿐 아니라 전문인력 확보 비용으로 이동&quot;, &quot;SI/SM 단가 협상에서 AI 설계·운영·검증 인력 프리미엄을 별도 밴드화 필요&quot;, &quot;내부 자동화 과제는 외부 고급인력 의존도를 낮추는 방향으로 설계해야 함&quot;], &quot;lnk&quot;: &quot;https://www.mk.co.kr/news/business/12054603&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 매일경제 · 원문 링크 확인&quot;})'>
+      <div class="ic-src">매일경제 · 2026.05.21</div>
+      <div class="ic-head">“원가 1%에도 애타는 기업, AX 지원 절실” — AI 인프라·전문인력 양성 요구 확대</div>
+      <div class="ic-sum">매일경제는 중견기업 AX 전환에서 AI 인프라와 R&amp;D 특화 AI, 전문 실무인력 양성 지원이 절실하다는 현장 목소리를 보도했다. 높은 AI 개발자 인건비와 초기 투자 부담도 언급됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI·AX 프로젝트의 병목이 솔루션 가격뿐 아니라 전문인력 확보 비용으로 이동</div><div class="ic-pt">SI/SM 단가 협상에서 AI 설계·운영·검증 인력 프리미엄을 별도 밴드화 필요</div><div class="ic-pt">내부 자동화 과제는 외부 고급인력 의존도를 낮추는 방향으로 설계해야 함</div>
+      </div>
+      <span class="ic-tag">AX 인력 수요</span>
+    </a><a class="ic" href="https://www.reuters.com/business/world-at-work/israeli-website-creator-wixcom-cuts-1000-jobs-due-strong-shekel-growth-ai-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Wix, AI와 비용 압박으로 1,000명 감원 — 디지털 제작 인력 구조 재편 신호&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 이스라엘 웹사이트 제작사 Wix.com이 AI 활용과 비용 압박을 이유로 약 1,000명 감원을 추진한다고 보도했다. 디지털 제작·운영 인력 구조가 AI 도입으로 재편되는 흐름을 보여준다.&quot;, &quot;pts&quot;: [&quot;웹·디지털 운영 외주에서 단순 제작·운영 인력 투입량 산정 방식 재검토 필요&quot;, &quot;AI 자동화 도구 사용 여부에 따라 용역 생산성과 적정 단가 기준이 달라짐&quot;, &quot;협력사 제안서에 AI 활용 범위·품질검수 역할·인력 산정 근거 제출 요구 필요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/world-at-work/israeli-website-creator-wixcom-cuts-1000-jobs-due-strong-shekel-growth-ai-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.28</div>
+      <div class="ic-head">Wix, AI와 비용 압박으로 1,000명 감원 — 디지털 제작 인력 구조 재편 신호</div>
+      <div class="ic-sum">Reuters는 이스라엘 웹사이트 제작사 Wix.com이 AI 활용과 비용 압박을 이유로 약 1,000명 감원을 추진한다고 보도했다. 디지털 제작·운영 인력 구조가 AI 도입으로 재편되는 흐름을 보여준다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">웹·디지털 운영 외주에서 단순 제작·운영 인력 투입량 산정 방식 재검토 필요</div><div class="ic-pt">AI 자동화 도구 사용 여부에 따라 용역 생산성과 적정 단가 기준이 달라짐</div><div class="ic-pt">협력사 제안서에 AI 활용 범위·품질검수 역할·인력 산정 근거 제출 요구 필요</div>
+      </div>
+      <span class="ic-tag">AI 인력재편</span>
+    </a><a class="ic" href="https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;삼성전자 노조, 잠정 임금합의 승인 — 반도체 공급 차질 리스크 완화&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 SK하이닉스 기사에서 삼성전자 국내 노조가 잠정 임금합의를 승인해 글로벌 칩 공급을 위협하던 파업 리스크를 피했다고 전했다. 반도체 인력·노무 이슈가 공급망 안정성과 직결됨을 보여준다.&quot;, &quot;pts&quot;: [&quot;반도체·IT 장비 공급망은 원재료뿐 아니라 핵심 제조인력 노무 리스크도 관리 대상&quot;, &quot;주요 부품 협력사 리스크 점검 시 임금협상·파업 가능성 모니터링 필요&quot;, &quot;장비 납기 리스크 평가에 제조사 노무 안정성 신호를 참고 지표로 추가&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.27</div>
+      <div class="ic-head">삼성전자 노조, 잠정 임금합의 승인 — 반도체 공급 차질 리스크 완화</div>
+      <div class="ic-sum">Reuters는 SK하이닉스 기사에서 삼성전자 국내 노조가 잠정 임금합의를 승인해 글로벌 칩 공급을 위협하던 파업 리스크를 피했다고 전했다. 반도체 인력·노무 이슈가 공급망 안정성과 직결됨을 보여준다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">반도체·IT 장비 공급망은 원재료뿐 아니라 핵심 제조인력 노무 리스크도 관리 대상</div><div class="ic-pt">주요 부품 협력사 리스크 점검 시 임금협상·파업 가능성 모니터링 필요</div><div class="ic-pt">장비 납기 리스크 평가에 제조사 노무 안정성 신호를 참고 지표로 추가</div>
+      </div>
+      <span class="ic-tag">반도체 노무리스크</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">👥</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">AI·AX 인력은 일반 개발 단가와 분리한 직무 밴드를 만들고, 협력사 제안서에 AI 활용 생산성·검수 역할을 명확히 요구</div></div></div>
+</div><!-- SLIDE 6: Auto -->
+<div class="slide cs" data-i="5">
+  <div class="sh">
+    <div class="sh-l"><div class="si">🚗</div><div><div class="stitle">한국 자동차</div><div class="ssub">HYUNDAI · KIA · EV/HYDROGEN</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ 넥쏘 720km</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ EV 안전</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ EV 정비역량</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-world-hydrogen-summit-2026" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;현대차그룹, 월드 하이드로젠 서밋 참가 — 디 올 뉴 넥쏘·수소 생태계 전시&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.21&quot;, &quot;sum&quot;: &quot;현대차그룹은 월드 하이드로젠 서밋 2026에서 HTWO 수소 사업과 디 올 뉴 넥쏘를 전시했다. 디 올 뉴 넥쏘는 1회 충전 최대 720km 수준과 유럽 판매 개시가 언급됐다.&quot;, &quot;pts&quot;: [&quot;법인 친환경차 검토에서 EV뿐 아니라 수소전기차·수소 인프라 동향도 병행 모니터링&quot;, &quot;장거리 운행·충전시간·충전 인프라 조건을 법인차 TCO 비교에 반영&quot;, &quot;수소차 도입은 차량 가격보다 인프라·정비·잔존가치 리스크 검토가 중요&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-world-hydrogen-summit-2026&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 현대자동차그룹 뉴스룸 · 원문 링크 확인&quot;})'>
+      <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.21</div>
+      <div class="ic-head">현대차그룹, 월드 하이드로젠 서밋 참가 — 디 올 뉴 넥쏘·수소 생태계 전시</div>
+      <div class="ic-sum">현대차그룹은 월드 하이드로젠 서밋 2026에서 HTWO 수소 사업과 디 올 뉴 넥쏘를 전시했다. 디 올 뉴 넥쏘는 1회 충전 최대 720km 수준과 유럽 판매 개시가 언급됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">법인 친환경차 검토에서 EV뿐 아니라 수소전기차·수소 인프라 동향도 병행 모니터링</div><div class="ic-pt">장거리 운행·충전시간·충전 인프라 조건을 법인차 TCO 비교에 반영</div><div class="ic-pt">수소차 도입은 차량 가격보다 인프라·정비·잔존가치 리스크 검토가 중요</div>
+      </div>
+      <span class="ic-tag">수소차·넥쏘</span>
+    </a><a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-hwaseong-safe-korea-2026-training" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;현대차그룹, 안전한국훈련 참가 — 무인 소방로봇 투입 시연&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.22&quot;, &quot;sum&quot;: &quot;현대차그룹은 화성시 2026 안전한국훈련에 참가해 건물 붕괴, 전기버스 화재, 유해화학물질 누출 등 복합재난 상황에서 무인 소방로봇을 활용하는 훈련을 진행했다.&quot;, &quot;pts&quot;: [&quot;전기차·배터리 화재 대응 장비가 사업장 안전·보험·시설 구매 항목으로 확대&quot;, &quot;전기버스·EV 운영 사업장은 소방로봇·열폭주 대응 장비 도입 검토 필요&quot;, &quot;모빌리티 구매 시 차량뿐 아니라 안전 인프라와 대응 프로세스를 함께 산정&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/hyundai-motor-group-hwaseong-safe-korea-2026-training&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 현대자동차그룹 뉴스룸 · 원문 링크 확인&quot;})'>
+      <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.22</div>
+      <div class="ic-head">현대차그룹, 안전한국훈련 참가 — 무인 소방로봇 투입 시연</div>
+      <div class="ic-sum">현대차그룹은 화성시 2026 안전한국훈련에 참가해 건물 붕괴, 전기버스 화재, 유해화학물질 누출 등 복합재난 상황에서 무인 소방로봇을 활용하는 훈련을 진행했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">전기차·배터리 화재 대응 장비가 사업장 안전·보험·시설 구매 항목으로 확대</div><div class="ic-pt">전기버스·EV 운영 사업장은 소방로봇·열폭주 대응 장비 도입 검토 필요</div><div class="ic-pt">모빌리티 구매 시 차량뿐 아니라 안전 인프라와 대응 프로세스를 함께 산정</div>
+      </div>
+      <span class="ic-tag">EV 안전 인프라</span>
+    </a><a class="ic" href="https://www.hyundaimotorgroup.com/ko/news/kia-skill-world-cup-12th" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;기아, 제12회 스킬 월드컵 성료 — EV 정비 평가 신규 도입&quot;, &quot;s&quot;: &quot;현대자동차그룹 뉴스룸 · 2026.05.22&quot;, &quot;sum&quot;: &quot;기아는 제12회 스킬 월드컵에서 40개국 42명의 대표 정비사가 참가했고, EV 관련 평가 항목을 신규 도입해 전동화 시대 정비 역량 강화를 목표로 했다고 밝혔다.&quot;, &quot;pts&quot;: [&quot;법인 EV 도입 시 차량 가격뿐 아니라 정비망·기술 인력 역량을 평가해야 함&quot;, &quot;EV 보급 확대에 따라 정비 SLA·부품 공급·교육체계가 구매 조건으로 중요&quot;, &quot;전동화 차량 운영비 산정 시 정비 품질과 사고 대응 역량을 반영&quot;], &quot;lnk&quot;: &quot;https://www.hyundaimotorgroup.com/ko/news/kia-skill-world-cup-12th&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 현대자동차그룹 뉴스룸 · 원문 링크 확인&quot;})'>
+      <div class="ic-src">현대자동차그룹 뉴스룸 · 2026.05.22</div>
+      <div class="ic-head">기아, 제12회 스킬 월드컵 성료 — EV 정비 평가 신규 도입</div>
+      <div class="ic-sum">기아는 제12회 스킬 월드컵에서 40개국 42명의 대표 정비사가 참가했고, EV 관련 평가 항목을 신규 도입해 전동화 시대 정비 역량 강화를 목표로 했다고 밝혔다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">법인 EV 도입 시 차량 가격뿐 아니라 정비망·기술 인력 역량을 평가해야 함</div><div class="ic-pt">EV 보급 확대에 따라 정비 SLA·부품 공급·교육체계가 구매 조건으로 중요</div><div class="ic-pt">전동화 차량 운영비 산정 시 정비 품질과 사고 대응 역량을 반영</div>
+      </div>
+      <span class="ic-tag">EV 정비역량</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">🚗</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">친환경 법인차는 차량 가격뿐 아니라 충전·수소 인프라, EV 화재 대응, 정비망 역량까지 TCO에 반영</div></div></div>
+</div><!-- SLIDE 7: Marketing -->
+<div class="slide cs" data-i="6">
+  <div class="sh">
+    <div class="sh-l"><div class="si">📣</div><div><div class="stitle">마케팅 AI</div><div class="ssub">AGENTIC SEARCH · AI ADS · BRAND TRUST</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ AI Agent</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ ChatGPT Ads</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ AI Branding</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Google 검색·Agentic AI 변화, 구매 여정이 브랜드 웹사이트를 우회할 가능성&quot;, &quot;s&quot;: &quot;Business Insider · 2026.05.27&quot;, &quot;sum&quot;: &quot;Business Insider는 Google의 AI 에이전트와 Universal Cart가 여행·식당·상품 구매 여정을 Google 생태계 내부에서 처리하게 만들 수 있으며, 브랜드는 AI가 추천할 만한 콘텐츠·크리에이티브를 구축해야 한다고 분석했다.&quot;, &quot;pts&quot;: [&quot;마케팅 구매 기준이 검색광고·SEO에서 AI 추천 최적화와 멀티미디어 신호 관리로 이동&quot;, &quot;대행사·솔루션 계약에 AEO/GEO, 영상·이미지 데이터 최적화 항목 반영 필요&quot;, &quot;브랜드 웹사이트 유입 감소 가능성에 대비해 AI 플랫폼 내 전환 지표를 관리해야 함&quot;], &quot;lnk&quot;: &quot;https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Business Insider · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Business Insider · 2026.05.27</div>
+      <div class="ic-head">Google 검색·Agentic AI 변화, 구매 여정이 브랜드 웹사이트를 우회할 가능성</div>
+      <div class="ic-sum">Business Insider는 Google의 AI 에이전트와 Universal Cart가 여행·식당·상품 구매 여정을 Google 생태계 내부에서 처리하게 만들 수 있으며, 브랜드는 AI가 추천할 만한 콘텐츠·크리에이티브를 구축해야 한다고 분석했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">마케팅 구매 기준이 검색광고·SEO에서 AI 추천 최적화와 멀티미디어 신호 관리로 이동</div><div class="ic-pt">대행사·솔루션 계약에 AEO/GEO, 영상·이미지 데이터 최적화 항목 반영 필요</div><div class="ic-pt">브랜드 웹사이트 유입 감소 가능성에 대비해 AI 플랫폼 내 전환 지표를 관리해야 함</div>
+      </div>
+      <span class="ic-tag">Agentic Marketing</span>
+    </a><a class="ic" href="https://www.businessinsider.com/chatgpt-ads-big-threat-google-openai-similarweb-search-keywords-conversations-2026-5" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;ChatGPT 광고 초기 데이터, Google 검색광고 위협 — 대화 의도 기반 타기팅 부상&quot;, &quot;s&quot;: &quot;Business Insider · 2026.05.27&quot;, &quot;sum&quot;: &quot;Business Insider는 Similarweb 데이터를 인용해 ChatGPT 광고가 키워드가 아니라 대화 맥락에서 형성되는 의도를 기반으로 작동하며, 광고 유발 쿼리의 상당수가 기존 Google Shopping 광고를 작동시키지 않았을 것이라고 보도했다.&quot;, &quot;pts&quot;: [&quot;광고 솔루션 구매 기준이 키워드 입찰에서 대화형 AI 인텐트 데이터로 확장&quot;, &quot;AI 광고 플랫폼은 CPM/CPC뿐 아니라 대화 지속률·후속 전환 품질을 함께 평가&quot;, &quot;브랜드 안전성·개인정보·광고 표시 투명성 조건을 계약 단계에서 점검 필요&quot;], &quot;lnk&quot;: &quot;https://www.businessinsider.com/chatgpt-ads-big-threat-google-openai-similarweb-search-keywords-conversations-2026-5&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Business Insider · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Business Insider · 2026.05.27</div>
+      <div class="ic-head">ChatGPT 광고 초기 데이터, Google 검색광고 위협 — 대화 의도 기반 타기팅 부상</div>
+      <div class="ic-sum">Business Insider는 Similarweb 데이터를 인용해 ChatGPT 광고가 키워드가 아니라 대화 맥락에서 형성되는 의도를 기반으로 작동하며, 광고 유발 쿼리의 상당수가 기존 Google Shopping 광고를 작동시키지 않았을 것이라고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">광고 솔루션 구매 기준이 키워드 입찰에서 대화형 AI 인텐트 데이터로 확장</div><div class="ic-pt">AI 광고 플랫폼은 CPM/CPC뿐 아니라 대화 지속률·후속 전환 품질을 함께 평가</div><div class="ic-pt">브랜드 안전성·개인정보·광고 표시 투명성 조건을 계약 단계에서 점검 필요</div>
+      </div>
+      <span class="ic-tag">ChatGPT Ads</span>
+    </a><a class="ic" href="https://www.businessinsider.com/how-to-solve-ai-brand-marketing-problem-2026-5" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;AI의 브랜딩 문제 — 신뢰·일자리·오정보 우려가 AI 마케팅 메시지의 핵심 변수&quot;, &quot;s&quot;: &quot;Business Insider · 2026.05.27&quot;, &quot;sum&quot;: &quot;Business Insider는 AI 산업이 일자리 대체, 오정보, 책임성 우려로 브랜딩 과제를 안고 있으며, 주요 마케터들이 실사용 가치·협업 이미지·문화적 신뢰 구축을 강조한다고 전했다.&quot;, &quot;pts&quot;: [&quot;AI 솔루션 도입 홍보는 기능 과시보다 이용자 신뢰·업무 보완 메시지가 중요&quot;, &quot;AI 서비스 RFP에 책임성·투명성·사용자 커뮤니케이션 지원 기능 포함 필요&quot;, &quot;마케팅 조직은 AI 성과뿐 아니라 고객 수용성·브랜드 리스크도 측정해야 함&quot;], &quot;lnk&quot;: &quot;https://www.businessinsider.com/how-to-solve-ai-brand-marketing-problem-2026-5&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Business Insider · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Business Insider · 2026.05.27</div>
+      <div class="ic-head">AI의 브랜딩 문제 — 신뢰·일자리·오정보 우려가 AI 마케팅 메시지의 핵심 변수</div>
+      <div class="ic-sum">Business Insider는 AI 산업이 일자리 대체, 오정보, 책임성 우려로 브랜딩 과제를 안고 있으며, 주요 마케터들이 실사용 가치·협업 이미지·문화적 신뢰 구축을 강조한다고 전했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 솔루션 도입 홍보는 기능 과시보다 이용자 신뢰·업무 보완 메시지가 중요</div><div class="ic-pt">AI 서비스 RFP에 책임성·투명성·사용자 커뮤니케이션 지원 기능 포함 필요</div><div class="ic-pt">마케팅 조직은 AI 성과뿐 아니라 고객 수용성·브랜드 리스크도 측정해야 함</div>
+      </div>
+      <span class="ic-tag">AI 브랜드 신뢰</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">📣</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">마케팅 AI 구매는 AEO/GEO, 대화형 광고, 브랜드 안전성, 멀티미디어 신호 최적화 역량을 핵심 평가 항목으로 전환</div></div></div>
+</div><!-- SLIDE 8: PC -->
+<div class="slide cs" data-i="7">
+  <div class="sh">
+    <div class="sh-l"><div class="si">💾</div><div><div class="stitle">PC/랩탑</div><div class="ssub">ARM LAPTOP · DRAM/SSD · CORPORATE PC</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ $300 ARM PC</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ DRAM·SSD 상승</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ PC 공급망</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.theverge.com/tech/938665/qualcomm-promises-300-windows-laptops-with-new-snapdragon-c" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Qualcomm, Snapdragon C로 $300 Windows 노트북 예고 — RAM 가격 상승 속 저가 ARM 대안&quot;, &quot;s&quot;: &quot;The Verge · 2026.05.28&quot;, &quot;sum&quot;: &quot;The Verge는 Qualcomm이 Snapdragon C 플랫폼을 통해 올해 $300 수준의 Windows 노트북을 목표로 한다고 보도했다. RAM 가격 상승과 PC 가격 상승 속에서 저가 ARM 기반 대안이 부상하고 있다.&quot;, &quot;pts&quot;: [&quot;법인 표준 노트북 구매에서 x86 단일 구조가 ARM 저가형 옵션으로 일부 분산 가능&quot;, &quot;저가형 ARM 노트북은 성능·호환성·보안 SW 지원성 검증 후 제한 도입 필요&quot;, &quot;메모리 가격 상승기에 예산형 단말 라인업 확보가 비용 방어 수단이 될 수 있음&quot;], &quot;lnk&quot;: &quot;https://www.theverge.com/tech/938665/qualcomm-promises-300-windows-laptops-with-new-snapdragon-c&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 The Verge · 원문 링크 확인&quot;})'>
+      <div class="ic-src">The Verge · 2026.05.28</div>
+      <div class="ic-head">Qualcomm, Snapdragon C로 $300 Windows 노트북 예고 — RAM 가격 상승 속 저가 ARM 대안</div>
+      <div class="ic-sum">The Verge는 Qualcomm이 Snapdragon C 플랫폼을 통해 올해 $300 수준의 Windows 노트북을 목표로 한다고 보도했다. RAM 가격 상승과 PC 가격 상승 속에서 저가 ARM 기반 대안이 부상하고 있다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">법인 표준 노트북 구매에서 x86 단일 구조가 ARM 저가형 옵션으로 일부 분산 가능</div><div class="ic-pt">저가형 ARM 노트북은 성능·호환성·보안 SW 지원성 검증 후 제한 도입 필요</div><div class="ic-pt">메모리 가격 상승기에 예산형 단말 라인업 확보가 비용 방어 수단이 될 수 있음</div>
+      </div>
+      <span class="ic-tag">ARM 노트북</span>
+    </a><a class="ic" href="https://www.pcgamer.com/hardware/memory/team-group-ceo-warns-that-dram-and-ssd-prices-will-still-rise-if-you-need-memory-we-recommend-purchasing-it-as-soon-as-possible/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Team Group CEO, DRAM·SSD 가격 추가 상승 경고 — 서버 제품 분기별 30% 인상 언급&quot;, &quot;s&quot;: &quot;PC Gamer · 2026.05.27&quot;, &quot;sum&quot;: &quot;PC Gamer는 Team Group CEO 인터뷰를 인용해 AI 관련 수요가 메모리 시장 공급의 40~50%를 차지하고, DRAM·NAND 부족이 2028년까지 지속될 수 있으며 서버 제품 가격이 분기별 30% 상승 중이라고 보도했다.&quot;, &quot;pts&quot;: [&quot;법인 PC·노트북 옵션 중 RAM·SSD 증설 비용이 빠르게 변동할 가능성&quot;, &quot;표준 사양을 RAM·SSD 최소/권장/고성능 3단계로 재정의해 예산 통제 필요&quot;, &quot;단가계약에는 메모리 가격 변동 조항과 분할 발주 옵션을 포함해야 함&quot;], &quot;lnk&quot;: &quot;https://www.pcgamer.com/hardware/memory/team-group-ceo-warns-that-dram-and-ssd-prices-will-still-rise-if-you-need-memory-we-recommend-purchasing-it-as-soon-as-possible/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 PC Gamer · 원문 링크 확인&quot;})'>
+      <div class="ic-src">PC Gamer · 2026.05.27</div>
+      <div class="ic-head">Team Group CEO, DRAM·SSD 가격 추가 상승 경고 — 서버 제품 분기별 30% 인상 언급</div>
+      <div class="ic-sum">PC Gamer는 Team Group CEO 인터뷰를 인용해 AI 관련 수요가 메모리 시장 공급의 40~50%를 차지하고, DRAM·NAND 부족이 2028년까지 지속될 수 있으며 서버 제품 가격이 분기별 30% 상승 중이라고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">법인 PC·노트북 옵션 중 RAM·SSD 증설 비용이 빠르게 변동할 가능성</div><div class="ic-pt">표준 사양을 RAM·SSD 최소/권장/고성능 3단계로 재정의해 예산 통제 필요</div><div class="ic-pt">단가계약에는 메모리 가격 변동 조항과 분할 발주 옵션을 포함해야 함</div>
+      </div>
+      <span class="ic-tag">DRAM·SSD 가격</span>
+    </a><a class="ic" href="https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Dell Client Solutions 매출 17% 증가 — PC 부문도 AI 서버 공급망 영향권&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 Dell의 AI 서버 실적과 함께 PC를 포함한 Client Solutions Group 매출도 17% 증가했다고 보도했다. 같은 기사에서 메모리 위기와 공급망 조정, 가격 인상도 언급됐다.&quot;, &quot;pts&quot;: [&quot;PC 구매도 서버 메모리 쇼티지와 동일한 부품 원가 압박을 받을 수 있음&quot;, &quot;대량 PC 발주 전 메모리·SSD 옵션별 가격 유효기간을 확인해야 함&quot;, &quot;단말 구매는 연 1회 일괄보다 시장가격 반영형 분할 조달 검토 필요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.28</div>
+      <div class="ic-head">Dell Client Solutions 매출 17% 증가 — PC 부문도 AI 서버 공급망 영향권</div>
+      <div class="ic-sum">Reuters는 Dell의 AI 서버 실적과 함께 PC를 포함한 Client Solutions Group 매출도 17% 증가했다고 보도했다. 같은 기사에서 메모리 위기와 공급망 조정, 가격 인상도 언급됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">PC 구매도 서버 메모리 쇼티지와 동일한 부품 원가 압박을 받을 수 있음</div><div class="ic-pt">대량 PC 발주 전 메모리·SSD 옵션별 가격 유효기간을 확인해야 함</div><div class="ic-pt">단말 구매는 연 1회 일괄보다 시장가격 반영형 분할 조달 검토 필요</div>
+      </div>
+      <span class="ic-tag">PC 공급망</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">💾</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">법인 PC·노트북은 메모리·SSD 가격 변동과 ARM 대안 호환성을 함께 검토하고, 분산 조달·표준 사양 재정의를 추진</div></div></div>
+</div><!-- SLIDE 9: Research -->
+<div class="slide cs" data-i="8">
+  <div class="sh">
+    <div class="sh-l"><div class="si">📊</div><div><div class="stitle">고객 조사</div><div class="ssub">MARKET RESEARCH · AI SERVICE SURVEY</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ 공정위 AI 조사</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ GfK 구매의향</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ NIM/GfK 심리</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://news.einfomax.co.kr/news/articleView.html?idxno=4416151" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;공정위, AI 서비스 시장 실태조사 실시 — 국내외 주요 AI 사업자 거래·경쟁 현황 점검&quot;, &quot;s&quot;: &quot;연합인포맥스 · 2026.05.21&quot;, &quot;sum&quot;: &quot;연합인포맥스는 공정거래위원회가 국내 AI 서비스 시장에 참여하는 국내외 주요 사업자를 대상으로 시장 실태조사를 시작했다고 보도했다. 거래 실태와 경쟁 현황, 허위·과장 광고 우려가 점검 대상이다.&quot;, &quot;pts&quot;: [&quot;AI 서비스·시장조사 용역 구매 시 데이터 사용, 광고 표현, 경쟁 제한 리스크 검토 필요&quot;, &quot;AI 솔루션 도입 전 시장지배력·전환비용·락인 가능성을 비교 평가해야 함&quot;, &quot;시장분석 용역에 규제·공정거래 리스크 분석을 포함할 필요&quot;], &quot;lnk&quot;: &quot;https://news.einfomax.co.kr/news/articleView.html?idxno=4416151&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 연합인포맥스 · 원문 링크 확인&quot;})'>
+      <div class="ic-src">연합인포맥스 · 2026.05.21</div>
+      <div class="ic-head">공정위, AI 서비스 시장 실태조사 실시 — 국내외 주요 AI 사업자 거래·경쟁 현황 점검</div>
+      <div class="ic-sum">연합인포맥스는 공정거래위원회가 국내 AI 서비스 시장에 참여하는 국내외 주요 사업자를 대상으로 시장 실태조사를 시작했다고 보도했다. 거래 실태와 경쟁 현황, 허위·과장 광고 우려가 점검 대상이다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 서비스·시장조사 용역 구매 시 데이터 사용, 광고 표현, 경쟁 제한 리스크 검토 필요</div><div class="ic-pt">AI 솔루션 도입 전 시장지배력·전환비용·락인 가능성을 비교 평가해야 함</div><div class="ic-pt">시장분석 용역에 규제·공정거래 리스크 분석을 포함할 필요</div>
+      </div>
+      <span class="ic-tag">AI 시장조사</span>
+    </a><a class="ic" href="https://www.reuters.com/world/uk/britons-hold-their-nerve-turn-warier-about-big-spending-plans-gfk-says-2026-05-21/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;영국 GfK 소비자조사, 대형 구매 의향 2025년 1월 이후 최저&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.21&quot;, &quot;sum&quot;: &quot;Reuters는 GfK 조사에서 영국 소비자 신뢰지수가 소폭 개선됐지만, 대형 구매 의향은 2025년 1월 이후 최저 수준으로 하락했다고 보도했다. 생활비 압박과 불확실성이 구매 심리를 제약한다는 해석이다.&quot;, &quot;pts&quot;: [&quot;시장분석 용역은 총지수보다 실제 구매 의향·고가상품 지표를 별도 추적해야 함&quot;, &quot;고객조사 결과를 가격 정책·프로모션·법인 수요 예측에 연결하는 분석 설계 필요&quot;, &quot;거시 불확실성 구간에서는 정성조사와 행동데이터를 결합해야 예측력이 향상&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/world/uk/britons-hold-their-nerve-turn-warier-about-big-spending-plans-gfk-says-2026-05-21/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.21</div>
+      <div class="ic-head">영국 GfK 소비자조사, 대형 구매 의향 2025년 1월 이후 최저</div>
+      <div class="ic-sum">Reuters는 GfK 조사에서 영국 소비자 신뢰지수가 소폭 개선됐지만, 대형 구매 의향은 2025년 1월 이후 최저 수준으로 하락했다고 보도했다. 생활비 압박과 불확실성이 구매 심리를 제약한다는 해석이다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">시장분석 용역은 총지수보다 실제 구매 의향·고가상품 지표를 별도 추적해야 함</div><div class="ic-pt">고객조사 결과를 가격 정책·프로모션·법인 수요 예측에 연결하는 분석 설계 필요</div><div class="ic-pt">거시 불확실성 구간에서는 정성조사와 행동데이터를 결합해야 예측력이 향상</div>
+      </div>
+      <span class="ic-tag">소비자조사</span>
+    </a><a class="ic" href="https://www.reuters.com/business/german-consumer-sentiment-recovers-heading-into-june-survey-finds-2026-05-22/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;독일 NIM/GfK 소비자심리 회복 — 구매 의향은 여전히 부진&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.22&quot;, &quot;sum&quot;: &quot;Reuters는 독일 소비자심리가 6월을 앞두고 개선됐지만 구매 의향은 여전히 낮고 저축 성향이 높다고 보도했다. 수입 기대 개선과 실제 소비 전환 사이의 괴리가 확인됐다.&quot;, &quot;pts&quot;: [&quot;시장분석에서는 심리지수 개선을 즉시 매출 개선으로 해석하지 않도록 주의&quot;, &quot;고객조사 용역에는 구매 전환·저축 성향·가격 민감도 분리 분석 필요&quot;, &quot;AI 기반 시장예측 모델도 지표 간 괴리를 반영하는 설명가능성이 중요&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/german-consumer-sentiment-recovers-heading-into-june-survey-finds-2026-05-22/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.22 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.22</div>
+      <div class="ic-head">독일 NIM/GfK 소비자심리 회복 — 구매 의향은 여전히 부진</div>
+      <div class="ic-sum">Reuters는 독일 소비자심리가 6월을 앞두고 개선됐지만 구매 의향은 여전히 낮고 저축 성향이 높다고 보도했다. 수입 기대 개선과 실제 소비 전환 사이의 괴리가 확인됐다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">시장분석에서는 심리지수 개선을 즉시 매출 개선으로 해석하지 않도록 주의</div><div class="ic-pt">고객조사 용역에는 구매 전환·저축 성향·가격 민감도 분리 분석 필요</div><div class="ic-pt">AI 기반 시장예측 모델도 지표 간 괴리를 반영하는 설명가능성이 중요</div>
+      </div>
+      <span class="ic-tag">시장심리 분석</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">📊</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">시장조사 용역은 AI 서비스 규제, 소비자 구매 의향, 행동 데이터와 정성조사를 결합하는 방식으로 과업 범위를 재정의</div></div></div>
+</div><!-- SLIDE 10: VideoDesign -->
+<div class="slide cs" data-i="9">
+  <div class="sh">
+    <div class="sh-l"><div class="si">🎨</div><div><div class="stitle">영상 제작 &amp; 그래픽 디자인</div><div class="ssub">VIDEO AI · DESIGN AI · MULTIMODAL</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ Google Omni</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ YouTube AI</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ 멀티모달 신호</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Google Omni, Flow에서 “anything-to-anything” 영상 생성·편집 — 딥페이크 수준 현실화&quot;, &quot;s&quot;: &quot;The Verge · 2026.05.23&quot;, &quot;sum&quot;: &quot;The Verge는 Google의 Omni Flash가 Flow에서 사진·영상·텍스트 기반 영상 생성·편집을 지원하며, 짧은 프롬프트로 현실감 있는 결과물을 만들 수 있다고 평가했다. 동시에 딥페이크·콘텐츠 신뢰 리스크도 지적했다.&quot;, &quot;pts&quot;: [&quot;영상 제작 외주·툴 구매 기준이 생성 품질뿐 아니라 워터마크·권리·검수 기능으로 확대&quot;, &quot;단순 편집·합성 작업은 AI 대체 가능성이 커져 제작비 구조 재산정 필요&quot;, &quot;브랜드 영상 제작 시 AI 사용 고지·저작권·초상권 검수 프로세스 필요&quot;], &quot;lnk&quot;: &quot;https://www.theverge.com/tech/936507/gemini-omni-hands-on-deepfake-ai-video&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.23 · 출처 The Verge · 원문 링크 확인&quot;})'>
+      <div class="ic-src">The Verge · 2026.05.23</div>
+      <div class="ic-head">Google Omni, Flow에서 “anything-to-anything” 영상 생성·편집 — 딥페이크 수준 현실화</div>
+      <div class="ic-sum">The Verge는 Google의 Omni Flash가 Flow에서 사진·영상·텍스트 기반 영상 생성·편집을 지원하며, 짧은 프롬프트로 현실감 있는 결과물을 만들 수 있다고 평가했다. 동시에 딥페이크·콘텐츠 신뢰 리스크도 지적했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">영상 제작 외주·툴 구매 기준이 생성 품질뿐 아니라 워터마크·권리·검수 기능으로 확대</div><div class="ic-pt">단순 편집·합성 작업은 AI 대체 가능성이 커져 제작비 구조 재산정 필요</div><div class="ic-pt">브랜드 영상 제작 시 AI 사용 고지·저작권·초상권 검수 프로세스 필요</div>
+      </div>
+      <span class="ic-tag">Omni·Flow</span>
+    </a><a class="ic" href="https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Sundar Pichai, YouTube 영상 기반 AI 검색·요약 변화 언급 — 비디오가 AI 검색 자산으로 전환&quot;, &quot;s&quot;: &quot;The Verge · 2026.05.26&quot;, &quot;sum&quot;: &quot;The Verge 인터뷰는 Google이 YouTube 영상을 모델 학습과 검색·요약 경험에 활용하고, 사용자가 영상의 관련 부분으로 더 직접 이동하는 방향을 다뤘다.&quot;, &quot;pts&quot;: [&quot;영상 콘텐츠는 광고 소재를 넘어 AI 검색·추천을 위한 구조화 데이터 자산으로 변화&quot;, &quot;영상 제작 용역에는 챕터링·메타데이터·스크립트·검색 최적화 납품 조건 포함 필요&quot;, &quot;브랜드 영상 자산 관리와 AI 검색 노출 전략을 함께 설계해야 함&quot;], &quot;lnk&quot;: &quot;https://www.theverge.com/podcast/936445/sundar-pichai-ai-search-google-zero-youtube-web&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.26 · 출처 The Verge · 원문 링크 확인&quot;})'>
+      <div class="ic-src">The Verge · 2026.05.26</div>
+      <div class="ic-head">Sundar Pichai, YouTube 영상 기반 AI 검색·요약 변화 언급 — 비디오가 AI 검색 자산으로 전환</div>
+      <div class="ic-sum">The Verge 인터뷰는 Google이 YouTube 영상을 모델 학습과 검색·요약 경험에 활용하고, 사용자가 영상의 관련 부분으로 더 직접 이동하는 방향을 다뤘다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">영상 콘텐츠는 광고 소재를 넘어 AI 검색·추천을 위한 구조화 데이터 자산으로 변화</div><div class="ic-pt">영상 제작 용역에는 챕터링·메타데이터·스크립트·검색 최적화 납품 조건 포함 필요</div><div class="ic-pt">브랜드 영상 자산 관리와 AI 검색 노출 전략을 함께 설계해야 함</div>
+      </div>
+      <span class="ic-tag">YouTube AI 검색</span>
+    </a><a class="ic" href="https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;AI 추천에서 영상·이미지·오디오 신호 중요도 상승 — 마케팅 크리에이티브 제작 기준 변화&quot;, &quot;s&quot;: &quot;Business Insider · 2026.05.27&quot;, &quot;sum&quot;: &quot;Business Insider는 Google AI 에이전트·검색 변화 속에서 AI 모델이 브랜드 추천을 판단할 때 영상·이미지·오디오를 중요한 신호로 활용하고 있으며, 특히 영상이 과소평가된 신호라고 전했다.&quot;, &quot;pts&quot;: [&quot;크리에이티브 제작물은 사람이 보는 광고물에서 AI가 해석하는 추천 신호로 확장&quot;, &quot;영상·이미지 제작 RFP에 AI 검색 노출을 위한 구조화·메타데이터 요구 필요&quot;, &quot;디자인·영상 협력사는 생성물 품질뿐 아니라 AI 최적화 역량으로 평가해야 함&quot;], &quot;lnk&quot;: &quot;https://www.businessinsider.com/google-search-agentic-ai-updates-matter-to-marketers-2026-5&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Business Insider · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Business Insider · 2026.05.27</div>
+      <div class="ic-head">AI 추천에서 영상·이미지·오디오 신호 중요도 상승 — 마케팅 크리에이티브 제작 기준 변화</div>
+      <div class="ic-sum">Business Insider는 Google AI 에이전트·검색 변화 속에서 AI 모델이 브랜드 추천을 판단할 때 영상·이미지·오디오를 중요한 신호로 활용하고 있으며, 특히 영상이 과소평가된 신호라고 전했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">크리에이티브 제작물은 사람이 보는 광고물에서 AI가 해석하는 추천 신호로 확장</div><div class="ic-pt">영상·이미지 제작 RFP에 AI 검색 노출을 위한 구조화·메타데이터 요구 필요</div><div class="ic-pt">디자인·영상 협력사는 생성물 품질뿐 아니라 AI 최적화 역량으로 평가해야 함</div>
+      </div>
+      <span class="ic-tag">멀티모달 신호</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">🎨</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">영상·디자인 AI 도입 시 생성 품질, 저작권, 초상권, 워터마크, AI 검색 최적화 메타데이터까지 납품 조건으로 포함</div></div></div>
+</div><!-- SLIDE 11: AI -->
+<div class="slide cs" data-i="10">
+  <div class="sh">
+    <div class="sh-l"><div class="si">🤖</div><div><div class="stitle">AI Ecosystem</div><div class="ssub">GPU · MEMORY · AI INFRA</div></div></div>
+  </div>
+  <div class="pills"><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv b">■ AMD $10B</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv r">■ AI Memory</div></div><div class="pill"><div class="pl">KEY SIGNAL</div><div class="pv g">■ AI DC $700B+</div></div></div>
+  <div class="igrid">
+    <a class="ic" href="https://www.reuters.com/world/asia-pacific/amd-says-it-will-invest-over-10-billion-across-taiwans-ai-ecosystem-2026-05-21/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;AMD, 대만 AI 생태계에 $10B 이상 투자 — Nvidia 독주 견제하는 랙스케일 AI 전략&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.21&quot;, &quot;sum&quot;: &quot;Reuters는 AMD가 대만 AI 생태계에 $10B 이상 투자하고, ASE·SPIL·Wiwynn·Wistron·Inventec 등과 협력해 전력 효율형 AI 시스템과 랙스케일 인프라를 추진한다고 보도했다.&quot;, &quot;pts&quot;: [&quot;AI 인프라 공급망이 Nvidia 단일 구조에서 AMD·대만 ODM 생태계로 다변화&quot;, &quot;GPU 서버 조달 시 NVIDIA 외 대안 벤더 로드맵과 ODM 협력 구조를 병행 모니터링&quot;, &quot;전력효율·랙스케일 통합 설계가 AI 서버 평가 기준으로 중요해짐&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/world/asia-pacific/amd-says-it-will-invest-over-10-billion-across-taiwans-ai-ecosystem-2026-05-21/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.21 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.21</div>
+      <div class="ic-head">AMD, 대만 AI 생태계에 $10B 이상 투자 — Nvidia 독주 견제하는 랙스케일 AI 전략</div>
+      <div class="ic-sum">Reuters는 AMD가 대만 AI 생태계에 $10B 이상 투자하고, ASE·SPIL·Wiwynn·Wistron·Inventec 등과 협력해 전력 효율형 AI 시스템과 랙스케일 인프라를 추진한다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 인프라 공급망이 Nvidia 단일 구조에서 AMD·대만 ODM 생태계로 다변화</div><div class="ic-pt">GPU 서버 조달 시 NVIDIA 외 대안 벤더 로드맵과 ODM 협력 구조를 병행 모니터링</div><div class="ic-pt">전력효율·랙스케일 통합 설계가 AI 서버 평가 기준으로 중요해짐</div>
+      </div>
+      <span class="ic-tag">AMD AI 투자</span>
+    </a><a class="ic" href="https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;SK하이닉스·삼성·Micron, AI 메모리 붐으로 $1T 클럽 — 공급 부족 2028년까지 지속 전망&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.27&quot;, &quot;sum&quot;: &quot;Reuters는 고성능 AI 메모리 수요가 가격 상승과 공급 부족을 유발하고 있으며, 메모리 칩 수요가 2028년까지 공급을 초과할 것이라는 분석을 전했다.&quot;, &quot;pts&quot;: [&quot;AI 학습·추론 인프라의 병목이 GPU뿐 아니라 HBM·DRAM·NAND 전반으로 확장&quot;, &quot;AI 서버 견적 검토 시 GPU 단가와 메모리 프리미엄을 분리 관리해야 함&quot;, &quot;메모리 확보력이 벤더 납기와 가격 경쟁력의 핵심 차별화 요소로 부상&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/world/asia-pacific/sk-hynix-market-capitalisation-tops-1-trln-2026-05-27/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.27 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.27</div>
+      <div class="ic-head">SK하이닉스·삼성·Micron, AI 메모리 붐으로 $1T 클럽 — 공급 부족 2028년까지 지속 전망</div>
+      <div class="ic-sum">Reuters는 고성능 AI 메모리 수요가 가격 상승과 공급 부족을 유발하고 있으며, 메모리 칩 수요가 2028년까지 공급을 초과할 것이라는 분석을 전했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 학습·추론 인프라의 병목이 GPU뿐 아니라 HBM·DRAM·NAND 전반으로 확장</div><div class="ic-pt">AI 서버 견적 검토 시 GPU 단가와 메모리 프리미엄을 분리 관리해야 함</div><div class="ic-pt">메모리 확보력이 벤더 납기와 가격 경쟁력의 핵심 차별화 요소로 부상</div>
+      </div>
+      <span class="ic-tag">AI 메모리</span>
+    </a><a class="ic" href="https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/" target="_blank" rel="noopener" onclick='om(event,{&quot;t&quot;: &quot;Dell, AI 데이터센터 수요로 연간 전망 상향 — 빅테크 AI 인프라 지출 $700B+ 환경&quot;, &quot;s&quot;: &quot;Reuters · 2026.05.28&quot;, &quot;sum&quot;: &quot;Reuters는 Alphabet·Amazon 등 미국 빅테크가 올해 AI 인프라에 7,000억 달러 이상을 지출할 계획이며, 이는 Dell·Supermicro 등 서버·데이터센터 장비 수요를 끌어올린다고 보도했다.&quot;, &quot;pts&quot;: [&quot;AI 인프라 장비는 단기 구매가 아니라 글로벌 캐파 경쟁에 편입된 전략 품목&quot;, &quot;국내 AI 서버 발주는 빅테크 선점 수요와 납기 경쟁을 감안해 조기 계획 필요&quot;, &quot;클라우드·온프레미스 TCO 비교 시 장비 가격뿐 아니라 확보 가능성도 반영&quot;], &quot;lnk&quot;: &quot;https://www.reuters.com/business/dell-raises-annual-forecasts-ai-data-center-buildout-fuels-demand-2026-05-28/&quot;, &quot;d&quot;: &quot;검증 기준: 게시/송고일 2026.05.28 · 출처 Reuters · 원문 링크 확인&quot;})'>
+      <div class="ic-src">Reuters · 2026.05.28</div>
+      <div class="ic-head">Dell, AI 데이터센터 수요로 연간 전망 상향 — 빅테크 AI 인프라 지출 $700B+ 환경</div>
+      <div class="ic-sum">Reuters는 Alphabet·Amazon 등 미국 빅테크가 올해 AI 인프라에 7,000억 달러 이상을 지출할 계획이며, 이는 Dell·Supermicro 등 서버·데이터센터 장비 수요를 끌어올린다고 보도했다.</div>
+      <div class="ic-pts">
+        <div class="ic-pt">AI 인프라 장비는 단기 구매가 아니라 글로벌 캐파 경쟁에 편입된 전략 품목</div><div class="ic-pt">국내 AI 서버 발주는 빅테크 선점 수요와 납기 경쟁을 감안해 조기 계획 필요</div><div class="ic-pt">클라우드·온프레미스 TCO 비교 시 장비 가격뿐 아니라 확보 가능성도 반영</div>
+      </div>
+      <span class="ic-tag">AI DC 투자</span>
+    </a>
+  </div>
+  <div class="abar"><div class="aicon">🤖</div><div><div class="albl">STRATEGIC PROCUREMENT ACTION</div><div class="atxt">AI 인프라 전략은 GPU 단가뿐 아니라 메모리 확보력, ODM 생태계, 전력효율, 글로벌 빅테크 캐파 선점 리스크를 반영</div></div></div>
+</div>
+</div>
+<script>
+const TOT=11; let cur=0; let anim=false;
+const slides=document.querySelectorAll('.slide'); const dots=document.querySelectorAll('.dot');
+const pbar=document.getElementById('pbar'); const cp=document.getElementById('cp');
+const ap=document.getElementById('ap'); const an=document.getElementById('an'); const hint=document.getElementById('hint');
+setTimeout(()=>{hint.style.opacity='0'},4500);
+function ui(){ pbar.style.width=((cur+1)/TOT*100)+'%'; cp.textContent=cur+1; dots.forEach((d,i)=>d.classList.toggle('on',i===cur)); ap.classList.toggle('hide',cur===0); an.classList.toggle('hide',cur===TOT-1); }
+function go(n){ if(anim||n<0||n>=TOT||n===cur)return; anim=true; const dir=n>cur?'xl':'xr'; const prev=cur; slides[prev].classList.remove('on'); slides[prev].classList.add(dir); slides[n].style.transform=n>cur?'translateX(60px)':'translateX(-60px)'; slides[n].style.opacity='0'; slides[n].classList.remove('xl','xr'); slides[n].offsetHeight; slides[n].style.transform=''; slides[n].style.opacity=''; slides[n].classList.add('on'); cur=n; ui(); setTimeout(()=>{slides[prev].classList.remove('xl','xr');anim=false;},460); }
+document.addEventListener('keydown',e=>{ if(document.getElementById('modal').classList.contains('open')){if(e.key==='Escape')cmb();return;} if(e.key==='ArrowRight'||e.key==='ArrowDown')go(cur+1); else if(e.key==='ArrowLeft'||e.key==='ArrowUp')go(cur-1); else if(e.key==='f'||e.key==='F')toggleFS(); });
+let tx=0; document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;}); document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)dx<0?go(cur+1):go(cur-1);});
+function toggleFS(){!document.fullscreenElement?document.documentElement.requestFullscreen?.():document.exitFullscreen?.();}
+function om(e,d){ e.preventDefault(); document.getElementById('mt').textContent=d.t; document.getElementById('ms').textContent=d.s; document.getElementById('msu').textContent=d.sum; const el=document.getElementById('mpt'); el.innerHTML=''; d.pts.forEach(p=>{const v=document.createElement('div');v.className='mpt';v.textContent='▸ '+p;el.appendChild(v);}); document.getElementById('ml').href=d.lnk; document.getElementById('mdt').textContent=d.d; document.getElementById('modal').classList.add('open'); }
+function cmo(e){if(e.target.id==='modal')document.getElementById('modal').classList.remove('open');} function cmb(){document.getElementById('modal').classList.remove('open');} ui();
+</script>
+</body>
+</html>
