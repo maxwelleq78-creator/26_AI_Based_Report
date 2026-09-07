@@ -1,0 +1,12 @@
+:root{--bg:#09090b;--card:#151518;--line:#303036;--fg:#f7f7f8;--muted:#a1a1aa;--red:#df002b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;line-height:1.55}
+.app{max-width:760px;margin:auto;padding:calc(22px + env(safe-area-inset-top)) 16px calc(42px + env(safe-area-inset-bottom))}
+.hero{padding:8px 2px 16px}.pill{display:inline-block;background:var(--red);padding:6px 9px;border-radius:99px;font-size:12px;font-weight:800;letter-spacing:.08em}
+h1{margin:12px 0 4px;font-size:32px}.hero p,footer{color:var(--muted)}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.status>div:first-child{display:flex;justify-content:space-between}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}small{display:block;color:var(--muted);font-size:12px}
+.now{border-color:#55202c;background:linear-gradient(180deg,#211015,#151518)}.now h2{margin:4px 0 8px}.now p{margin:0}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:9px}.buttons .primary{grid-column:1/-1}
+button,select{font:inherit}button{border:1px solid var(--line);background:#222228;color:#fff;border-radius:12px;padding:13px 10px;font-weight:750}.primary{background:var(--red);border-color:var(--red);font-size:17px}
+label{display:block;color:var(--muted);font-size:13px;margin:10px 0}select{display:block;width:100%;margin-top:5px;background:#222228;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}
+li{margin:7px 0}.played{color:#707079;text-decoration:line-through}.next{font-weight:800}.badge{font-size:10px;border:1px solid #55555d;border-radius:6px;padding:2px 5px;margin-left:5px;color:#bbb}
+.info p,.info li{color:#d7d7dc}footer{font-size:11px;padding:14px 3px}@media(max-width:430px){h1{font-size:28px}}
