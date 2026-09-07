@@ -1,12 +1,19 @@
 {
-  "name":"Barcelona Bus Turístic 한국어 GPS Guide",
-  "short_name":"BCN GPS Guide",
-  "description":"Barcelona Bus Turístic Red Route용 한국어 GPS 자동 오디오가이드",
-  "start_url":"./index.html",
-  "scope":"./",
-  "display":"standalone",
-  "background_color":"#09090b",
-  "theme_color":"#b4001e",
-  "lang":"ko-KR",
-  "icons":[{"src":"./icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}]
+  "name": "v1.0 Barcelona GPS Guide",
+  "short_name": "v1.0 BCN Guide",
+  "description": "Barcelona Bus Turístic Red Route용 한국어 GPS 자동 오디오가이드",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#b4001e",
+  "lang": "ko-KR",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
