@@ -46,3 +46,25 @@ footer{text-align:center;color:#66727d;font-size:10px;padding:20px 4px 0}
   .hero h1{font-size:17px}.map-shell #map{height:226px}.now-playing{grid-template-columns:70px minmax(0,1fr)}.place-thumb{width:70px;height:96px;min-height:96px}
   .now-main h2{font-size:16px}.now-main p{font-size:10px}.route-status b{font-size:10.5px}
 }
+
+/* v1.3.2 visual QA against actual Galaxy capture and target mockup */
+.leaflet-tile-pane{filter:brightness(.58) saturate(.72) contrast(.92) hue-rotate(170deg)}
+.landmark{color:#dfe5ea;font-size:10px;font-weight:800;text-shadow:0 1px 3px #000;background:#111820b8;border:1px solid #ffffff14;padding:2px 5px;border-radius:6px;white-space:nowrap}
+.landmark.active{color:#fff;border-color:#f23845;background:#171b21e8}
+@media(max-width:719px){
+  .map-shell #map{height:278px}
+  .route-status{margin-top:6px;padding:3px 10px}
+  .route-status>div{padding:4px 0;grid-template-columns:22px 64px minmax(0,1fr)}
+  .route-status em{font-size:10.5px}.route-status b{font-size:11px;line-height:1.2}
+  .now-playing{grid-template-columns:96px minmax(0,1fr);padding:8px;gap:9px}
+  .place-thumb{width:96px;height:128px;min-height:128px;object-fit:cover;border-radius:9px;background:#26313a}
+  .now-main h2{font-size:18px;margin:2px 0 4px}
+  .now-main p{font-size:10.5px;line-height:1.43;margin:5px 0 0;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+  .start-btn{padding:9px 8px;font-size:15px}
+  .transport-controls button{padding:7px 4px}
+  .below-grid{margin-top:10px}
+  .below-grid>.status-mini{display:grid;grid-template-columns:repeat(4,1fr)}
+  .below-grid>.status-mini>div{padding:7px 6px}
+  .below-grid>.status-mini small{font-size:8px}.below-grid>.status-mini b{font-size:10px}
+}
+@media(min-width:720px){.below-grid>.status-mini{grid-column:1/-1}}
