@@ -27,7 +27,7 @@ const S=[
 ];
 
 const $=id=>document.getElementById(id);
-let running=false,paused=false,watchId=null,current=1,lastPassed=1,lastNarrated=1,played=new Set(),lastPos=null,wakeLock=null;
+let running=false,paused=false,watchId=null,current=1,lastPassed=1,lastNarrated=1,played=new Set(),lastPos=null,wakeLock=null,previewMode=true;
 let map,userMarker,currentMarker,nextMarker,hotelMarker,focusLine,stopMarkers=[];
 let speechTimer=null,speechStart=0,speechEstimate=1,speechTextLen=1,voices=[],queuedIndex=null,speechToken=0,speakingIndex=null;
 
@@ -37,12 +37,28 @@ const secFmt=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.floor(s
 const eligible=i=>$("modeSelect").value==="all"||S[i][3]===1;
 const nextEligible=(from=current)=>{let i=((from%S.length)+S.length)%S.length;for(let k=0;k<S.length;k++){if(eligible(i))return i;i=(i+1)%S.length}return i};
 const summary=t=>{const parts=t.split(/(?<=[.!?다요])\s+/).filter(Boolean);let s=parts.slice(0,2).join(" ");if(s.length<75)s=parts.slice(0,3).join(" ");return s.length>175?s.slice(0,172)+"…":s};
+const BCN=[41.390979,2.166518], BCN_RADIUS=50000;
+const inBarcelona=(lat,lon)=>dist(lat,lon,BCN[0],BCN[1])<BCN_RADIUS;
 
 function loadVoices(){voices=speechSynthesis.getVoices();const ko=voices.filter(v=>(v.lang||"").toLowerCase().startsWith("ko"));const list=ko.length?ko:voices;$("voiceSelect").innerHTML="";if(!list.length){$("voiceSelect").innerHTML='<option value="">기기 기본 음성</option>';return}list.forEach(v=>{const o=document.createElement("option");o.value=voices.indexOf(v);o.textContent=v.name+" ("+v.lang+")";$("voiceSelect").appendChild(o)})}
 function selectedVoice(){const i=parseInt($("voiceSelect").value,10);return Number.isInteger(i)?voices[i]:null}
 
 function icon(kind,label=""){if(kind==="user")return L.divIcon({className:"",html:'<div class="user-dot"></div>',iconSize:[22,22],iconAnchor:[11,11]});if(kind==="stop")return L.divIcon({className:"",html:'<div class="stop-dot"></div>',iconSize:[8,8],iconAnchor:[4,4]});const cls=kind==="red"?"red":"gray";return L.divIcon({className:"",html:'<div class="marker-wrap"><div class="pin-dot '+cls+'"></div><div class="marker-label">'+label+'</div></div>',iconSize:[160,46],iconAnchor:[10,10]})}
-function buildMap(){map=L.map("map",{zoomControl:false,attributionControl:true}).setView([41.390979,2.166518],15);L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",{maxZoom:20,subdomains:"abcd",attribution:"© OpenStreetMap © CARTO"}).addTo(map);stopMarkers=S.map(s=>L.marker([s[1],s[2]],{icon:icon("stop"),opacity:.52}).addTo(map));hotelMarker=L.marker([41.39075,2.16631],{icon:L.divIcon({className:"",html:'<div class="hotel-label">Mandarin Oriental Barcelona</div>',iconSize:[170,24],iconAnchor:[85,-12]})}).addTo(map);updateMap()}
+function buildMap(){
+  map=L.map("map",{zoomControl:false,attributionControl:true,zoomSnap:.25}).setView([41.3952,2.1712],14.5);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:20,subdomains:"abcd",attribution:"© OpenStreetMap © CARTO"}).addTo(map);
+  stopMarkers=S.map(s=>L.marker([s[1],s[2]],{icon:icon("stop"),opacity:.38}).addTo(map));
+  hotelMarker=L.marker([41.39075,2.16631],{icon:L.divIcon({className:"",html:'<div class="hotel-label">Mandarin Oriental Barcelona 바로 앞</div>',iconSize:[190,24],iconAnchor:[95,-12]})}).addTo(map);
+  const landmarks=[
+    [41.39171,2.16495,"La Pedrera"],
+    [41.39098,2.16652,"Casa Batlló"],
+    [41.40297,2.17379,"Sagrada Família"],
+    [41.39105,2.18064,"Arc de Triomf"]
+  ];
+  landmarks.forEach((x,i)=>L.marker([x[0],x[1]],{icon:L.divIcon({className:"",html:'<div class="landmark '+(i===1?"active":"")+'">'+x[2]+'</div>',iconSize:[120,24],iconAnchor:[60,12]})}).addTo(map));
+  setUser(BCN[0],BCN[1]);
+  updateMap()
+}
 function updateMap(){if(!map)return;if(currentMarker)currentMarker.remove();if(nextMarker)nextMarker.remove();if(focusLine)focusLine.remove();const cur=S[lastNarrated]||S[1],ni=(!running&&current===lastNarrated)?nextEligible(current+1):nextEligible(current),nxt=S[ni];currentMarker=L.marker([cur[1],cur[2]],{icon:icon("red",cur[0])}).addTo(map);nextMarker=L.marker([nxt[1],nxt[2]],{icon:icon("gray",nxt[0])}).addTo(map);const pts=[];let i=lastPassed;pts.push([S[i][1],S[i][2]]);for(let k=0;k<4;k++){i=(i+1)%S.length;pts.push([S[i][1],S[i][2]])}focusLine=L.polyline(pts,{color:"#f23947",weight:4,opacity:.82,lineJoin:"round"}).addTo(map);$("currentNarration").textContent=cur[0].replace(" · Museu Tàpies","");$("nextNarration").textContent=nxt[0];$("mapLinkBtn").dataset.lat=cur[1];$("mapLinkBtn").dataset.lon=cur[2]}
 function setUser(lat,lon){if(!map)return;if(!userMarker)userMarker=L.marker([lat,lon],{icon:icon("user")}).addTo(map);else userMarker.setLatLng([lat,lon])}
 function nearest(lat,lon){let z={i:0,d:Infinity};S.forEach((s,i)=>{const d=dist(lat,lon,s[1],s[2]);if(d<z.d)z={i,d}});return z}
@@ -57,19 +73,44 @@ function requestNarration(i,interrupt=false){if(!interrupt&&(speechSynthesis.spe
 function passStop(i,forceSpeak=false){lastPassed=i;played.add(i);if(forceSpeak||eligible(i))requestNarration(i,forceSpeak);current=(i+1)%S.length;renderStops();updateMap()}
 function nextNarration(){const i=nextEligible(current);passStop(i,true)}
 
-function handlePos(p){if(!running||paused)return;const {latitude:lat,longitude:lon,accuracy}=p.coords;lastPos={lat,lon,accuracy};setUser(lat,lon);$("accuracyText").textContent="±"+Math.round(accuracy||0)+" m";const n=nearest(lat,lon);$("currentLocation").textContent=S[n.i][0];let best={i:current,d:Infinity};forward().forEach(i=>{const d=dist(lat,lon,S[i][1],S[i][2]);if(d<best.d)best={i,d}});const ni=nextEligible(current),nd=dist(lat,lon,S[ni][1],S[ni][2]);$("nextDistance").textContent=fmt(nd);const rad=Math.max(210,Math.min(340,(accuracy||25)*2.1));if(best.d<=rad&&!played.has(best.i))passStop(best.i,false)}
+function handlePos(p){
+  if(!running||paused)return;
+  const {latitude:lat,longitude:lon,accuracy}=p.coords;
+  lastPos={lat,lon,accuracy};
+  if(!inBarcelona(lat,lon)){
+    previewMode=true;
+    setUser(BCN[0],BCN[1]);
+    map.setView([41.3952,2.1712],14.5);
+    $("currentLocation").textContent="Casa Batlló · Museu Tàpies";
+    $("accuracyText").textContent="여행 전";
+    $("gpsStatus").textContent="바르셀로나 미리보기";
+    const ni=nextEligible(current+1);
+    $("nextDistance").textContent=fmt(dist(BCN[0],BCN[1],S[ni][1],S[ni][2]));
+    return;
+  }
+  previewMode=false;
+  setUser(lat,lon);
+  $("accuracyText").textContent="±"+Math.round(accuracy||0)+" m";
+  const n=nearest(lat,lon);$("currentLocation").textContent=S[n.i][0];
+  let best={i:current,d:Infinity};
+  forward().forEach(i=>{const d=dist(lat,lon,S[i][1],S[i][2]);if(d<best.d)best={i,d}});
+  const ni=nextEligible(current),nd=dist(lat,lon,S[ni][1],S[ni][2]);
+  $("nextDistance").textContent=fmt(nd);
+  const rad=Math.max(210,Math.min(340,(accuracy||25)*2.1));
+  if(best.d<=rad&&!played.has(best.i))passStop(best.i,false)
+}
 function geoErr(e){$("gpsStatus").textContent=e.code===1?"위치 권한 필요":"GPS 오류";$("currentLocation").textContent=e.code===1?"위치 권한 필요":"GPS 오류"}
 
 async function acquireWakeLock(){try{if("wakeLock" in navigator){wakeLock=await navigator.wakeLock.request("screen");$("wakeText").textContent="켜짐";wakeLock.addEventListener("release",()=>{$("wakeText").textContent="꺼짐"})}else $("wakeText").textContent="미지원"}catch(e){$("wakeText").textContent="사용 안 함"}}
 function releaseWake(){if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}$("wakeText").textContent="꺼짐"}
 
-async function start(){if(running){stop();return}if(!navigator.geolocation){$("gpsStatus").textContent="GPS 미지원";return}running=true;paused=false;played.clear();queuedIndex=null;lastNarrated=1;if($("startSelect").value==="auto"){current=1;lastPassed=1}else{current=+$("startSelect").value;lastPassed=current}renderStops();updateMap();updateModeText();$("startBtn").innerHTML='<span>■</span> GPS GUIDE STOP';$("gpsStatus").textContent="GPS 연결 중";await acquireWakeLock();const u=new SpeechSynthesisUtterance("바르셀로나 한국어 GPS 가이드를 시작합니다. 위치가 확인되면 자동으로 해설하겠습니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u);navigator.geolocation.getCurrentPosition(p=>{if($("startSelect").value==="auto"){const n=nearest(p.coords.latitude,p.coords.longitude);current=n.i;lastPassed=n.i;renderStops();updateMap()}handlePos(p)},geoErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});watchId=navigator.geolocation.watchPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:1500,timeout:20000})}
+async function start(){if(running){stop();return}if(!navigator.geolocation){$("gpsStatus").textContent="GPS 미지원";return}running=true;paused=false;played.clear();queuedIndex=null;lastNarrated=1;if($("startSelect").value==="auto"){current=1;lastPassed=1}else{current=+$("startSelect").value;lastPassed=current}renderStops();updateMap();updateModeText();$("startBtn").innerHTML='<span>■</span> GPS GUIDE STOP';$("gpsStatus").textContent="GPS 연결 중";await acquireWakeLock();const u=new SpeechSynthesisUtterance("바르셀로나 한국어 GPS 가이드를 시작합니다. 위치가 확인되면 자동으로 해설하겠습니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u);navigator.geolocation.getCurrentPosition(p=>{if($("startSelect").value==="auto"&&inBarcelona(p.coords.latitude,p.coords.longitude)){const n=nearest(p.coords.latitude,p.coords.longitude);current=n.i;lastPassed=n.i;renderStops();updateMap()}handlePos(p)},geoErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});watchId=navigator.geolocation.watchPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:1500,timeout:20000})}
 function stop(){running=false;paused=false;if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;speechToken++;speechSynthesis.cancel();clearInterval(speechTimer);queuedIndex=null;speakingIndex=null;releaseWake();$("startBtn").innerHTML='<span>▶</span> GPS GUIDE START';$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent="중지됨"}
 function togglePause(){if(!running)return;paused=!paused;if(paused){speechSynthesis.pause();$("pauseBtn").innerHTML='▶ <small>계속</small>';$("gpsStatus").textContent="일시정지"}else{speechSynthesis.resume();$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent=speechSynthesis.speaking?"해설 재생 중":"GPS 추적 중";if(lastPos&&!speechSynthesis.speaking)handlePos({coords:{latitude:lastPos.lat,longitude:lastPos.lon,accuracy:lastPos.accuracy}})}}
-function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;queuedIndex=null;renderStops();updateModeText();updateMap();$("currentLocation").textContent="GPS 시작 전 · MO Barcelona 앞";$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="Casa Batlló";$("nowText").textContent="Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다."}
+function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;queuedIndex=null;renderStops();updateModeText();updateMap();$("currentLocation").textContent="Casa Batlló · Museu Tàpies"; previewMode=true; setUser(BCN[0],BCN[1]); if(map) map.setView([41.3952,2.1712],14.5);$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="Casa Batlló";$("nowText").textContent="Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다."}
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.panel).classList.add("active");if(b.dataset.panel==="mapPanel")setTimeout(()=>map.invalidateSize(),120)});
-$("startBtn").onclick=start;$("pauseBtn").onclick=togglePause;$("replayBtn").onclick=()=>requestNarration(lastNarrated,true);$("nextBtn").onclick=nextNarration;$("demoBtn").onclick=nextNarration;$("testBtn").onclick=()=>{speechToken++;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("안녕하세요. 바르셀로나 한국어 GPS 오디오가이드 음성 테스트입니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u)};$("resetBtn").onclick=reset;$("modeSelect").onchange=()=>{updateModeText();renderStops();updateMap()};$("startSelect").onchange=()=>{if(!running){current=$("startSelect").value==="auto"?1:+$("startSelect").value;lastPassed=current;renderStops();updateMap()}};$("recenterBtn").onclick=()=>{if(lastPos)map.setView([lastPos.lat,lastPos.lon],16);else map.setView([41.390979,2.166518],15)};$("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastNarrated][1],lon=$("mapLinkBtn").dataset.lon||S[lastNarrated][2];window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank")};
+$("startBtn").onclick=start;$("pauseBtn").onclick=togglePause;$("replayBtn").onclick=()=>requestNarration(lastNarrated,true);$("nextBtn").onclick=nextNarration;$("demoBtn").onclick=nextNarration;$("testBtn").onclick=()=>{speechToken++;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("안녕하세요. 바르셀로나 한국어 GPS 오디오가이드 음성 테스트입니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u)};$("resetBtn").onclick=reset;$("modeSelect").onchange=()=>{updateModeText();renderStops();updateMap()};$("startSelect").onchange=()=>{if(!running){current=$("startSelect").value==="auto"?1:+$("startSelect").value;lastPassed=current;renderStops();updateMap()}};$("recenterBtn").onclick=()=>{if(lastPos&&inBarcelona(lastPos.lat,lastPos.lon))map.setView([lastPos.lat,lastPos.lon],16);else map.setView([41.3952,2.1712],14.5)};$("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastNarrated][1],lon=$("mapLinkBtn").dataset.lon||S[lastNarrated][2];window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank")};
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&running&&!wakeLock)acquireWakeLock()});
 speechSynthesis.onvoiceschanged=loadVoices;buildMap();loadVoices();reset();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.1").catch(()=>{}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.2").catch(()=>{}));
