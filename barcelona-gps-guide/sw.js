@@ -1,5 +1,5 @@
-const CACHE="bcn-gps-guide-v1.3.2-r2";
-const CORE=["./index.html?v=1.3.2","./styles.css?v=1.3.2","./app.js?v=1.3.2","./manifest.webmanifest?v=1.3.2","./icon.svg?v=1.3.2"];
+const CACHE="bcn-gps-guide-v1.3.3";
+const CORE=["./index.html?v=1.3.3","./styles.css?v=1.3.3","./app.js?v=1.3.3","./manifest.webmanifest?v=1.3.3","./icon.svg?v=1.3.3"];
 self.addEventListener("install",e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)))});
 self.addEventListener("activate",e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
-self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;const nav=e.request.mode==="navigate";if(nav){e.respondWith(fetch(e.request,{cache:"no-store"}).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put("./index.html?v=1.3.2",copy)).catch(()=>{});return r}).catch(()=>caches.match("./index.html?v=1.3.2")));return}e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)))});
+self.addEventListener("fetch",e=>{if(e.request.method!=="GET")return;const nav=e.request.mode==="navigate";if(nav){e.respondWith(fetch(e.request,{cache:"no-store"}).then(r=>{const copy=r.clone();caches.open(CACHE).then(c=>c.put("./index.html?v=1.3.3",copy)).catch(()=>{});return r}).catch(()=>caches.match("./index.html?v=1.3.3")));return}e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request)))});
