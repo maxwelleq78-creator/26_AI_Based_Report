@@ -162,4 +162,4 @@ $("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastPlayed
 
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&running&&!wakeLock)acquireWakeLock()});
 buildMap();loadVoices();reset();
-if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));
+if("serviceWorker"in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.2.1").catch(()=>{}));
