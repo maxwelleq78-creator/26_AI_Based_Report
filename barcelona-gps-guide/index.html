@@ -3,98 +3,162 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0a0d11">
+<meta name="theme-color" content="#0a0e13">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" href="./icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <link rel="stylesheet" href="./styles.css">
-<title>v1.1 Barcelona GPS Guide</title>
+<title>v1.2 Barcelona GPS Guide</title>
 </head>
 <body>
 <main class="app">
   <header class="hero">
-    <div class="mini-mark" aria-hidden="true">⛪</div>
+    <div class="hero-icon" aria-hidden="true">
+      <svg viewBox="0 0 64 64"><path d="M14 52V28l5-6 4 6V18l5-8 4 8v10l4-6 5 6v24M10 52h44M19 38h5M29 38h6M41 38h4M22 52V42h20v10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+    </div>
     <div class="hero-center">
-      <h1>v1.1 Barcelona GPS Guide</h1>
+      <h1>v1.2 Barcelona GPS Guide</h1>
       <div class="route-pill">RED ROUTE</div>
       <p>버스를 타고 만나는, 더 깊은 바르셀로나</p>
     </div>
-    <div class="hero-note">GPS<br>Audio<br>Guide</div>
+    <div class="hero-note">More<br>than<br>a city</div>
   </header>
 
-  <div class="tabs" role="tablist">
-    <button id="mapTab" class="tab active" data-panel="mapPanel">🗺 지도</button>
-    <button id="guideTab" class="tab" data-panel="guidePanel">🎧 해설</button>
-  </div>
+  <nav class="tabs">
+    <button class="tab active" data-panel="mapPanel">🗺 지도</button>
+    <button class="tab" data-panel="guidePanel">🎧 해설</button>
+  </nav>
 
   <section id="mapPanel" class="panel active">
     <div class="map-shell">
       <div id="map"></div>
-      <div class="map-brand"><span class="bus-icon">▣</span><div><b>Barcelona<br>Bus Turístic</b><small>RED ROUTE</small></div></div>
-      <button id="recenterBtn" class="recenter" aria-label="현재 위치로 이동">➤</button>
+      <div class="map-brand">
+        <span class="bus-badge">▣</span>
+        <div><b>Barcelona<br>Bus Turístic</b><small>RED ROUTE</small></div>
+      </div>
+      <button id="recenterBtn" class="recenter" aria-label="내 위치로 이동">➤</button>
     </div>
 
-    <section class="location-card card">
-      <div class="metric-row"><span class="metric-icon">📍</span><span>현재 위치</span><b id="currentLocation">위치 확인 전</b></div>
-      <div class="metric-row"><span class="metric-icon live">◖◗</span><span>설명 중</span><b id="currentNarration">—</b></div>
-      <div class="metric-row"><span class="metric-icon">➜</span><span>다음</span><b id="nextNarration">—</b></div>
-      <div class="metric-row"><span class="metric-icon">🛣</span><span>거리</span><b id="nextDistance">—</b></div>
+    <section class="route-status card">
+      <div class="status-row"><span class="status-icon">📍</span><span>현재 위치</span><b id="currentLocation">위치 확인 전</b></div>
+      <div class="status-row"><span class="status-icon live">◖◗</span><span>설명 중</span><b id="currentNarration">Casa Batlló</b></div>
+      <div class="status-row"><span class="status-icon">➜</span><span>다음</span><b id="nextNarration">Eixample</b></div>
+      <div class="status-row"><span class="status-icon">🛣</span><span>거리</span><b id="nextDistance">—</b></div>
     </section>
   </section>
 
   <section id="guidePanel" class="panel">
-    <section class="card guide-overview">
-      <h2>Red Route 해설 목록</h2>
-      <p>GPS가 다음 장소에 가까워지면 자동으로 해당 해설을 재생합니다.</p>
+    <section class="guide-panel card">
+      <div class="guide-heading">
+        <div><small>RED ROUTE</small><h2>해설 순서</h2></div>
+        <span id="routeProgressText">0 / 24</span>
+      </div>
+      <p>GPS가 다음 장소에 접근하면 자동으로 한국어 해설을 재생합니다.</p>
       <ol id="stopList"></ol>
     </section>
   </section>
 
-  <section class="now-card card">
-    <div class="thumb" aria-hidden="true">
-      <svg viewBox="0 0 120 170" preserveAspectRatio="xMidYMid slice">
+  <section class="now-playing card">
+    <div class="place-thumb" aria-hidden="true">
+      <svg viewBox="0 0 140 190" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#79b7f2"/><stop offset="1" stop-color="#e8d3a2"/></linearGradient>
-          <linearGradient id="fac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d7bea2"/><stop offset=".5" stop-color="#9fb6b4"/><stop offset="1" stop-color="#c69c78"/></linearGradient>
+          <linearGradient id="s1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7db5ee"/><stop offset=".62" stop-color="#c6d2d3"/><stop offset="1" stop-color="#c79b69"/></linearGradient>
+          <linearGradient id="f1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c7a77e"/><stop offset=".48" stop-color="#9fae9d"/><stop offset="1" stop-color="#d3b28f"/></linearGradient>
         </defs>
-        <rect width="120" height="170" fill="url(#sky)"/>
-        <rect y="118" width="120" height="52" fill="#576b46"/>
-        <path d="M24 164V66 Q60 50 96 66V164Z" fill="url(#fac)" stroke="#725c53" stroke-width="2"/>
-        <path d="M22 66 Q35 40 50 56 Q64 28 78 54 Q94 42 98 68" fill="#4e766a"/>
-        <g fill="#20323a" stroke="#e8d8c9" stroke-width="2">
-          <path d="M31 82 Q40 70 49 82V100H31Z"/><path d="M55 79 Q64 65 73 79V98H55Z"/><path d="M78 83 Q87 71 94 83V101H78Z"/>
-          <path d="M31 111 Q40 99 49 111V132H31Z"/><path d="M55 108 Q64 95 73 108V130H55Z"/><path d="M78 112 Q87 100 94 112V132H78Z"/>
+        <rect width="140" height="190" fill="url(#s1)"/>
+        <path d="M20 190V72Q70 50 120 72V190Z" fill="url(#f1)" stroke="#725c53" stroke-width="2"/>
+        <path d="M18 75Q31 39 49 58Q65 25 82 56Q104 37 122 75" fill="#49766e"/>
+        <g fill="#1d3642" stroke="#ecdcc9" stroke-width="2">
+          <path d="M31 88Q42 72 53 88V110H31Z"/><path d="M63 84Q73 67 84 84V108H63Z"/><path d="M94 88Q105 73 116 88V111H94Z"/>
+          <path d="M31 124Q42 108 53 124V148H31Z"/><path d="M63 120Q73 104 84 120V146H63Z"/><path d="M94 124Q105 108 116 124V148H94Z"/>
         </g>
-        <g fill="#c79a63"><circle cx="28" cy="101" r="4"/><circle cx="52" cy="98" r="4"/><circle cx="76" cy="100" r="4"/><circle cx="99" cy="103" r="4"/></g>
+        <path d="M27 152Q42 141 56 153M60 150Q73 140 88 152M91 152Q106 141 119 154" fill="none" stroke="#d5a354" stroke-width="5"/>
+        <rect y="162" width="140" height="28" fill="#4f683d"/>
       </svg>
     </div>
     <div class="now-main">
-      <div class="now-head"><span>🎧 지금 듣는 해설</span><small id="timeText">00:00 / 00:00</small></div>
+      <div class="now-top"><span>🎧 지금 듣는 해설</span><small id="timeText">00:00 / 00:00</small></div>
       <h2 id="nowTitle">Casa Batlló</h2>
-      <div class="progress"><div id="progressFill"></div></div>
+      <div class="audio-progress"><div id="progressFill"></div></div>
       <p id="nowText">Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다.</p>
     </div>
   </section>
 
-  <button id="startBtn" class="start-btn">▶ GPS GUIDE START</button>
+  <button id="startBtn" class="start-btn"><span>▶</span> GPS GUIDE START</button>
 
-  <div class="bottom-controls">
-    <button id="pauseBtn">Ⅱ&nbsp;&nbsp;일시정지</button>
-    <button id="replayBtn">↻&nbsp;&nbsp;다시 듣기</button>
-    <button id="nextBtn">▸|&nbsp;&nbsp;다음 해설</button>
+  <div class="transport-controls">
+    <button id="pauseBtn">Ⅱ <span>일시정지</span></button>
+    <button id="replayBtn">↻ <span>다시 듣기</span></button>
+    <button id="nextBtn">▸| <span>다음 해설</span></button>
   </div>
 
-  <details class="settings card">
-    <summary>설정 · 테스트</summary>
-    <label>해설 범위<select id="modeSelect"><option value="highlights" selected>핵심 장소만 · 추천</option><option value="all">전체 정류장</option></select></label>
-    <label>시작 위치<select id="startSelect"><option value="auto">GPS 자동</option><option value="1" selected>MO Barcelona 앞 · Casa Batlló</option><option value="0">Plaça Catalunya</option></select></label>
-    <label>말하기 속도<select id="rateSelect"><option value="0.9">0.9×</option><option value="1" selected>1.0×</option><option value="1.1">1.1×</option></select></label>
-    <div class="settings-actions"><button id="testBtn">🔊 음성 테스트</button><button id="demoBtn">🧪 다음 해설 데모</button><button id="resetBtn">↺ 초기화</button></div>
-  </details>
+  <section class="status-mini card">
+    <div><span>GPS 상태</span><b id="gpsStatus">대기 중</b></div>
+    <div><span>정확도</span><b id="accuracyText">—</b></div>
+    <div><span>해설 모드</span><b id="modeText">핵심</b></div>
+    <div><span>화면 유지</span><b id="wakeText">미사용</b></div>
+  </section>
 
-  <footer>개인 여행용 비공식 한국어 가이드 · 위치 정보는 기기 안에서만 처리됩니다.</footer>
+  <section class="feature-section card">
+    <div class="section-title"><div><small>v1.0 기능 유지</small><h3>상세 설정</h3></div><span>⌄</span></div>
+    <label>해설 범위
+      <select id="modeSelect">
+        <option value="highlights" selected>핵심 장소만 · 추천</option>
+        <option value="all">전체 24개 정류장</option>
+      </select>
+    </label>
+    <label>시작 위치
+      <select id="startSelect">
+        <option value="auto">GPS로 자동 선택</option>
+        <option value="1" selected>MO Barcelona 앞 · Casa Batlló</option>
+        <option value="0">Plaça Catalunya</option>
+      </select>
+    </label>
+    <label>한국어 음성
+      <select id="voiceSelect"></select>
+    </label>
+    <label>말하기 속도
+      <select id="rateSelect">
+        <option value="0.9">0.9× 천천히</option>
+        <option value="1" selected>1.0× 보통</option>
+        <option value="1.1">1.1× 조금 빠르게</option>
+      </select>
+    </label>
+    <div class="tool-grid">
+      <button id="testBtn">🔊 음성 테스트</button>
+      <button id="demoBtn">🧪 다음 해설 데모</button>
+      <button id="resetBtn">↺ 진행상태 초기화</button>
+      <button id="mapLinkBtn">↗ Google Maps</button>
+    </div>
+  </section>
+
+  <section class="feature-section card">
+    <div class="section-title"><div><small>여행 당일</small><h3>운행 변경 체크</h3></div><span>●</span></div>
+    <div class="notice-box">
+      <b>Sants</b><p>2026-07-17부터 기존 정류장 대신 Pg. Sant Antoni 대체 정류장이 안내돼 있습니다.</p>
+    </div>
+    <div class="notice-box">
+      <b>Torre Glòries</b><p>2026-01-19부터 Carrer de Badajoz 160 대체 정류장이 안내돼 있습니다.</p>
+    </div>
+    <a class="external-link" href="https://www.barcelonabusturistic.cat/en/service-information" target="_blank" rel="noopener">공식 운행 변경 확인 ↗</a>
+  </section>
+
+  <section class="feature-section card">
+    <div class="section-title"><div><small>안드로이드 권장</small><h3>사용 팁 & 개인정보</h3></div><span>✓</span></div>
+    <ul class="tips">
+      <li>버스 탑승 직전에 앱을 열고 START를 누르세요.</li>
+      <li>위치 권한은 <b>정확한 위치 + 앱 사용 중 허용</b>이 좋습니다.</li>
+      <li>Galaxy에서는 배터리 사용을 <b>제한 없음</b>으로 두면 GPS가 더 안정적입니다.</li>
+      <li>가능한 기기에서는 화면 꺼짐 방지 기능을 자동으로 요청합니다.</li>
+      <li>위치정보는 서버로 보내지 않고 휴대폰 안에서만 계산합니다.</li>
+    </ul>
+  </section>
+
+  <footer>개인 여행용 비공식 한국어 가이드 · TMB / Barcelona Bus Turístic 공식 앱이 아닙니다.</footer>
 </main>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="./app.js"></script>
 </body>
