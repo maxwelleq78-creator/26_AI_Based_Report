@@ -68,3 +68,15 @@ footer{text-align:center;color:#66727d;font-size:10px;padding:20px 4px 0}
   .below-grid>.status-mini small{font-size:8px}.below-grid>.status-mini b{font-size:10px}
 }
 @media(min-width:720px){.below-grid>.status-mini{grid-column:1/-1}}
+
+/* v1.3.3 GPS truth + no-key map + dynamic stop photos */
+.leaflet-tile-pane{filter:none!important}
+.map-base{filter:brightness(1.34) saturate(.72) hue-rotate(165deg) contrast(.92)}
+.map-label-layer{filter:brightness(1.08) saturate(.55);opacity:.82}
+.leaflet-control-scale-line{background:#0f151bb8!important;color:#e8edf1!important;border-color:#dfe5ea!important;font-size:8px!important}
+.route-note{display:none!important}
+.place-thumb{transition:opacity .2s ease}
+@media(max-width:719px){
+  .map-shell #map{height:286px}
+  .leaflet-control-scale{margin-left:9px!important;margin-bottom:8px!important}
+}
