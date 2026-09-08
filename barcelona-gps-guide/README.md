@@ -19,3 +19,11 @@ Android/Chrome용 개인 여행 PWA입니다.
 https://www.barcelonabusturistic.cat/en/service-information
 
 개인 여행용 비공식 가이드이며 Barcelona Bus Turístic/TMB 공식 앱이 아닙니다.
+
+
+
+## v1.3.7 map update
+- Red line uses the operator's published full road geometry (1,533 latitude/longitude points), retrieved 2026-09-08 from https://www.barcelonabusturistic.cat/en/red-route/modal/mapa_v1 (`drupalSettings.tmbModuleNodeRutaMaps.coords`). Metadata lives in `route-data.js`. No stop-to-stop straight-line interpolation or generic driving route is used.
+- The published basic route may differ from temporary diversions. Check https://www.barcelonabusturistic.cat/en/service-information on the day of travel. Existing narration/GPS stop sequence has not been changed; the official landing page and detailed map should be reconciled separately before changing narration order.
+- Light OpenFreeMap Positron vector style is stored in `map-style.json`; POI layers are omitted so restaurant, cafe and shopping symbols are not drawn. Street labels and app landmarks remain. OpenFreeMap/OpenMapTiles/OpenStreetMap credits appear on the map.
+- MapLibre GL 5.6.2 + Leaflet adapter 0.0.22 are pinned. Vector background requires WebGL and network access; failures show a map-only status message, with guide controls still available. Local style/geometry are service-worker core assets. External map tiles, dependencies, fonts and photos are not cached by this app.

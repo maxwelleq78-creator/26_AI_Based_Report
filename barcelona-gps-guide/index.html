@@ -6,11 +6,12 @@
 <meta name="theme-color" content="#070a0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.webmanifest?v=1.3.6">
-<link rel="icon" href="./icon.svg?v=1.3.6" type="image/svg+xml">
+<link rel="manifest" href="./manifest.webmanifest?v=1.3.7">
+<link rel="icon" href="./icon.svg?v=1.3.7" type="image/svg+xml">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<link rel="stylesheet" href="./styles.css?v=1.3.6">
-<title>v1.3.6 Barcelona GPS Guide</title>
+<link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.css">
+<link rel="stylesheet" href="./styles.css?v=1.3.7">
+<title>v1.3.7 Barcelona GPS Guide</title>
 </head>
 <body>
 <main class="app">
@@ -32,7 +33,7 @@
 <path d="M64 83.4 L66.9 76.1 L68.4 72.1 C69.5 68.8 68 68 68 70.4 C68 73.2 72.1 79 73.1 83.6 L72.8 87.1 L68.6 87.5 L68.7 99.1 C64.5 99 61.1 96.5 65.3 97.5 L65.1 86.3 C62.3 88.8 66.7 87.4 66.8 86.3 L66.6 79 L64.1 82.6 M71.1 63.7 C68.3 63 69.3 61.3 72.8 62 L71.8 58 L73.9 52.2 C75 48.9 74.5 47.1 74.6 48.9 L76.8 56.5 C77.3 66.2 74.3 57.6 77 53.6 C78 49 77.4 52.2 77.8 55.6 L80 62.2 L80.4 66.1 C79.4 65.2 76.3 62.9 76.1 64 C75.8 65.4 83.3 67.2 82 69.3 C81.5 70.2 75.3 65.7 75.9 65.1 M75 64.8 L74.4 82.4 L71.7 74.4 L72.8 67.9 M79.2 75.6 C78.7 72.7 77.8 73.4 78.8 76.2 L81 80.8 L83 72.1 L84 78.3 L85.4 75.4 L87.8 81.6 L87.6 100 M74.5 99.1 C69.9 99 72.6 99 72.7 97.9 L72.6 87.5 L77.5 87.4 L78.1 98.8 C82.4 99.6 82.4 97.8 80.9 98.2 L81 88 C81.2 85.7 82.4 86.2 82.4 88 L82.5 98.6 L86.1 98.7 M73.1 84.6 L76.4 84.7 L78.2 81.1 C80.4 88 82.2 86.5 83.5 81.6 L86.3 87.9 L86.3 98.6"/>
 <path d="M1.5 102 L12.7 100.5 C13.5 97.6 10 99.3 6.3 99.4 C4.7 99.5 4.7 88 5.9 82.7 C6.5 80.4 17.5 83.4 13.6 82.9 L7 82.7 L7.1 101 C6.1 102.8 4 100.2 5.2 100 L13.6 99.8 C14.7 103 10.4 101.4 8.1 101.5 M14.8 98.8 C19.1 102.4 15.7 98.9 17.9 98.9 L18.1 84.4 L20.6 84.3 L20.3 98.6 L22.9 99.3 C22.3 97.1 22.2 87.1 22.9 84.7 C24.3 84.1 25.5 84.2 26.6 84.6 L26.5 98.8 L29 98.8 L30.1 84.5 L34 84.9 L33.6 98.4 C35 99.3 38.8 97.4 39.5 98.7 C41.1 103 33.7 101.1 31.6 101.1 L21.1 100.9 C18.4 100.8 15.8 100.1 14.8 99.7 M38.9 100.6 L62 100.8 C66.9 98.7 65.5 101.1 61.3 101.2 M87.8 81.6 C82.6 78.6 86.9 79.9 86.2 76.2 C85.8 73.5 92.9 77 97.5 75.9 L97.8 74 C98.1 70.9 97.3 76.5 97.6 79.3 C87 78.8 83.6 81.2 94.3 81.1 L98.5 80.9 L98.6 98.6 L89.8 98.4 C88.9 98.4 88.7 102.8 87.9 100.9 L87.7 82.1 M89.8 100.3 L97.8 100.2 L98.5 101.3 L102.5 101.3"/>
 </g>
-</svg></div><div class="hero-center"><h1>v1.3.6 Barcelona GPS Guide</h1><span class="route-pill">RED ROUTE</span><p>버스를 타고 만나는, 더 깊은 바르셀로나</p></div>
+</svg></div><div class="hero-center"><h1>v1.3.7 Barcelona GPS Guide</h1><span class="route-pill">RED ROUTE</span><p>버스를 타고 만나는, 더 깊은 바르셀로나</p></div>
   <div class="hero-note"><span>More<br>than<br>a city</span><i></i></div>
 </header>
 
@@ -103,6 +104,7 @@
   <details class="card feature">
     <summary><span><small>여행 당일</small><b>운행 변경 체크</b></span><i>⌄</i></summary>
     <div class="feature-body">
+      <div class="notice"><b>지도 노선 안내</b><p>적색 선은 공식 공개 기본 운행 경로입니다. 공사·행사에 따른 임시 우회 경로는 다를 수 있으니 당일 운행 변경을 확인하세요.</p></div>
       <div class="notice"><b>Sants</b><p>현재 공식 안내상 기존 Estació de Sants 정류장 대신 Pg. Sant Antoni 대체 정류장이 운영될 수 있습니다.</p></div>
       <div class="notice"><b>Torre Glòries · 22@</b><p>현재 공식 안내상 기존 정류장이 취소되어 160 Badajoz Street 대체 정류장이 안내됩니다.</p></div>
       <a class="external-link" href="https://www.barcelonabusturistic.cat/en/service-information" target="_blank" rel="noopener">공식 운행 변경 확인 ↗</a>
@@ -129,6 +131,10 @@
 <footer>개인 여행용 비공식 한국어 가이드 · Barcelona Bus Turístic 공식 서비스가 아닙니다.</footer>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./app.js?v=1.3.6"></script>
+<script src="https://unpkg.com/maplibre-gl@5.6.2/dist/maplibre-gl.js"></script>
+<script src="https://unpkg.com/@maplibre/maplibre-gl-leaflet@0.0.22/leaflet-maplibre-gl.js"></script>
+<script src="./route-data.js?v=1.3.7"></script>
+<script src="./app.js?v=1.3.7"></script>
 </body>
 </html>
+
