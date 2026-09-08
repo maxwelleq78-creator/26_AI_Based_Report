@@ -117,3 +117,12 @@ footer{text-align:center;color:#66727d;font-size:10px;padding:20px 4px 0}
 @media(max-width:380px){
   .map-shell #map{height:226px}.hero h1{font-size:17px}.now-playing{grid-template-columns:76px minmax(0,1fr)}.place-thumb{width:76px;height:100px;min-height:100px}
 }
+
+
+/* v1.3.6: fill the existing header space without moving its content. */
+.hero-icon{position:relative;height:48px;opacity:.95}
+.hero-icon svg{position:absolute;left:0;top:50%;width:74px;height:86px;transform:translateY(-50%);pointer-events:none}
+@media(max-width:719px){
+  .hero-icon{height:30px}
+  .hero-icon svg{width:58px;height:62px}
+}
