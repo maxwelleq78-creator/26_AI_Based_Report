@@ -6,23 +6,24 @@
 <meta name="theme-color" content="#070a0e">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<link rel="manifest" href="./manifest.webmanifest?v=1.3.3">
-<link rel="icon" href="./icon.svg?v=1.3.3" type="image/svg+xml">
+<link rel="manifest" href="./manifest.webmanifest?v=1.3.4">
+<link rel="icon" href="./icon.svg?v=1.3.4" type="image/svg+xml">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-<link rel="stylesheet" href="./styles.css?v=1.3.3">
-<title>v1.3.3 Barcelona GPS Guide</title>
+<link rel="stylesheet" href="./styles.css?v=1.3.4">
+<title>v1.3.4 Barcelona GPS Guide</title>
 </head>
 <body>
 <main class="app">
 <header class="hero">
-  <div class="hero-icon" aria-hidden="true"><svg viewBox="0 0 64 64"><path d="M14 52V28l5-6 4 6V18l5-8 4 8v10l4-6 5 6v24M10 52h44M19 38h5M29 38h6M41 38h4M22 52V42h20v10" fill="none" stroke="currentColor" stroke-width="2"/></svg></div>
-  <div class="hero-center"><h1>v1.3.3 Barcelona GPS Guide</h1><span class="route-pill">RED ROUTE</span><p>버스를 타고 만나는, 더 깊은 바르셀로나</p></div>
-  <div class="hero-note">More<br>than<br>a city</div>
+  <div class="hero-icon" aria-hidden="true"><svg class="ui-icon hero-sagrada" viewBox="0 0 48 48" aria-hidden="true">
+<path d="M8 42h32M11 42V25l4-5 4 5V14l5-9 5 9v11l4-5 4 5v17M15 42V31h18v11M20 31v-8h8v8M14 18V10M34 18V10M24 8V2" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div><div class="hero-center"><h1>v1.3.4 Barcelona GPS Guide</h1><span class="route-pill">RED ROUTE</span><p>버스를 타고 만나는, 더 깊은 바르셀로나</p></div>
+  <div class="hero-note"><span>More<br>than<br>a city</span><i></i></div>
 </header>
 
 <section class="top-grid">
   <div class="left-stack">
-    <nav class="tabs"><button class="tab active" data-panel="mapPanel">🗺 지도</button><button class="tab" data-panel="guidePanel">🎧 해설</button></nav>
+    <nav class="tabs"><button class="tab active" data-panel="mapPanel"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5 8 4l8 3 5-2v12.5L16 20l-8-3-5 2V6.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 4v13M16 7v13" fill="none" stroke="currentColor" stroke-width="1.8"/></svg><span>지도</span></button><button class="tab" data-panel="guidePanel"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v7H5.5A1.5 1.5 0 0 1 4 18.5V13Zm16 0h-3v7h1.5a1.5 1.5 0 0 0 1.5-1.5V13Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg><span>해설</span></button></nav>
     <section id="mapPanel" class="panel active">
       <div class="map-shell">
         <div id="map"></div>
@@ -31,10 +32,10 @@
         <button id="recenterBtn" class="recenter" aria-label="현재 위치로 이동">➤</button>
       </div>
       <section class="card route-status">
-        <div><span class="status-icon">📍</span><em>현재 위치</em><b id="currentLocation">GPS 시작 전 · MO Barcelona 앞</b></div>
-        <div><span class="status-icon live">◖◗</span><em>설명 중</em><b id="currentNarration">Casa Batlló</b></div>
-        <div><span class="status-icon">➜</span><em>다음</em><b id="nextNarration">Eixample</b></div>
-        <div><span class="status-icon">🛣</span><em>거리</em><b id="nextDistance">—</b></div>
+        <div><span class="status-icon"><svg class="status-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s6-5.5 6-12a6 6 0 1 0-12 0c0 6.5 6 12 6 12Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9" r="2.2" fill="currentColor"/></svg></span><em>현재 위치</em><b id="currentLocation">GPS 시작 전 · MO Barcelona 앞</b></div>
+        <div><span class="status-icon live"><svg class="status-svg wave-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4M8 7v10M12 4v16M16 7v10M20 10v4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></span><em>설명 중</em><b id="currentNarration">Casa Batlló</b></div>
+        <div><span class="status-icon"><svg class="status-svg" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="m10 8 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><em>다음</em><b id="nextNarration">Eixample</b></div>
+        <div><span class="status-icon"><svg class="status-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 5 21M16 3l3 18M12 4v4m0 4v4m0 4v1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><em>거리</em><b id="nextDistance">—</b></div>
       </section>
     </section>
     <section id="guidePanel" class="panel">
@@ -50,7 +51,7 @@
     <section class="card now-playing">
       <img class="place-thumb" id="placeThumb" alt="Casa Batlló" src="data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 480'%3E%3Crect width='320' height='480' fill='%2326303a'/%3E%3Ctext x='160' y='225' fill='%23d7dee5' text-anchor='middle' font-family='Arial' font-size='24'%3ECasa Batlló%3C/text%3E%3Ctext x='160' y='258' fill='%239aa5af' text-anchor='middle' font-family='Arial' font-size='14'%3Eloading photo…%3C/text%3E%3C/svg%3E">
       <div class="now-main">
-        <div class="now-top"><span>🎧 지금 듣는 해설</span><small id="timeText">00:00 / 00:00</small></div>
+        <div class="now-top"><span><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 13v-2a8 8 0 0 1 16 0v2M4 13h3v7H5.5A1.5 1.5 0 0 1 4 18.5V13Zm16 0h-3v7h1.5a1.5 1.5 0 0 0 1.5-1.5V13Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>지금 듣는 해설</span><small id="timeText">00:00 / 00:00</small></div>
         <h2 id="nowTitle">Casa Batlló</h2>
         <div class="audio-progress"><div id="progressFill"></div></div>
         <p id="nowText">Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다.</p>
@@ -113,6 +114,6 @@
 <footer>개인 여행용 비공식 한국어 가이드 · Barcelona Bus Turístic 공식 서비스가 아닙니다.</footer>
 </main>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-<script src="./app.js?v=1.3.3"></script>
+<script src="./app.js?v=1.3.4"></script>
 </body>
 </html>
