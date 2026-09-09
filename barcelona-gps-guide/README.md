@@ -27,3 +27,10 @@ https://www.barcelonabusturistic.cat/en/service-information
 - The published basic route may differ from temporary diversions. Check https://www.barcelonabusturistic.cat/en/service-information on the day of travel. Existing narration/GPS stop sequence has not been changed; the official landing page and detailed map should be reconciled separately before changing narration order.
 - Light OpenFreeMap Positron vector style is stored in `map-style.json`; POI layers are omitted so restaurant, cafe and shopping symbols are not drawn. Street labels and app landmarks remain. OpenFreeMap/OpenMapTiles/OpenStreetMap credits appear on the map.
 - MapLibre GL 5.6.2 + Leaflet adapter 0.0.22 are pinned. Vector background requires WebGL and network access; failures show a map-only status message, with guide controls still available. Local style/geometry are service-worker core assets. External map tiles, dependencies, fonts and photos are not cached by this app.
+
+## v1.3.8 single-camera map correction
+- Removes Leaflet and the MapLibre/Leaflet adapter. A single native MapLibre GL 5.6.2 map renders the bright base, official route, stops, current/next points, user position, and text labels. No independently animated map overlay exists.
+- GeoJSON source `guide-route` preserves all 1,533 official coordinates, converting latitude/longitude to GeoJSON longitude/latitude. User coordinates are unaltered in `guide-user`; no route snapping is applied.
+- Map moves, zooms, recenter and resize use native MapLibre APIs. Initial zoom is 13.5 (equivalent to the former Leaflet 14.5 viewport); recenter zoom is 15 (former 16). Rotation and pitch are disabled for a 2D guide.
+- GPS detection, Korean narration and photo retrieval are preserved. Previous map update's POI-free local style and road geometry are unchanged. External map availability still requires network/WebGL; map failures show a status message.
+- Validation results are reported separately; this note does not claim physical-device or deployment verification.
