@@ -46,6 +46,11 @@ const PHOTO_QUERIES=[
   "Diagonal Mar Barcelona","Parc del Fòrum Barcelona","Nova Mar Bella beach Barcelona","Bogatell Beach Barcelona",
   "Port Olímpic Barcelona","Barceloneta Barcelona","La Rambla Columbus Monument Barcelona","Port Vell World Trade Center Barcelona"
 ];
+// Official detailed map travel order; the landing-page list reverses the final section.
+const stopOrder=[0,1,2,3,4,5,6,7,8,9,10,11,23,22,21,20,19,18,17,16,15,14,13,12];
+const orderedStops=stopOrder.map(i=>S[i]),orderedPhotos=stopOrder.map(i=>PHOTO_QUERIES[i]);
+S.splice(0,S.length,...orderedStops);PHOTO_QUERIES.splice(0,PHOTO_QUERIES.length,...orderedPhotos);
+const stopLabel=i=>(i+1)+". "+S[i][0];
 const PHOTO_CACHE={};
 function photoFallback(i){
   const name=(S[i]?.[0]||"Barcelona").replace(/&/g,"and");
@@ -87,7 +92,7 @@ function mapStatus(message){
 function buildMap(){
   if(!window.maplibregl){mapStatus("지도를 불러오지 못했습니다. 인터넷 연결 후 새로고침해 주세요.");return}
   try{
-    map=new maplibregl.Map({container:"map",style:"./map-style.json?v=1.3.8",center:[2.1712,41.3952],zoom:13.5,minZoom:0,maxZoom:18,pitch:0,bearing:0,maxPitch:0,dragRotate:false,pitchWithRotate:false,touchPitch:false,attributionControl:false});
+    map=new maplibregl.Map({container:"map",style:"./map-style.json?v=1.3.9",center:[2.1712,41.3952],zoom:13.5,minZoom:0,maxZoom:18,pitch:0,bearing:0,maxPitch:0,dragRotate:false,pitchWithRotate:false,touchPitch:false,attributionControl:false});
     map.touchZoomRotate.disableRotation();
     map.addControl(new maplibregl.AttributionControl({compact:true,customAttribution:'<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),"bottom-right");
     map.addControl(new maplibregl.ScaleControl({maxWidth:90,unit:"metric"}),"bottom-left");
@@ -100,10 +105,12 @@ function buildMap(){
         map.addLayer({id:"guide-route-casing",type:"line",source:"guide-route",layout:{"line-join":"round","line-cap":"round"},paint:{"line-color":"#ffffff","line-width":7,"line-opacity":.85}});
         map.addLayer({id:"guide-route-line",type:"line",source:"guide-route",layout:{"line-join":"round","line-cap":"round"},paint:{"line-color":"#ed3348","line-width":4}});
       }else mapStatus("공식 노선 데이터를 불러오지 못했습니다. 새로고침해 주세요.");
-      map.addSource("guide-stops",{type:"geojson",data:collection(S.map(s=>pointFeature(s[1],s[2])))});
-      map.addLayer({id:"guide-stop-points",type:"circle",source:"guide-stops",paint:{"circle-radius":3,"circle-color":"#f23947","circle-stroke-width":1,"circle-stroke-color":"#ffffff","circle-opacity":.38,"circle-stroke-opacity":.38}});
+      map.addSource("guide-stops",{type:"geojson",data:collection(S.map((s,i)=>pointFeature(s[1],s[2],{number:String(i+1),index:i,name:s[0]})))});
+      map.addLayer({id:"guide-stop-points",type:"circle",source:"guide-stops",paint:{"circle-radius":12,"circle-color":"#df293e","circle-stroke-width":2,"circle-stroke-color":"#ffffff"}});
       map.addSource("guide-active",{type:"geojson",data:collection([])});
-      map.addLayer({id:"guide-active-points",type:"circle",source:"guide-active",paint:{"circle-radius":8,"circle-color":["match",["get","kind"],"current","#f23947","#98a3ad"],"circle-stroke-width":2,"circle-stroke-color":"#ffffff"}});
+      map.addLayer({id:"guide-active-points",type:"circle",source:"guide-active",paint:{"circle-radius":16,"circle-color":["match",["get","kind"],"current","#f23947","#98a3ad"],"circle-stroke-width":2,"circle-stroke-color":"#ffffff"}});
+      map.addLayer({id:"guide-stop-numbers",type:"symbol",source:"guide-stops",layout:{"text-field":["get","number"],"text-font":["Noto Sans Regular"],"text-size":12,"text-allow-overlap":true,"text-ignore-placement":true},paint:{"text-color":"#ffffff"}});
+      map.on("click","guide-stop-numbers",e=>{const f=e.features?.[0];if(!f)return;const el=document.createElement("div");el.textContent=stopLabel(Number(f.properties.index));el.style.color="#17232d";new maplibregl.Popup({offset:16}).setLngLat(f.geometry.coordinates).setDOMContent(el).addTo(map)});
       map.addSource("guide-user",{type:"geojson",data:collection([])});
       map.addLayer({id:"guide-user-halo",type:"circle",source:"guide-user",paint:{"circle-radius":14,"circle-color":"#297cff","circle-opacity":.2}});
       map.addLayer({id:"guide-user-point",type:"circle",source:"guide-user",paint:{"circle-radius":9,"circle-color":"#297cff","circle-stroke-width":2,"circle-stroke-color":"#ffffff"}});
@@ -121,8 +128,8 @@ function buildMap(){
 }
 function updateMap(){
   const cur=S[lastNarrated]||S[1],ni=(!running&&current===lastNarrated)?nextEligible(current+1):nextEligible(current),nxt=S[ni];
-  if(mapReady)map.getSource("guide-active").setData(collection([pointFeature(cur[1],cur[2],{kind:"current",label:cur[0]}),pointFeature(nxt[1],nxt[2],{kind:"next",label:nxt[0]})]));
-  $("currentNarration").textContent=cur[0].replace(" · Museu Tàpies","");$("nextNarration").textContent=nxt[0];$("mapLinkBtn").dataset.lat=cur[1];$("mapLinkBtn").dataset.lon=cur[2];
+  if(mapReady)map.getSource("guide-active").setData(collection([pointFeature(cur[1],cur[2],{kind:"current",label:stopLabel(lastNarrated)}),pointFeature(nxt[1],nxt[2],{kind:"next",label:stopLabel(ni)})]));
+  $("currentNarration").textContent=stopLabel(lastNarrated).replace(" · Museu Tàpies","");$("nextNarration").textContent=stopLabel(ni);$("mapLinkBtn").dataset.lat=cur[1];$("mapLinkBtn").dataset.lon=cur[2];
 }
 function syncUser(){if(mapReady)map.getSource("guide-user").setData(collection(mapUserPosition?[pointFeature(mapUserPosition.lat,mapUserPosition.lon)]:[]))}
 function setUser(lat,lon){mapUserPosition={lat,lon};syncUser()}
@@ -130,10 +137,10 @@ function nearest(lat,lon){let z={i:0,d:Infinity};S.forEach((s,i)=>{const d=dist(
 function forward(){let a=[];for(let k=0;k<6;k++)a.push((current+k)%S.length);return a}
 
 function updateModeText(){$("modeText").textContent=$("modeSelect").value==="all"?"전체":"핵심"}
-function renderStops(){for(const id of ["stopList","stopListMirror"]){const ol=$(id);ol.innerHTML="";S.forEach((s,i)=>{const li=document.createElement("li");li.textContent=s[0];if(s[3]){const b=document.createElement("span");b.className="badge";b.textContent="핵심";li.appendChild(b)}if(played.has(i))li.classList.add("done");if(i===nextEligible(current))li.classList.add("current");ol.appendChild(li)})}$("routeProgressText").textContent=played.size+" / "+S.length}
+function renderStops(){for(const id of ["stopList","stopListMirror"]){const ol=$(id);ol.innerHTML="";S.forEach((s,i)=>{const li=document.createElement("li");li.textContent=stopLabel(i);li.style.listStyle="none";if(s[3]){const b=document.createElement("span");b.className="badge";b.textContent="핵심";li.appendChild(b)}if(played.has(i))li.classList.add("done");if(i===nextEligible(current))li.classList.add("current");ol.appendChild(li)})}$("routeProgressText").textContent=played.size+" / "+S.length}
 
 function speechProgressStart(text){clearInterval(speechTimer);speechStart=Date.now();speechTextLen=Math.max(1,text.length);speechEstimate=Math.max(10,text.length/(5.4*+$("rateSelect").value));$("progressFill").style.width="0%";$("timeText").textContent="00:00 / "+secFmt(speechEstimate);speechTimer=setInterval(()=>{if(paused)return;const e=(Date.now()-speechStart)/1000,p=Math.min(98,e/speechEstimate*100);$("progressFill").style.width=p+"%";$("timeText").textContent=secFmt(e)+" / "+secFmt(speechEstimate)},250)}
-function actuallySpeak(i,interrupt=false){if(paused)return;const token=++speechToken;if(interrupt)speechSynthesis.cancel();speakingIndex=i;lastNarrated=i;const text=S[i][4],u=new SpeechSynthesisUtterance(text);u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechProgressStart(text);u.onboundary=e=>{if(token===speechToken&&typeof e.charIndex==="number")$("progressFill").style.width=Math.min(100,e.charIndex/speechTextLen*100)+"%"};u.onend=()=>{if(token!==speechToken)return;clearInterval(speechTimer);$("progressFill").style.width="100%";speakingIndex=null;$("gpsStatus").textContent=running?"GPS 추적 중":"대기 중";if(queuedIndex!==null){const q=queuedIndex;queuedIndex=null;setTimeout(()=>actuallySpeak(q,false),180)}};speechSynthesis.speak(u);$("nowTitle").textContent=S[i][0].replace(" · Museu Tàpies","");$("nowText").textContent=summary(text);updatePlacePhoto(i);$("gpsStatus").textContent="해설 재생 중";updateMap()}
+function actuallySpeak(i,interrupt=false){if(paused)return;const token=++speechToken;if(interrupt)speechSynthesis.cancel();speakingIndex=i;lastNarrated=i;const text=S[i][4],u=new SpeechSynthesisUtterance(text);u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechProgressStart(text);u.onboundary=e=>{if(token===speechToken&&typeof e.charIndex==="number")$("progressFill").style.width=Math.min(100,e.charIndex/speechTextLen*100)+"%"};u.onend=()=>{if(token!==speechToken)return;clearInterval(speechTimer);$("progressFill").style.width="100%";speakingIndex=null;$("gpsStatus").textContent=running?"GPS 추적 중":"대기 중";if(queuedIndex!==null){const q=queuedIndex;queuedIndex=null;setTimeout(()=>actuallySpeak(q,false),180)}};speechSynthesis.speak(u);$("nowTitle").textContent=stopLabel(i).replace(" · Museu Tàpies","");$("nowText").textContent=summary(text);updatePlacePhoto(i);$("gpsStatus").textContent="해설 재생 중";updateMap()}
 function requestNarration(i,interrupt=false){if(!interrupt&&(speechSynthesis.speaking||speakingIndex!==null)){queuedIndex=i;return}actuallySpeak(i,interrupt)}
 function passStop(i,forceSpeak=false){lastPassed=i;played.add(i);if(forceSpeak||eligible(i))requestNarration(i,forceSpeak);current=(i+1)%S.length;renderStops();updateMap()}
 function nextNarration(){const i=nextEligible(current);passStop(i,true)}
@@ -146,7 +153,7 @@ function handlePos(p){
   if(map)map.easeTo({center:[lon,lat],duration:350});
   $("accuracyText").textContent="±"+Math.round(accuracy||0)+" m";
   const n=nearest(lat,lon);
-  $("currentLocation").textContent=(n.d<500?S[n.i][0]:"GPS "+lat.toFixed(5)+", "+lon.toFixed(5));
+  $("currentLocation").textContent=(n.d<500?stopLabel(n.i):"GPS "+lat.toFixed(5)+", "+lon.toFixed(5));
   const ni=nextEligible(current);
   $("nextDistance").textContent=fmt(dist(lat,lon,S[ni][1],S[ni][2]));
   $("gpsStatus").textContent="GPS 추적 중";
@@ -163,12 +170,12 @@ function releaseWake(){if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=nu
 async function start(){if(running){stop();return}if(!navigator.geolocation){$("gpsStatus").textContent="GPS 미지원";return}running=true;paused=false;played.clear();queuedIndex=null;lastNarrated=1;if($("startSelect").value==="auto"){current=1;lastPassed=1}else{current=+$("startSelect").value;lastPassed=current}renderStops();updateMap();updateModeText();$("startBtn").innerHTML='<span>■</span> GPS GUIDE STOP';$("gpsStatus").textContent="GPS 연결 중";await acquireWakeLock();const u=new SpeechSynthesisUtterance("바르셀로나 한국어 GPS 가이드를 시작합니다. 위치가 확인되면 자동으로 해설하겠습니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u);navigator.geolocation.getCurrentPosition(p=>{if($("startSelect").value==="auto"){const n=nearest(p.coords.latitude,p.coords.longitude);if(n.d<1500){current=n.i;lastPassed=n.i;renderStops();updateMap()}}handlePos(p)},geoErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});watchId=navigator.geolocation.watchPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:1500,timeout:20000})}
 function stop(){running=false;paused=false;if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;speechToken++;speechSynthesis.cancel();clearInterval(speechTimer);queuedIndex=null;speakingIndex=null;releaseWake();$("startBtn").innerHTML='<span>▶</span> GPS GUIDE START';$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent="중지됨"}
 function togglePause(){if(!running)return;paused=!paused;if(paused){speechSynthesis.pause();$("pauseBtn").innerHTML='▶ <small>계속</small>';$("gpsStatus").textContent="일시정지"}else{speechSynthesis.resume();$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent=speechSynthesis.speaking?"해설 재생 중":"GPS 추적 중";if(lastPos&&!speechSynthesis.speaking)handlePos({coords:{latitude:lastPos.lat,longitude:lastPos.lon,accuracy:lastPos.accuracy}})}}
-function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;queuedIndex=null;renderStops();updateModeText();updateMap();$("currentLocation").textContent="GPS 시작 전 · MO Barcelona 앞"; mapUserPosition=null;syncUser(); if(map) map.jumpTo({center:[2.1712,41.3952],zoom:13.5});$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="Casa Batlló";$("nowText").textContent="Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다.";updatePlacePhoto(1)}
+function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;queuedIndex=null;renderStops();updateModeText();updateMap();$("currentLocation").textContent="GPS 시작 전 · MO Barcelona 앞"; mapUserPosition=null;syncUser(); if(map) map.jumpTo({center:[2.1712,41.3952],zoom:13.5});$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="2. Casa Batlló";$("nowText").textContent="Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다.";updatePlacePhoto(1)}
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.panel).classList.add("active");if(b.dataset.panel==="mapPanel")setTimeout(()=>{if(map)map.resize()},120)});
 $("startBtn").onclick=start;$("pauseBtn").onclick=togglePause;$("replayBtn").onclick=()=>requestNarration(lastNarrated,true);$("nextBtn").onclick=nextNarration;$("demoBtn").onclick=nextNarration;$("testBtn").onclick=()=>{speechToken++;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("안녕하세요. 바르셀로나 한국어 GPS 오디오가이드 음성 테스트입니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u)};$("resetBtn").onclick=reset;$("modeSelect").onchange=()=>{updateModeText();renderStops();updateMap()};$("startSelect").onchange=()=>{if(!running){current=$("startSelect").value==="auto"?1:+$("startSelect").value;lastPassed=current;renderStops();updateMap()}};$("recenterBtn").onclick=()=>{if(!map)return;if(lastPos)map.jumpTo({center:[lastPos.lon,lastPos.lat],zoom:15});else map.jumpTo({center:[2.1712,41.3952],zoom:13.5})};$("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastNarrated][1],lon=$("mapLinkBtn").dataset.lon||S[lastNarrated][2];window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank")};
 document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&running&&!wakeLock)acquireWakeLock()});
 speechSynthesis.onvoiceschanged=loadVoices;buildMap();loadVoices();reset();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.8").catch(()=>{}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.9").catch(()=>{}));
 
 
