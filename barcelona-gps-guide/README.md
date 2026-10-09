@@ -39,3 +39,8 @@ https://www.barcelonabusturistic.cat/en/service-information
 - Corrects the reversed segment after Miramar using the official detailed map (https://www.barcelonabusturistic.cat/en/red-route/modal/mapa_v1) and route arrows in the official printable map, checked 2026-10-09. Numbers 1–24 represent this travel order starting at Catalunya, not independently verified physical sign IDs.
 - Keeps narration records and photo queries paired when reordering; all map stops have always-visible number labels, matching list and narration status. Tap a number for the name.
 - Shows dated notices for Sants closure and Glories replacement. Retains nominal coordinates and does not invent diversion geometry.
+
+## v1.3.10 all-stop narration
+- Unifies GPS narration to all 24 stops; removes highlights filter and badges. Initial GPS selection defaults to nearest stop and is shared between getCurrentPosition/watchPosition to avoid callback ordering races.
+- Displays full narration, including initial Casa Batllo text. Replaces lossy single pending slot with a FIFO queue; removes the timer dependency between queued narrations and startup speech that could strand the first GPS narration.
+- Never pauses on visibility loss; on return, reacquires GPS/wake lock and resumes or restarts interrupted speech, preserving waiting narrations. This is best-effort recovery, NOT guaranteed background audio or background geolocation. Mobile web geolocation can be suspended while hidden; native Android foreground service is needed for dependable background GPS guidance.
