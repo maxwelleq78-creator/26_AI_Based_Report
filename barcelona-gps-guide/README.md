@@ -44,3 +44,7 @@ https://www.barcelonabusturistic.cat/en/service-information
 - Unifies GPS narration to all 24 stops; removes highlights filter and badges. Initial GPS selection defaults to nearest stop and is shared between getCurrentPosition/watchPosition to avoid callback ordering races.
 - Displays full narration, including initial Casa Batllo text. Replaces lossy single pending slot with a FIFO queue; removes the timer dependency between queued narrations and startup speech that could strand the first GPS narration.
 - Never pauses on visibility loss; on return, reacquires GPS/wake lock and resumes or restarts interrupted speech, preserving waiting narrations. This is best-effort recovery, NOT guaranteed background audio or background geolocation. Mobile web geolocation can be suspended while hidden; native Android foreground service is needed for dependable background GPS guidance.
+
+## v1.3.11 navigation and visible sequence
+- Removes the guide tab and duplicate collapsed stop list; a single 24-stop list is always visible on the main page above settings.
+- Adds previous narration and makes previous/next browse relative to the displayed narration, wrapping at route ends. Manual browsing resumes from pause without rewinding GPS progress or marking unvisited stops visited. Current narration is highlighted in the list.

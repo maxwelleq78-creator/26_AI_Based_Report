@@ -128,7 +128,7 @@ footer{text-align:center;color:#66727d;font-size:10px;padding:20px 4px 0}
 }
 
 
-/* v1.3.10: light vector base, with POI symbols excluded in map-style.json. */
+/* v1.3.11: light vector base, with POI symbols excluded in map-style.json. */
 #map{background:#e8e9e5}
 .map-status{position:absolute;top:88px;left:12px;right:12px;z-index:800;padding:8px 12px;border-radius:8px;background:rgba(15,23,31,.94);color:#fff;font-size:12px;line-height:1.5;pointer-events:none}
 
@@ -138,3 +138,11 @@ footer{text-align:center;color:#66727d;font-size:10px;padding:20px 4px 0}
 @media(max-width:719px){.now-playing{grid-template-columns:82px 1fr}.place-thumb{height:120px}}
 
 #nowText{grid-column:1/-1;margin:0;color:#e2e7eb}
+
+/* One map view and a permanently visible stop sequence. */
+.map-shell{border-top:1px solid var(--line);border-radius:16px}
+.transport-controls{grid-template-columns:repeat(4,minmax(0,1fr))}
+.transport-controls button{min-height:44px}.transport-controls small{display:block;margin:2px 0 0;font-size:11px}
+.main-route-list{margin:14px 0;border-radius:16px}.main-route-list ol{padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px}
+.main-route-list li{font-size:13px;overflow-wrap:anywhere}.main-route-list li.listening{color:#ff5967;font-weight:800;text-decoration:none}
+@media(max-width:430px){.main-route-list ol{grid-template-columns:1fr}}
