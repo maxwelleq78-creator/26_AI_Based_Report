@@ -27,14 +27,16 @@ const S=[
 ];
 
 const $=id=>document.getElementById(id);
+let initialFixPending=false;
 let running=false,paused=false,watchId=null,current=1,lastPassed=1,lastNarrated=1,played=new Set(),lastPos=null,wakeLock=null;
 let map,mapReady=false,mapUserPosition=null;
-let speechTimer=null,speechStart=0,speechEstimate=1,speechTextLen=1,voices=[],queuedIndex=null,speechToken=0,speakingIndex=null;
+let activeUtterance=null;
+let speechTimer=null,speechStart=0,speechEstimate=1,speechTextLen=1,voices=[],narrationQueue=[],speechToken=0,speakingIndex=null;
 
 const dist=(a,b,c,d)=>{const R=6371000,r=x=>x*Math.PI/180,A=r(c-a),B=r(d-b),q=Math.sin(A/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(B/2)**2;return 2*R*Math.asin(Math.sqrt(q))};
 const fmt=m=>m<1000?Math.round(m)+" m":(m/1000).toFixed(1)+" km";
 const secFmt=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.floor(s%60)).padStart(2,"0");
-const eligible=i=>$("modeSelect").value==="all"||S[i][3]===1;
+const eligible=i=>true;
 const nextEligible=(from=current)=>{let i=((from%S.length)+S.length)%S.length;for(let k=0;k<S.length;k++){if(eligible(i))return i;i=(i+1)%S.length}return i};
 const summary=t=>{const parts=t.split(/(?<=[.!?다요])\s+/).filter(Boolean);let s=parts.slice(0,2).join(" ");if(s.length<75)s=parts.slice(0,3).join(" ");return s.length>175?s.slice(0,172)+"…":s};
 
@@ -92,7 +94,7 @@ function mapStatus(message){
 function buildMap(){
   if(!window.maplibregl){mapStatus("지도를 불러오지 못했습니다. 인터넷 연결 후 새로고침해 주세요.");return}
   try{
-    map=new maplibregl.Map({container:"map",style:"./map-style.json?v=1.3.9",center:[2.1712,41.3952],zoom:13.5,minZoom:0,maxZoom:18,pitch:0,bearing:0,maxPitch:0,dragRotate:false,pitchWithRotate:false,touchPitch:false,attributionControl:false});
+    map=new maplibregl.Map({container:"map",style:"./map-style.json?v=1.3.10",center:[2.1712,41.3952],zoom:13.5,minZoom:0,maxZoom:18,pitch:0,bearing:0,maxPitch:0,dragRotate:false,pitchWithRotate:false,touchPitch:false,attributionControl:false});
     map.touchZoomRotate.disableRotation();
     map.addControl(new maplibregl.AttributionControl({compact:true,customAttribution:'<a href="https://openfreemap.org/">OpenFreeMap</a> · <a href="https://openmaptiles.org/">© OpenMapTiles</a> · © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}),"bottom-right");
     map.addControl(new maplibregl.ScaleControl({maxWidth:90,unit:"metric"}),"bottom-left");
@@ -136,18 +138,19 @@ function setUser(lat,lon){mapUserPosition={lat,lon};syncUser()}
 function nearest(lat,lon){let z={i:0,d:Infinity};S.forEach((s,i)=>{const d=dist(lat,lon,s[1],s[2]);if(d<z.d)z={i,d}});return z}
 function forward(){let a=[];for(let k=0;k<6;k++)a.push((current+k)%S.length);return a}
 
-function updateModeText(){$("modeText").textContent=$("modeSelect").value==="all"?"전체":"핵심"}
-function renderStops(){for(const id of ["stopList","stopListMirror"]){const ol=$(id);ol.innerHTML="";S.forEach((s,i)=>{const li=document.createElement("li");li.textContent=stopLabel(i);li.style.listStyle="none";if(s[3]){const b=document.createElement("span");b.className="badge";b.textContent="핵심";li.appendChild(b)}if(played.has(i))li.classList.add("done");if(i===nextEligible(current))li.classList.add("current");ol.appendChild(li)})}$("routeProgressText").textContent=played.size+" / "+S.length}
+function updateModeText(){$("modeText").textContent="모든 역"}
+function renderStops(){for(const id of ["stopList","stopListMirror"]){const ol=$(id);ol.innerHTML="";S.forEach((s,i)=>{const li=document.createElement("li");li.textContent=stopLabel(i);li.style.listStyle="none";if(played.has(i))li.classList.add("done");if(i===nextEligible(current))li.classList.add("current");ol.appendChild(li)})}$("routeProgressText").textContent=played.size+" / "+S.length}
 
 function speechProgressStart(text){clearInterval(speechTimer);speechStart=Date.now();speechTextLen=Math.max(1,text.length);speechEstimate=Math.max(10,text.length/(5.4*+$("rateSelect").value));$("progressFill").style.width="0%";$("timeText").textContent="00:00 / "+secFmt(speechEstimate);speechTimer=setInterval(()=>{if(paused)return;const e=(Date.now()-speechStart)/1000,p=Math.min(98,e/speechEstimate*100);$("progressFill").style.width=p+"%";$("timeText").textContent=secFmt(e)+" / "+secFmt(speechEstimate)},250)}
-function actuallySpeak(i,interrupt=false){if(paused)return;const token=++speechToken;if(interrupt)speechSynthesis.cancel();speakingIndex=i;lastNarrated=i;const text=S[i][4],u=new SpeechSynthesisUtterance(text);u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechProgressStart(text);u.onboundary=e=>{if(token===speechToken&&typeof e.charIndex==="number")$("progressFill").style.width=Math.min(100,e.charIndex/speechTextLen*100)+"%"};u.onend=()=>{if(token!==speechToken)return;clearInterval(speechTimer);$("progressFill").style.width="100%";speakingIndex=null;$("gpsStatus").textContent=running?"GPS 추적 중":"대기 중";if(queuedIndex!==null){const q=queuedIndex;queuedIndex=null;setTimeout(()=>actuallySpeak(q,false),180)}};speechSynthesis.speak(u);$("nowTitle").textContent=stopLabel(i).replace(" · Museu Tàpies","");$("nowText").textContent=summary(text);updatePlacePhoto(i);$("gpsStatus").textContent="해설 재생 중";updateMap()}
-function requestNarration(i,interrupt=false){if(!interrupt&&(speechSynthesis.speaking||speakingIndex!==null)){queuedIndex=i;return}actuallySpeak(i,interrupt)}
+function actuallySpeak(i,interrupt=false){if(paused)return;const token=++speechToken;if(interrupt){narrationQueue=[];speechSynthesis.cancel();}speakingIndex=i;lastNarrated=i;const text=S[i][4],u=new SpeechSynthesisUtterance(text);activeUtterance=u;u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechProgressStart(text);u.onboundary=e=>{if(token===speechToken&&typeof e.charIndex==="number")$("progressFill").style.width=Math.min(100,e.charIndex/speechTextLen*100)+"%"};u.onend=()=>{if(token!==speechToken)return;clearInterval(speechTimer);$("progressFill").style.width="100%";speakingIndex=null;activeUtterance=null;$("gpsStatus").textContent=running?"GPS 추적 중":"대기 중";if(narrationQueue.length&&!paused)actuallySpeak(narrationQueue.shift(),false)};speechSynthesis.speak(u);$("nowTitle").textContent=stopLabel(i).replace(" · Museu Tàpies","");$("nowText").textContent=text;updatePlacePhoto(i);$("gpsStatus").textContent="해설 재생 중";updateMap()}
+function requestNarration(i,interrupt=false){if(!interrupt&&(speechSynthesis.speaking||speakingIndex!==null)){if(!narrationQueue.includes(i))narrationQueue.push(i);return}actuallySpeak(i,interrupt)}
 function passStop(i,forceSpeak=false){lastPassed=i;played.add(i);if(forceSpeak||eligible(i))requestNarration(i,forceSpeak);current=(i+1)%S.length;renderStops();updateMap()}
 function nextNarration(){const i=nextEligible(current);passStop(i,true)}
 
 function handlePos(p){
   if(!running||paused)return;
   const {latitude:lat,longitude:lon,accuracy}=p.coords;
+  if(initialFixPending){const n=nearest(lat,lon);if(n.d<1500){current=n.i;lastPassed=n.i;initialFixPending=false;renderStops();updateMap()}}
   lastPos={lat,lon,accuracy};
   setUser(lat,lon);
   if(map)map.easeTo({center:[lon,lat],duration:350});
@@ -167,15 +170,25 @@ function geoErr(e){$("gpsStatus").textContent=e.code===1?"위치 권한 필요":
 async function acquireWakeLock(){try{if("wakeLock" in navigator){wakeLock=await navigator.wakeLock.request("screen");$("wakeText").textContent="켜짐";wakeLock.addEventListener("release",()=>{$("wakeText").textContent="꺼짐"})}else $("wakeText").textContent="미지원"}catch(e){$("wakeText").textContent="사용 안 함"}}
 function releaseWake(){if(wakeLock){try{wakeLock.release()}catch(e){}wakeLock=null}$("wakeText").textContent="꺼짐"}
 
-async function start(){if(running){stop();return}if(!navigator.geolocation){$("gpsStatus").textContent="GPS 미지원";return}running=true;paused=false;played.clear();queuedIndex=null;lastNarrated=1;if($("startSelect").value==="auto"){current=1;lastPassed=1}else{current=+$("startSelect").value;lastPassed=current}renderStops();updateMap();updateModeText();$("startBtn").innerHTML='<span>■</span> GPS GUIDE STOP';$("gpsStatus").textContent="GPS 연결 중";await acquireWakeLock();const u=new SpeechSynthesisUtterance("바르셀로나 한국어 GPS 가이드를 시작합니다. 위치가 확인되면 자동으로 해설하겠습니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u);navigator.geolocation.getCurrentPosition(p=>{if($("startSelect").value==="auto"){const n=nearest(p.coords.latitude,p.coords.longitude);if(n.d<1500){current=n.i;lastPassed=n.i;renderStops();updateMap()}}handlePos(p)},geoErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});watchId=navigator.geolocation.watchPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:1500,timeout:20000})}
-function stop(){running=false;paused=false;if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;speechToken++;speechSynthesis.cancel();clearInterval(speechTimer);queuedIndex=null;speakingIndex=null;releaseWake();$("startBtn").innerHTML='<span>▶</span> GPS GUIDE START';$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent="중지됨"}
-function togglePause(){if(!running)return;paused=!paused;if(paused){speechSynthesis.pause();$("pauseBtn").innerHTML='▶ <small>계속</small>';$("gpsStatus").textContent="일시정지"}else{speechSynthesis.resume();$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent=speechSynthesis.speaking?"해설 재생 중":"GPS 추적 중";if(lastPos&&!speechSynthesis.speaking)handlePos({coords:{latitude:lastPos.lat,longitude:lastPos.lon,accuracy:lastPos.accuracy}})}}
-function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;queuedIndex=null;renderStops();updateModeText();updateMap();$("currentLocation").textContent="GPS 시작 전 · MO Barcelona 앞"; mapUserPosition=null;syncUser(); if(map) map.jumpTo({center:[2.1712,41.3952],zoom:13.5});$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="2. Casa Batlló";$("nowText").textContent="Mandarin Oriental Barcelona 바로 앞의 Casa Batlló 정류장에서 시작하도록 설정되어 있습니다.";updatePlacePhoto(1)}
+async function start(){if(running){stop();return}if(!navigator.geolocation){$("gpsStatus").textContent="GPS 미지원";return}running=true;initialFixPending=$("startSelect").value==="auto";paused=false;played.clear();narrationQueue=[];lastNarrated=1;if($("startSelect").value==="auto"){current=1;lastPassed=1}else{current=+$("startSelect").value;lastPassed=current}renderStops();updateMap();updateModeText();$("startBtn").innerHTML='<span>■</span> GPS GUIDE STOP';$("gpsStatus").textContent="GPS 연결 중";acquireWakeLock();navigator.geolocation.getCurrentPosition(handlePos,geoErr,{enableHighAccuracy:true,timeout:15000,maximumAge:0});watchId=navigator.geolocation.watchPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:1500,timeout:20000})}
+function stop(){running=false;paused=false;if(watchId!==null)navigator.geolocation.clearWatch(watchId);watchId=null;speechToken++;speechSynthesis.cancel();clearInterval(speechTimer);narrationQueue=[];speakingIndex=null;releaseWake();$("startBtn").innerHTML='<span>▶</span> GPS GUIDE START';$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent="중지됨"}
+function togglePause(){if(!running)return;paused=!paused;if(paused){speechSynthesis.pause();$("pauseBtn").innerHTML='▶ <small>계속</small>';$("gpsStatus").textContent="일시정지"}else{speechSynthesis.resume();$("pauseBtn").innerHTML='Ⅱ <small>일시정지</small>';$("gpsStatus").textContent=speechSynthesis.speaking?"해설 재생 중":"GPS 추적 중";if(speakingIndex===null&&narrationQueue.length)actuallySpeak(narrationQueue.shift());if(lastPos&&!speechSynthesis.speaking)handlePos({coords:{latitude:lastPos.lat,longitude:lastPos.lon,accuracy:lastPos.accuracy}})}}
+function reset(){played.clear();current=1;lastPassed=1;lastNarrated=1;narrationQueue=[];renderStops();updateModeText();updateMap();$("currentLocation").textContent="GPS 시작 전 · MO Barcelona 앞"; mapUserPosition=null;syncUser(); if(map) map.jumpTo({center:[2.1712,41.3952],zoom:13.5});$("nextDistance").textContent="—";$("accuracyText").textContent="—";$("progressFill").style.width="0%";$("timeText").textContent="00:00 / 00:00";$("nowTitle").textContent="2. Casa Batlló";$("nowText").textContent=S[1][4];updatePlacePhoto(1)}
 
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));b.classList.add("active");$(b.dataset.panel).classList.add("active");if(b.dataset.panel==="mapPanel")setTimeout(()=>{if(map)map.resize()},120)});
-$("startBtn").onclick=start;$("pauseBtn").onclick=togglePause;$("replayBtn").onclick=()=>requestNarration(lastNarrated,true);$("nextBtn").onclick=nextNarration;$("demoBtn").onclick=nextNarration;$("testBtn").onclick=()=>{speechToken++;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("안녕하세요. 바르셀로나 한국어 GPS 오디오가이드 음성 테스트입니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u)};$("resetBtn").onclick=reset;$("modeSelect").onchange=()=>{updateModeText();renderStops();updateMap()};$("startSelect").onchange=()=>{if(!running){current=$("startSelect").value==="auto"?1:+$("startSelect").value;lastPassed=current;renderStops();updateMap()}};$("recenterBtn").onclick=()=>{if(!map)return;if(lastPos)map.jumpTo({center:[lastPos.lon,lastPos.lat],zoom:15});else map.jumpTo({center:[2.1712,41.3952],zoom:13.5})};$("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastNarrated][1],lon=$("mapLinkBtn").dataset.lon||S[lastNarrated][2];window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank")};
-document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&running&&!wakeLock)acquireWakeLock()});
+$("startBtn").onclick=start;$("pauseBtn").onclick=togglePause;$("replayBtn").onclick=()=>requestNarration(lastNarrated,true);$("nextBtn").onclick=nextNarration;$("demoBtn").onclick=nextNarration;$("testBtn").onclick=()=>{speechToken++;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance("안녕하세요. 바르셀로나 한국어 GPS 오디오가이드 음성 테스트입니다.");u.lang="ko-KR";u.rate=+$("rateSelect").value;const v=selectedVoice();if(v)u.voice=v;speechSynthesis.speak(u)};$("resetBtn").onclick=reset;$("startSelect").onchange=()=>{if(!running){current=$("startSelect").value==="auto"?1:+$("startSelect").value;lastPassed=current;renderStops();updateMap()}};$("recenterBtn").onclick=()=>{if(!map)return;if(lastPos)map.jumpTo({center:[lastPos.lon,lastPos.lat],zoom:15});else map.jumpTo({center:[2.1712,41.3952],zoom:13.5})};$("mapLinkBtn").onclick=()=>{const lat=$("mapLinkBtn").dataset.lat||S[lastNarrated][1],lon=$("mapLinkBtn").dataset.lon||S[lastNarrated][2];window.open("https://www.google.com/maps/search/?api=1&query="+lat+","+lon,"_blank")};
+function restoreGuide(){
+  if(document.visibilityState!=="visible"||!running||paused)return;
+  if(!wakeLock)acquireWakeLock();
+  if(speechSynthesis.paused)speechSynthesis.resume();
+  if(speakingIndex!==null&&!speechSynthesis.speaking&&!speechSynthesis.pending){const pending=narrationQueue.slice();actuallySpeak(speakingIndex,true);narrationQueue=pending;}
+  else if(speakingIndex===null&&narrationQueue.length)actuallySpeak(narrationQueue.shift());
+  navigator.geolocation.getCurrentPosition(handlePos,geoErr,{enableHighAccuracy:true,maximumAge:0,timeout:15000});
+}
+// Do not cancel or pause narration on hide. Mobile OS may still suspend this page.
+document.addEventListener("visibilitychange",restoreGuide);
+window.addEventListener("pageshow",restoreGuide);
 speechSynthesis.onvoiceschanged=loadVoices;buildMap();loadVoices();reset();
-if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.9").catch(()=>{}));
+if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js?v=1.3.10").catch(()=>{}));
 
 
